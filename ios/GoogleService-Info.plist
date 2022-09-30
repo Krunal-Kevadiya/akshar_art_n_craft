@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>341542748178-7qap4cn7cgacc85tk825hcf4gkt3tacv.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.341542748178-7qap4cn7cgacc85tk825hcf4gkt3tacv</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCEJSaTG4PRrq9W7UNxddAlXbSuDDDFQbw</string>
+	<key>GCM_SENDER_ID</key>
+	<string>341542748178</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.akshar.artncraft.aksharArtNCraft</string>
+	<key>PROJECT_ID</key>
+	<string>akshar-art-and-craft</string>
+	<key>STORAGE_BUCKET</key>
+	<string>akshar-art-and-craft.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:341542748178:ios:f63ee85b38444a085358cb</string>
+</dict>
+</plist>

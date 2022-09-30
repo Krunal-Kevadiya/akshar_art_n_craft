@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "341542748178",
+    "project_id": "akshar-art-and-craft",
+    "storage_bucket": "akshar-art-and-craft.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:341542748178:android:7ea30806a9ee9e745358cb",
+        "android_client_info": {
+          "package_name": "com.akshar.artncraft.akshar_art_n_craft"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "341542748178-prj0cfbhru60vsqebh8eg3d4hltjlc8v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.akshar.artncraft.akshar_art_n_craft",
+            "certificate_hash": "3885a714d4c12bb223e7b6ed1b33aa528d6ee03a"
+          }
+        },
+        {
+          "client_id": "341542748178-343e6jouf23s2g0r61pi3sas2tealq5o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6cLOkMF-e0T0ihQgjmir2bTHfBPHitT8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "341542748178-343e6jouf23s2g0r61pi3sas2tealq5o.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "341542748178-7qap4cn7cgacc85tk825hcf4gkt3tacv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.akshar.artncraft.aksharArtNCraft"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
