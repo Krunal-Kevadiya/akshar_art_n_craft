@@ -14,7 +14,7 @@ class CatalogModel {
 
   factory CatalogModel.fromJson(Map<String, dynamic> json) =>
       _$CatalogModelFromJson(json);
-  final String id;
+  final int id;
   final String name;
   final String? description;
   final String? photoUrl;

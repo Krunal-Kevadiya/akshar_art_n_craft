@@ -13,7 +13,7 @@ class FirestoreDatabase {
 
   final _firestoreService = FirestoreService.instance;
 
-  String? getCatalogPath(FirestoreOperationType type, String? id) {
+  String? getCatalogPath(FirestoreOperationType type, int? id) {
     switch (type) {
       case FirestoreOperationType.user:
         return id != null ? FirestorePath.user(id) : FirestorePath.users;
@@ -23,6 +23,10 @@ class FirestoreDatabase {
         return id != null ? FirestorePath.fabric(id) : FirestorePath.fabrics;
       case FirestoreOperationType.favorites:
         return id != null ? FirestorePath.favorites(uid, id) : null;
+      case FirestoreOperationType.testimonial:
+        return id != null
+            ? FirestorePath.testimonial(id)
+            : FirestorePath.testimonials;
       case FirestoreOperationType.category:
         return id != null
             ? FirestorePath.category(id)
@@ -80,10 +84,29 @@ class FirestoreDatabase {
     return Error(Exception(ErrorString.pathNotFoundError.tr()));
   }
 
-  Stream<List<CatalogModel>>? getAllCatalog(FirestoreOperationType type) {
+  Stream<List<CatalogModel>>? getAllCatalog(
+    FirestoreOperationType type,
+    bool isDelete,
+  ) {
     final path = getCatalogPath(type, null);
     if (path != null) {
       return _firestoreService.collectionStream(
+        path: path,
+        builder: (data, documentId) =>
+            data != null ? CatalogModel.fromJson(data) : null,
+        queryBuilder: (query) => query.where('delete', isEqualTo: isDelete),
+      );
+    }
+    return null;
+  }
+
+  Stream<CatalogModel?>? getCatalogById(
+    FirestoreOperationType type,
+    int id,
+  ) {
+    final path = getCatalogPath(type, id);
+    if (path != null) {
+      return _firestoreService.documentStream(
         path: path,
         builder: (data, documentId) =>
             data != null ? CatalogModel.fromJson(data) : null,
@@ -92,16 +115,15 @@ class FirestoreDatabase {
     return null;
   }
 
-  Stream<CatalogModel?>? getCatalogById(
+  Stream<List<TestimonialModel>>? getAllTestimonial(
     FirestoreOperationType type,
-    String id,
   ) {
-    final path = getCatalogPath(type, id);
+    final path = getCatalogPath(type, null);
     if (path != null) {
-      return _firestoreService.documentStream(
+      return _firestoreService.collectionStream(
         path: path,
         builder: (data, documentId) =>
-            data != null ? CatalogModel.fromJson(data) : null,
+            data != null ? TestimonialModel.fromJson(data) : null,
       );
     }
     return null;

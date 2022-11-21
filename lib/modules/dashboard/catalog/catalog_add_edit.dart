@@ -28,7 +28,8 @@ class _CatalogAddEditState extends State<CatalogAddEdit> {
   TextEditingController? _descriptionController;
   XFile? _file;
   bool _isLoading = false;
-  String? _id;
+  int? _id;
+  bool _deleted = false;
 
   @override
   void initState() {
@@ -44,6 +45,7 @@ class _CatalogAddEditState extends State<CatalogAddEdit> {
     final _todoModel =
         ModalRoute.of(context)?.settings.arguments as CatalogModel?;
     _id = _todoModel?.id;
+    _deleted = _todoModel?.delete ?? false;
     _nameController = TextEditingController(text: _todoModel?.name ?? '');
     _descriptionController =
         TextEditingController(text: _todoModel?.description ?? '');
@@ -140,7 +142,7 @@ class _CatalogAddEditState extends State<CatalogAddEdit> {
                 id: documentIdFromCurrentDate(),
                 name: _nameController!.text,
                 description: _descriptionController!.text,
-                delete: false,
+                delete: _deleted,
               ),
             )
           : await firestoreDatabase.updateCatalog(
@@ -149,7 +151,7 @@ class _CatalogAddEditState extends State<CatalogAddEdit> {
                 id: _id ?? documentIdFromCurrentDate(),
                 name: _nameController!.text,
                 description: _descriptionController!.text,
-                delete: false,
+                delete: _deleted,
               ),
             );
       if (!mounted) return;

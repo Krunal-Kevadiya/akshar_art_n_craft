@@ -68,12 +68,10 @@ class Navigation {
         if (userSnapshot.data?.emailVerified == true) {
           return const HomePage();
         } else {
-          print('verify');
-          // ScaffoldMessenger.of(context).showSnackBar(
-          //   SnackBar(content: Text(ErrorString.fbVerifyEmailError.tr())),
-          // );
+          return const VerifyPage();
         }
       }
+      return const HomePage();
       return const WelcomePage();
     }
     return const IndicatorPage();
@@ -104,29 +102,29 @@ class Navigation {
           type: FirestoreOperationType.fabric,
         );
       case DrawerString.productMenu:
-        return const HomeView();
+        return const ProductPage();
       case DrawerString.shopByCategoryMenu:
-        return const HomeView();
+        return const CategoryPage();
       case DrawerString.videosMenu:
-        return const HomeView();
+        return const VideosPage();
       case DrawerString.signInMenu:
-        return const HomeView();
+        return const SignInPage();
       case DrawerString.wishlistMenu:
-        return const HomeView();
+        return const WishlistPage();
       case DrawerString.ordersMenu:
-        return const HomeView();
+        return const OrdersPage();
       case DrawerString.profileMenu:
         return const ProfilePage();
       case DrawerString.testimonialsMenu:
-        return const HomeView();
+        return const TestimonialsPage();
       case DrawerString.contactUsMenu:
-        return const HomeView();
+        return const ContactUsPage();
       case DrawerString.aboutUsMenu:
-        return const HomeView();
+        return const AboutUsPage();
       case DrawerString.shareAppMenu:
-        return const HomeView();
+        return const ShareAppPage();
       case DrawerString.rateUsMenu:
-        return const HomeView();
+        return const RateUsPage();
       default:
         return const HomeView();
     }
@@ -140,9 +138,9 @@ class Navigation {
       case 0:
         return CatalogAddEdit(type: type);
       case 1:
-        return const CatalogList();
+        return CatalogList(type: type);
       case 2:
-        return const CatalogDeleteList();
+        return CatalogDeleteList(type: type);
       default:
         return CatalogAddEdit(type: type);
     }

@@ -84,7 +84,7 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Backdrop'),
+        title: Text(DrawerString.homeMenu.tr()),
         elevation: 0,
         leading: const MenuButton(),
       ),

@@ -1,3 +1,5 @@
+import '../models/models.dart';
+
 class AppString {
   AppString._();
 
@@ -136,4 +138,32 @@ class CatalogString {
   static const String descriptionLabel = 'descriptionLabel';
   static const String addButton = 'addButton';
   static const String editButton = 'editButton';
+  static const String deleteButton = 'deleteButton';
+  static const String deletedTitle = 'deletedTitle';
+  static const String undoButton = 'undoButton';
+}
+
+class ContactUsString {
+  ContactUsString._();
+
+  static const String byAddress = 'byAddress';
+  static const String byAddressDesc = 'byAddressDesc';
+  static const String byPhone = 'byPhone';
+  static List<TestimonialModel> byPhoneDesc = [
+    TestimonialModel(id: 1, name: 'byPhoneName', phone: 'byPhoneNo')
+  ];
+  static const String byEmail = 'byEmail';
+  static const String byEmailDesc = 'byEmailDesc';
+}
+
+class AboutUsString {
+  AboutUsString._();
+
+  static const String aboutUs = 'aboutUs';
+}
+
+class ShareAppString {
+  ShareAppString._();
+
+  static const String shareApp = 'shareApp';
 }

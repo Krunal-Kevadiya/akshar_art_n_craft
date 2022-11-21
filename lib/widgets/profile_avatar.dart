@@ -26,27 +26,25 @@ class ProfileAvatar extends StatelessWidget {
     final theme = Theme.of(context);
     return GestureDetector(
       onTap: () {
-        MyBottomSheet.showImagePickerSheet(
-          context: context,
-          pickGallery: () async {
-            if (enabled) {
+        if (enabled) {
+          MyBottomSheet.showImagePickerSheet(
+            context: context,
+            pickGallery: () async {
               final photo = await MediaSelection.pickImage(
                 context: context,
                 source: ImageSource.gallery,
               );
               onFileSubmitted!(photo);
-            }
-          },
-          pickCamera: () async {
-            if (enabled) {
+            },
+            pickCamera: () async {
               final photo = await MediaSelection.pickImage(
                 context: context,
                 source: ImageSource.camera,
               );
               onFileSubmitted!(photo);
-            }
-          },
-        );
+            },
+          );
+        }
       },
       child: Stack(
         children: [

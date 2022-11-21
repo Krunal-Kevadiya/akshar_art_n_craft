@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../assets/assets.dart';
 import '../../../models/models.dart';
 import '../../../themes/themes.dart';
+import '../../../utils/utils.dart';
 
 class DrawerMenu extends StatelessWidget {
   DrawerMenu({
@@ -77,7 +78,18 @@ class DrawerMenu extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 35.s,
+              backgroundColor: AppColors.gray.withOpacity(0.5),
               backgroundImage: url != null ? NetworkImage(url) : null,
+              child: url == null
+                  ? Text(
+                      name.asInitialCharacter(),
+                      style: theme.textTheme.caption?.copyWith(
+                        color: AppColors.primaryLightColor,
+                        fontSize: 15.ms,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
+                  : null,
             ),
             SizedBox(height: 10.vs),
             Text(

@@ -2,6 +2,7 @@ export './already_have_an_account.dart';
 export './app_bar.dart';
 export './background.dart';
 export './condition_base_widget.dart';
+export './empty_content.dart';
 export './menu_button.dart';
 export './profile_avatar.dart';
 export './rounded_button.dart';
