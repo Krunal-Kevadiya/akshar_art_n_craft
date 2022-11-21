@@ -11,7 +11,7 @@ import '../services/services.dart';
 import '../themes/themes.dart';
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key, required this.databaseBuilder});
+  const MyApp({required this.databaseBuilder, super.key});
 
   // Expose builders for 3rd party services at the root of the widget tree
   // This is useful when mocking services while testing

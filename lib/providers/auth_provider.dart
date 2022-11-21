@@ -54,19 +54,19 @@ class AuthProvider extends ChangeNotifier {
     String errorMessage;
     switch (e.code) {
       case 'invalid-email':
-        errorMessage = ErrorString.fbInvalidEmailError.tr();
+        errorMessage = ErrorString.fbInvalidEmail.tr();
         break;
       case 'wrong-password':
-        errorMessage = ErrorString.fbWrongPasswordError.tr();
+        errorMessage = ErrorString.fbWrongPassword.tr();
         break;
       case 'weak-password':
-        errorMessage = ErrorString.fbWeakPasswordError.tr();
+        errorMessage = ErrorString.fbWeakPassword.tr();
         break;
       case 'email-already-in-use':
-        errorMessage = ErrorString.fbEmailAlreadyInUseError.tr();
+        errorMessage = ErrorString.fbEmailAlreadyInUse.tr();
         break;
       default:
-        errorMessage = ErrorString.fbUnknownError.tr();
+        errorMessage = ErrorString.fbUnknown.tr();
     }
     return errorMessage;
   }
@@ -78,13 +78,15 @@ class AuthProvider extends ChangeNotifier {
     final docSnapshot =
         await _firestore.collection(FirestorePath.users).doc(user.uid).get();
     final type = docSnapshot.data()?['type'] as String? ?? 'user';
+    final phoneNumber =
+        docSnapshot.data()?['phone'] as String? ?? user.phoneNumber;
 
     return UserModel(
       uid: user.uid,
       email: user.email,
       emailVerified: user.emailVerified,
       displayName: user.displayName,
-      phoneNumber: user.phoneNumber,
+      phoneNumber: phoneNumber,
       photoUrl: user.photoURL,
       type: type,
     );
@@ -100,7 +102,7 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<Result<Exception, UserModel>> registerWithEmailAndPassword(
+  Future<Result<UserModel, Exception>> registerWithEmailAndPassword(
     String name,
     String email,
     String password,
@@ -120,7 +122,10 @@ class AuthProvider extends ChangeNotifier {
         final userDetails = <String, dynamic>{
           'type': 'admin',
         };
-        await _firestore.collection('users').doc(user.uid).set(userDetails);
+        await _firestore
+            .collection(FirestorePath.users)
+            .doc(user.uid)
+            .set(userDetails, SetOptions(merge: true));
         await user.sendEmailVerification();
       }
       final userModel =
@@ -130,7 +135,7 @@ class AuthProvider extends ChangeNotifier {
       if (userModel != null) {
         return Success(userModel);
       } else {
-        return Error(Exception(ErrorString.signInError.tr()));
+        return Error(Exception(ErrorString.signIn.tr()));
       }
     } on FirebaseAuthException catch (e) {
       _status = Status.unauthenticated;
@@ -143,7 +148,7 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  Future<Result<Exception, UserModel>> signInWithEmailAndPassword(
+  Future<Result<UserModel, Exception>> signInWithEmailAndPassword(
     String email,
     String password,
   ) async {
@@ -154,7 +159,7 @@ class AuthProvider extends ChangeNotifier {
         email: email,
         password: password,
       );
-      await result.user!.reload();
+      await result.user?.reload();
       final userModel =
           await _userFromFirebase(FirebaseAuth.instance.currentUser);
       _status = Status.unauthenticated;
@@ -162,7 +167,7 @@ class AuthProvider extends ChangeNotifier {
       if (userModel != null) {
         return Success(userModel);
       } else {
-        return Error(Exception(ErrorString.signInError.tr()));
+        return Error(Exception(ErrorString.signIn.tr()));
       }
     } on FirebaseAuthException catch (e) {
       _status = Status.unauthenticated;
@@ -175,7 +180,7 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  Future<Result<Exception, bool>> sendPasswordResetEmail(String email) async {
+  Future<Result<bool, Exception>> sendPasswordResetEmail(String email) async {
     try {
       _status = Status.forgetting;
       notifyListeners();
@@ -194,7 +199,7 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  Future<Result<Exception, bool>> sendEmailVerification() async {
+  Future<Result<bool, Exception>> sendEmailVerification() async {
     try {
       await _auth.currentUser?.sendEmailVerification();
       return const Success(true);
@@ -205,7 +210,7 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  Future<Result<Exception, bool>> updateProfile(
+  Future<Result<bool, Exception>> updateProfile(
     String name,
     String email,
     String phone,
@@ -217,21 +222,33 @@ class AuthProvider extends ChangeNotifier {
       notifyListeners();
       await _auth.currentUser?.updateDisplayName(name);
       await _auth.currentUser?.updateEmail(email);
-      //await _auth.currentUser?.updatePhoneNumber(phone);
       if (password != '') {
         await _auth.currentUser?.updatePassword(password);
       }
       await _auth.currentUser?.reload();
       if (file != null) {
-        final ref =
-            FirebaseStorage.instance.ref().child('user').child(file.getName);
+        final ref = FirebaseStorage.instance
+            .ref()
+            .child(FirestoreOperationType.user.name)
+            .child(file.getName);
         final metadata = SettableMetadata(
           contentType: 'image/${file.getExtension}',
           customMetadata: {'picked-file-path': file.path},
         );
         final uploadTask = await ref.putFile(File(file.path), metadata);
         final downloadUrl = await uploadTask.ref.getDownloadURL();
+        final oldProfile = _auth.currentUser?.photoURL ?? '';
         await _auth.currentUser?.updatePhotoURL(downloadUrl);
+        final userDetails = <String, dynamic>{
+          'phone': 'phone',
+        };
+        await _firestore
+            .collection(FirestorePath.users)
+            .doc(_auth.currentUser?.uid)
+            .set(userDetails, SetOptions(merge: true));
+        if (oldProfile != '') {
+          await FirebaseStorage.instance.refFromURL(oldProfile).delete();
+        }
       }
       _status = Status.unauthenticated;
       notifyListeners();

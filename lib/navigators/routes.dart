@@ -6,6 +6,7 @@ class Routes {
   static const signIn = '/signIn';
   static const signUp = '/signUp';
   static const forgot = '/forgot';
+  static const verify = '/verify';
   static const home = '/home';
-  static const catalog = '/catalog';
+  static const productList = '/productList';
 }

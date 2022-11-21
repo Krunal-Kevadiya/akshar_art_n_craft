@@ -11,7 +11,11 @@ class FirestoreService {
   FirestoreService._();
   static final instance = FirestoreService._();
 
-  Future<Result<Exception, bool>> add({
+  DocumentReference<Map<String, dynamic>> ref(String path) {
+    return FirebaseFirestore.instance.doc(path);
+  }
+
+  Future<Result<bool, Exception>> add({
     required String path,
     required Map<String, dynamic> data,
   }) async {
@@ -24,7 +28,7 @@ class FirestoreService {
     }
   }
 
-  Future<Result<Exception, bool>> update({
+  Future<Result<bool, Exception>> update({
     required String path,
     required Map<String, dynamic> data,
   }) async {
@@ -37,7 +41,7 @@ class FirestoreService {
     }
   }
 
-  Future<Result<Exception, bool>> delete({required String path}) async {
+  Future<Result<bool, Exception>> delete({required String path}) async {
     try {
       final reference = FirebaseFirestore.instance.doc(path);
       await reference.delete();
@@ -87,7 +91,7 @@ class FirestoreService {
     });
   }
 
-  Future<Result<Exception, String>> uploadImage({
+  Future<Result<String, Exception>> uploadImage({
     required XFile file,
     required String bucket,
   }) async {

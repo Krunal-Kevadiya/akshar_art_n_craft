@@ -55,5 +55,7 @@
 	<string>This app requires this permission as it allows user to capture a image to upload it as profile picture and contact pictures</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>This app requires this permission as it allows user to upload an image as profile picture and contact pictures</string>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
 </dict>
 </plist>

@@ -30,44 +30,34 @@ class SignUpPage extends StatelessWidget {
                 isBackAllow: true,
                 title: SignUpString.signUpTitle.tr().toUpperCase(),
               ),
-              Row(
-                children: [
-                  const Spacer(),
-                  Expanded(
-                    flex: 8,
-                    child: SvgPicture.asset(Vectors.signup),
-                  ),
-                  const Spacer(),
-                ],
-              ),
-              SizedBox(height: 16.vs),
-              Row(
-                children: [
-                  const Spacer(),
-                  Expanded(
-                    flex: 8,
-                    child: SignUpForm(
-                      navigationCallback: (routeName) {
-                        Navigator.pushNamed(
-                          context,
-                          routeName,
-                          arguments: {'currentWidget': context.widget},
-                        );
-                      },
-                      homeCallback: () {
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          Routes.home,
-                          ModalRoute.withName(Routes.root),
-                          arguments: {'currentWidget': context.widget},
-                        );
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 25.s),
+                child: Column(
+                  children: <Widget>[
+                    SvgPicture.asset(Vectors.signup),
+                    SizedBox(height: 16.vs),
+                    SignUpForm(
+                      navigationCallback: (routeName, isRemoveUntil) {
+                        if (isRemoveUntil) {
+                          Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            routeName,
+                            ModalRoute.withName(Routes.root),
+                            arguments: {'currentWidget': this},
+                          );
+                        } else {
+                          Navigator.pushNamed(
+                            context,
+                            routeName,
+                            arguments: {'currentWidget': this},
+                          );
+                        }
                       },
                     ),
-                  ),
-                  const Spacer(),
-                ],
+                    const SocialSignUp()
+                  ],
+                ),
               ),
-              const SocialSignUp()
             ],
           ),
         ),

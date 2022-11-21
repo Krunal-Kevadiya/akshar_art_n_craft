@@ -1,13 +1,16 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import './catalog_share_model.dart';
+import '../../../assets/assets.dart';
 import '../../../constants/constants.dart';
 import '../../../navigators/navigators.dart';
 import '../../../themes/themes.dart';
 import '../../../widgets/widgets.dart';
 
 class CatalogPage extends StatefulWidget {
-  const CatalogPage({super.key, required this.title, required this.type});
+  const CatalogPage({required this.title, required this.type, super.key});
   final String title;
   final FirestoreOperationType type;
 
@@ -44,11 +47,7 @@ class _CatalogPageState extends State<CatalogPage> {
       bottomNavigationBar: CurvedNavigationBar(
         key: _bottomNavigationKey,
         height: 60.s,
-        items: <Widget>[
-          Icon(Icons.add, size: 30.s, color: AppColors.white),
-          Icon(Icons.list, size: 30.s, color: AppColors.white),
-          Icon(Icons.delete_sweep, size: 30.s, color: AppColors.white),
-        ],
+        items: MockDatas.getCatalogMenu(),
         color: AppColors.primaryColor,
         buttonBackgroundColor: AppColors.primaryColor,
         backgroundColor: AppColors.transparent,
@@ -58,7 +57,14 @@ class _CatalogPageState extends State<CatalogPage> {
         },
         letIndexChange: (index) => true,
       ),
-      body: Navigation.getCatalogBottomTabScreen(currentIndex, widget.type),
+      body: ChangeNotifierProvider(
+        create: (context) => CatalogShareModel(),
+        child: Navigation.getCatalogBottomTabScreen(
+          currentIndex,
+          widget.type,
+          _bottomNavigationKey?.currentState,
+        ),
+      ),
     );
   }
 }

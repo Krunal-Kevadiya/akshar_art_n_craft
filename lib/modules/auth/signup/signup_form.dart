@@ -11,12 +11,11 @@ import '../../../widgets/widgets.dart';
 
 class SignUpForm extends StatefulWidget {
   const SignUpForm({
-    super.key,
     required this.navigationCallback,
-    required this.homeCallback,
+    super.key,
   });
-  final void Function(String routeName) navigationCallback;
-  final VoidCallback homeCallback;
+  // ignore: avoid_positional_boolean_parameters
+  final void Function(String routeName, bool isRemoveUntil) navigationCallback;
 
   @override
   State<SignUpForm> createState() => _SignUpFormState();
@@ -24,35 +23,31 @@ class SignUpForm extends StatefulWidget {
 
 class _SignUpFormState extends State<SignUpForm> {
   GlobalKey<FormState>? _signUpFormKey;
-  late FocusNode _nameFocusNode;
-  late FocusNode _emailFocusNode;
-  late FocusNode _passwordFocusNode;
-  TextEditingController? _nameController;
-  TextEditingController? _emailController;
-  TextEditingController? _passwordController;
+  late List<FocusNode> _focusNode;
+  late List<TextEditingController> _controller;
 
   @override
   void initState() {
     super.initState();
     _signUpFormKey = GlobalKey();
-    _nameFocusNode = FocusNode();
-    _emailFocusNode = FocusNode();
-    _passwordFocusNode = FocusNode();
-    _nameController = TextEditingController();
-    _emailController = TextEditingController();
-    _passwordController = TextEditingController();
+    _focusNode = List<FocusNode>.generate(3, (int index) => FocusNode());
+    _controller = List<TextEditingController>.generate(
+      3,
+      (int index) => TextEditingController(),
+    );
+    _focusNode[0].requestFocus();
   }
 
   @override
   void dispose() {
     super.dispose();
     _signUpFormKey = null;
-    _nameFocusNode.unfocus();
-    _emailFocusNode.unfocus();
-    _passwordFocusNode.unfocus();
-    _nameController?.dispose();
-    _emailController?.dispose();
-    _passwordController?.dispose();
+    for (final node in _focusNode) {
+      node.unfocus();
+    }
+    for (final input in _controller) {
+      input.dispose();
+    }
   }
 
   @override
@@ -66,43 +61,43 @@ class _SignUpFormState extends State<SignUpForm> {
         children: [
           RoundedInput(
             autoFocus: true,
-            focusNode: _nameFocusNode,
-            controller: _nameController,
+            focusNode: _focusNode[0],
+            controller: _controller[0],
             prefixIcon: Icons.person,
             hintText: SignUpString.nameHint.tr(),
             validator: Validations.name,
             onEditingComplete: () => fieldFocusChange(
               context: context,
-              from: _nameFocusNode,
-              to: _emailFocusNode,
+              from: _focusNode[0],
+              to: _focusNode[1],
             ),
             enabled: authProvider.status != Status.registering,
           ),
           SizedBox(height: 16.vs),
           RoundedInput(
-            controller: _emailController,
-            focusNode: _emailFocusNode,
+            controller: _controller[1],
+            focusNode: _focusNode[1],
             prefixIcon: Icons.email_rounded,
             hintText: SignInString.emailHint.tr(),
             validator: Validations.email,
             onEditingComplete: () => fieldFocusChange(
               context: context,
-              from: _emailFocusNode,
-              to: _passwordFocusNode,
+              from: _focusNode[1],
+              to: _focusNode[2],
             ),
             enabled: authProvider.status != Status.registering,
           ),
           SizedBox(height: 16.vs),
           RoundedInput(
-            controller: _passwordController,
+            controller: _controller[2],
             prefixIcon: Icons.lock,
             maxLines: 1,
-            focusNode: _passwordFocusNode,
+            focusNode: _focusNode[2],
             hintText: SignInString.passwordHint.tr(),
             obscureTextWithSuffixIcon: true,
             validator: Validations.password,
             textInputAction: TextInputAction.done,
-            onEditingComplete: _passwordFocusNode.unfocus,
+            onEditingComplete: _focusNode[2].unfocus,
             onFieldSubmitted: (_) {
               _isValidate(authProvider);
             },
@@ -124,7 +119,7 @@ class _SignUpFormState extends State<SignUpForm> {
             signin: false,
             press: () {
               if (authProvider.status != Status.registering) {
-                widget.navigationCallback(Routes.signIn);
+                widget.navigationCallback(Routes.signIn, false);
               }
             },
           ),
@@ -134,24 +129,24 @@ class _SignUpFormState extends State<SignUpForm> {
   }
 
   Future<void> _isValidate(AuthProvider authProvider) async {
-    if (_signUpFormKey!.currentState!.validate()) {
+    if (_signUpFormKey?.currentState?.validate() ?? false) {
       final result = await authProvider.registerWithEmailAndPassword(
-        _nameController!.text,
-        _emailController!.text,
-        _passwordController!.text,
+        _controller[0].text,
+        _controller[1].text,
+        _controller[2].text,
       );
       if (!mounted) return;
-      result.when((error) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(error.toString())));
-      }, (success) {
-        if (success.emailVerified == true) {
-          widget.homeCallback();
+      result.when((success) {
+        if ((success.emailVerified ?? false) == true) {
+          widget.navigationCallback(Routes.home, true);
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(ErrorString.fbVerifyEmailError.tr())),
+            SnackBar(content: Text(ErrorString.fbVerifyEmail.tr())),
           );
         }
+      }, (error) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(error.toString())));
       });
     }
   }

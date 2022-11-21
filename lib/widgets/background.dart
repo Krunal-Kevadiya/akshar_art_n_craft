@@ -3,22 +3,27 @@ import '../assets/assets.dart';
 import '../themes/themes.dart';
 
 class Background extends StatelessWidget {
-  const Background(
-      {super.key,
-      required this.child,
-      this.topImage = Images.mainTop,
-      this.topLeft,
-      this.topRight,
-      this.bottomImage = Images.signinBottom,
-      this.bottomLeft,
-      this.bottomRight,
-      this.alignment = Alignment.center,
-      this.bottomImageWidthFactor,});
+  const Background({
+    required this.child,
+    super.key,
+    this.topImage = Images.mainTop,
+    this.topLeft,
+    this.topRight,
+    this.bottomImage = Images.signinBottom,
+    this.bottomLeft,
+    this.bottomRight,
+    this.alignment = Alignment.center,
+    this.bottomImageWidthFactor,
+  });
 
   final Widget child;
   final AlignmentGeometry alignment;
-  final String topImage, bottomImage;
-  final double? topLeft, topRight, bottomLeft, bottomRight;
+  final String topImage;
+  final String bottomImage;
+  final double? topLeft;
+  final double? topRight;
+  final double? bottomLeft;
+  final double? bottomRight;
   final double? bottomImageWidthFactor;
 
   @override
@@ -38,6 +43,7 @@ class Background extends StatelessWidget {
               width: 30.wp,
               height: 35.wp,
               fit: BoxFit.fill,
+              color: AppColors.primaryLightColor,
             ),
           ),
           Positioned(
@@ -49,6 +55,7 @@ class Background extends StatelessWidget {
               width: bottomImageWidthFactor?.wp ?? 25.wp,
               height: 30.wp,
               fit: BoxFit.fill,
+              color: AppColors.primaryLightColor,
             ),
           ),
           Positioned(child: child),

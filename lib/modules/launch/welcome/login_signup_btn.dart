@@ -8,8 +8,8 @@ import '../../../widgets/widgets.dart';
 
 class LoginAndSignupBtn extends StatelessWidget {
   const LoginAndSignupBtn({
-    super.key,
     required this.navigationCallback,
+    super.key,
   });
   final void Function(String routeName) navigationCallback;
 

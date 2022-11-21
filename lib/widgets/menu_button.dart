@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 
+import '../themes/themes.dart';
+
 class MenuButton extends StatelessWidget {
   const MenuButton({super.key});
 
@@ -8,9 +10,9 @@ class MenuButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: () {
-        ZoomDrawer.of(context)!.toggle();
+        ZoomDrawer.of(context)?.toggle();
       },
-      icon: const Icon(Icons.menu),
+      icon: Icon(Icons.menu, size: 25.s),
     );
   }
 }

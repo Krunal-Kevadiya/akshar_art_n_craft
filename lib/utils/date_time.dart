@@ -1,1 +1,2 @@
-String documentIdFromCurrentDate() => DateTime.now().toIso8601String();
+int documentIdFromCurrentDate() =>
+    DateTime.now().toUtc().millisecondsSinceEpoch;

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../constants/constants.dart';
 import '../../../models/models.dart';
+import '../themes/themes.dart';
 
 class MockDatas {
   MockDatas._();
@@ -21,17 +22,17 @@ class MockDatas {
         text: name ?? 'Nan',
         email: email,
         url: url,
-        routes: DrawerString.productMenu,
+        routes: DrawerMenuString.product,
         type: MenuType.header,
       ),
       DrawerMenuModel(
-        text: DrawerString.shopForMenuTitle.tr(),
+        text: DrawerMenuString.shopForSection.tr(),
         type: MenuType.menuTitle,
       ),
       DrawerMenuModel(
-        text: DrawerString.homeMenu.tr(),
+        text: DrawerMenuString.home.tr(),
         icon: Icons.cottage,
-        routes: DrawerString.homeMenu,
+        routes: DrawerMenuString.home,
         type: MenuType.menuItem,
       )
     ];
@@ -39,33 +40,33 @@ class MockDatas {
     if (isAdmin && isLogin) {
       list.addAll([
         DrawerMenuModel(
-          text: DrawerString.categoryMenu.tr(),
+          text: DrawerMenuString.category.tr(),
           icon: Icons.style,
-          routes: DrawerString.categoryMenu,
+          routes: DrawerMenuString.category,
           type: MenuType.menuItem,
         ),
         DrawerMenuModel(
-          text: DrawerString.subCategoryMenu.tr(),
+          text: DrawerMenuString.subCategory.tr(),
           icon: Icons.widgets,
-          routes: DrawerString.subCategoryMenu,
+          routes: DrawerMenuString.subCategory,
           type: MenuType.menuItem,
         ),
         DrawerMenuModel(
-          text: DrawerString.brandMenu.tr(),
+          text: DrawerMenuString.brand.tr(),
           icon: Icons.sell,
-          routes: DrawerString.brandMenu,
+          routes: DrawerMenuString.brand,
           type: MenuType.menuItem,
         ),
         DrawerMenuModel(
-          text: DrawerString.fabricMenu.tr(),
+          text: DrawerMenuString.fabric.tr(),
           icon: Icons.dns,
-          routes: DrawerString.fabricMenu,
+          routes: DrawerMenuString.fabric,
           type: MenuType.menuItem,
         ),
         DrawerMenuModel(
-          text: DrawerString.productMenu.tr(),
+          text: DrawerMenuString.product.tr(),
           icon: Icons.token,
-          routes: DrawerString.productMenu,
+          routes: DrawerMenuString.product,
           type: MenuType.menuItem,
         )
       ]);
@@ -73,19 +74,19 @@ class MockDatas {
 
     list.addAll([
       DrawerMenuModel(
-        text: DrawerString.shopByCategoryMenu.tr(),
+        text: DrawerMenuString.shopByCategory.tr(),
         icon: Icons.store,
-        routes: DrawerString.shopByCategoryMenu,
+        routes: DrawerMenuString.shopByCategory,
         type: MenuType.menuItem,
       ),
       DrawerMenuModel(
-        text: DrawerString.videosMenu.tr(),
+        text: DrawerMenuString.videos.tr(),
         icon: Icons.ondemand_video,
-        routes: DrawerString.videosMenu,
+        routes: DrawerMenuString.videos,
         type: MenuType.menuItem,
       ),
       DrawerMenuModel(
-        text: DrawerString.myAccountMenuTitle.tr(),
+        text: DrawerMenuString.myAccountSection.tr(),
         type: MenuType.menuTitle,
       )
     ]);
@@ -93,9 +94,9 @@ class MockDatas {
     if (!isLogin) {
       list.add(
         DrawerMenuModel(
-          text: DrawerString.signInMenu.tr(),
+          text: DrawerMenuString.signIn.tr(),
           icon: Icons.lock,
-          routes: DrawerString.signInMenu,
+          routes: DrawerMenuString.signIn,
           type: MenuType.menuItem,
         ),
       );
@@ -104,27 +105,27 @@ class MockDatas {
     if (isLogin) {
       list.addAll([
         DrawerMenuModel(
-          text: DrawerString.wishlistMenu.tr(),
+          text: DrawerMenuString.wishlist.tr(),
           icon: Icons.favorite,
-          routes: DrawerString.wishlistMenu,
+          routes: DrawerMenuString.wishlist,
           type: MenuType.menuItem,
         ),
         DrawerMenuModel(
-          text: DrawerString.ordersMenu.tr(),
+          text: DrawerMenuString.orders.tr(),
           icon: Icons.shopping_basket,
-          routes: DrawerString.ordersMenu,
+          routes: DrawerMenuString.orders,
           type: MenuType.menuItem,
         ),
         DrawerMenuModel(
-          text: DrawerString.profileMenu.tr(),
+          text: DrawerMenuString.profile.tr(),
           icon: Icons.account_circle,
-          routes: DrawerString.profileMenu,
+          routes: DrawerMenuString.profile,
           type: MenuType.menuItem,
         ),
         DrawerMenuModel(
-          text: DrawerString.logoutMenu.tr(),
+          text: DrawerMenuString.logout.tr(),
           icon: Icons.key,
-          routes: DrawerString.logoutMenu,
+          routes: DrawerMenuString.logout,
           type: MenuType.menuItem,
         )
       ]);
@@ -132,41 +133,49 @@ class MockDatas {
 
     list.addAll([
       DrawerMenuModel(
-        text: DrawerString.hellAndSupportMenuTitle.tr(),
+        text: DrawerMenuString.hellAndSupportSection.tr(),
         type: MenuType.menuTitle,
       ),
       DrawerMenuModel(
-        text: DrawerString.testimonialsMenu.tr(),
+        text: DrawerMenuString.testimonials.tr(),
         icon: Icons.chat,
-        routes: DrawerString.testimonialsMenu,
+        routes: DrawerMenuString.testimonials,
         type: MenuType.menuItem,
       ),
       DrawerMenuModel(
-        text: DrawerString.contactUsMenu.tr(),
+        text: DrawerMenuString.contactUs.tr(),
         icon: Icons.contact_mail,
-        routes: DrawerString.contactUsMenu,
+        routes: DrawerMenuString.contactUs,
         type: MenuType.menuItem,
       ),
       DrawerMenuModel(
-        text: DrawerString.aboutUsMenu.tr(),
+        text: DrawerMenuString.aboutUs.tr(),
         icon: Icons.personal_injury,
-        routes: DrawerString.aboutUsMenu,
+        routes: DrawerMenuString.aboutUs,
         type: MenuType.menuItem,
       ),
       DrawerMenuModel(
-        text: DrawerString.shareAppMenu.tr(),
+        text: DrawerMenuString.shareApp.tr(),
         icon: Icons.share,
-        routes: DrawerString.shareAppMenu,
+        routes: DrawerMenuString.shareApp,
         type: MenuType.menuItem,
       ),
       DrawerMenuModel(
-        text: DrawerString.rateUsMenu.tr(),
+        text: DrawerMenuString.rateUs.tr(),
         icon: Icons.star,
-        routes: DrawerString.rateUsMenu,
+        routes: DrawerMenuString.rateUs,
         type: MenuType.menuItem,
       )
     ]);
 
     return list;
+  }
+
+  static List<Widget> getCatalogMenu() {
+    return [
+      Icon(Icons.add, size: 25.s, color: AppColors.white),
+      Icon(Icons.list, size: 25.s, color: AppColors.white),
+      Icon(Icons.delete_sweep, size: 25.s, color: AppColors.white),
+    ];
   }
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+
 import '../themes/themes.dart';
+import '../utils/utils.dart';
 
 class RoundedInput extends StatefulWidget {
   const RoundedInput({
@@ -25,10 +27,16 @@ class RoundedInput extends StatefulWidget {
   });
 
   final String hintText;
-  final int? minLines, maxLines;
-  final IconData? suffixIcon, prefixIcon;
-  final Color? iconColor, backgroundColor;
-  final bool obscureText, obscureTextWithSuffixIcon, autoFocus, enabled;
+  final int? minLines;
+  final int? maxLines;
+  final IconData? suffixIcon;
+  final IconData? prefixIcon;
+  final Color? iconColor;
+  final Color? backgroundColor;
+  final bool obscureText;
+  final bool obscureTextWithSuffixIcon;
+  final bool autoFocus;
+  final bool enabled;
   final TextInputType keyboardType;
   final TextInputAction textInputAction;
   final TextEditingController? controller;
@@ -73,67 +81,20 @@ class _RoundedInputState extends State<RoundedInput> {
           (isDarkTheme ? AppColors.primaryLightColor : AppColors.primaryColor),
       onFieldSubmitted: widget.onFieldSubmitted,
       textAlignVertical: TextAlignVertical.center,
-      style: theme.textTheme.overline
+      style: theme.textTheme.labelSmall
           ?.copyWith(fontSize: 14.ms, fontWeight: FontWeight.w400),
       minLines: widget.minLines,
       maxLines: widget.maxLines,
-      decoration: InputDecoration(
-        prefixIcon: widget.prefixIcon != null
-            ? Icon(
-                widget.prefixIcon,
-                color: widget.iconColor,
-              )
-            : null,
-        suffixIcon: widget.suffixIcon != null
-            ? Icon(
-                widget.suffixIcon,
-                color: widget.iconColor,
-              )
-            : widget.obscureTextWithSuffixIcon
-                ? GestureDetector(
-                    onTap: _toggle,
-                    child: Icon(
-                      _obscureText ? Icons.visibility : Icons.visibility_off,
-                      color: widget.iconColor,
-                    ),
-                  )
-                : null,
-        labelText: widget.hintText,
-        contentPadding: EdgeInsets.only(
-          top: isMultiLines ? 10.s : 0,
-          bottom: isMultiLines ? 10.s : 0,
-          right: isMultiLines ? 10.s : 0,
-        ),
-        enabledBorder:
-            (theme.inputDecorationTheme.enabledBorder as OutlineInputBorder?)
-                ?.copyWith(
-          borderRadius:
-              BorderRadius.all(Radius.circular(isMultiLines ? 20.s : 99.s)),
-        ),
-        disabledBorder:
-            (theme.inputDecorationTheme.disabledBorder as OutlineInputBorder?)
-                ?.copyWith(
-          borderRadius:
-              BorderRadius.all(Radius.circular(isMultiLines ? 20.s : 99.s)),
-        ),
-        focusedBorder:
-            (theme.inputDecorationTheme.focusedBorder as OutlineInputBorder?)
-                ?.copyWith(
-          borderRadius:
-              BorderRadius.all(Radius.circular(isMultiLines ? 20.s : 99.s)),
-        ),
-        errorBorder:
-            (theme.inputDecorationTheme.errorBorder as OutlineInputBorder?)
-                ?.copyWith(
-          borderRadius:
-              BorderRadius.all(Radius.circular(isMultiLines ? 20.s : 99.s)),
-        ),
-        focusedErrorBorder: (theme.inputDecorationTheme.focusedErrorBorder
-                as OutlineInputBorder?)
-            ?.copyWith(
-          borderRadius:
-              BorderRadius.all(Radius.circular(isMultiLines ? 20.s : 99.s)),
-        ),
+      decoration: customInputDecoration(
+        theme: theme,
+        isMultiLines: isMultiLines,
+        prefixIcon: widget.prefixIcon,
+        suffixIcon: widget.suffixIcon,
+        iconColor: widget.iconColor,
+        hintText: widget.hintText,
+        obscureTextWithSuffixIcon: widget.obscureTextWithSuffixIcon,
+        obscureText: _obscureText,
+        toggle: _toggle,
       ).applyDefaults(theme.inputDecorationTheme),
     );
   }

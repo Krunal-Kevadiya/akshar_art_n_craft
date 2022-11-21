@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -8,13 +9,15 @@ import '../utils/utils.dart';
 
 class ProfileAvatar extends StatelessWidget {
   const ProfileAvatar({
+    required this.name,
+    required this.enabled,
     super.key,
     this.file,
     this.photoUrl,
-    required this.name,
+    this.size,
     this.onFileSubmitted,
-    required this.enabled,
   });
+  final double? size;
   final bool enabled;
   final XFile? file;
   final String? photoUrl;
@@ -24,70 +27,105 @@ class ProfileAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return GestureDetector(
+    return InkWell(
+      borderRadius: BorderRadius.circular(
+        size != null ? (size! / 2).s : 10.s,
+      ),
       onTap: () {
-        MyBottomSheet.showImagePickerSheet(
-          context: context,
-          pickGallery: () async {
-            if (enabled) {
-              final photo = await MediaSelection.pickImage(
-                context: context,
-                source: ImageSource.gallery,
-              );
-              onFileSubmitted!(photo);
-            }
-          },
-          pickCamera: () async {
-            if (enabled) {
-              final photo = await MediaSelection.pickImage(
-                context: context,
-                source: ImageSource.camera,
-              );
-              onFileSubmitted!(photo);
-            }
-          },
-        );
+        handleTap(context);
       },
       child: Stack(
-        children: [
-          CircleAvatar(
-            radius: 55.s,
-            backgroundColor: AppColors.gray.withOpacity(0.5),
-            backgroundImage: file?.path != null
-                ? FileImage(File(file!.path))
-                : photoUrl != null
-                    ? NetworkImage(photoUrl ?? '') as ImageProvider
-                    : null,
-            child: file?.path == null && photoUrl == null
-                ? Text(
-                    name.asInitialCharacter(),
-                    style: theme.textTheme.caption?.copyWith(
-                      color: AppColors.primaryLightColor,
-                      fontSize: 35.ms,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  )
-                : null,
-          ),
-          Positioned(
-            right: 0,
-            bottom: 0,
-            child: Container(
-              height: 32.s,
-              width: 32.s,
-              decoration: BoxDecoration(
-                color: AppColors.primaryColor,
-                borderRadius: BorderRadius.circular(16.s),
-              ),
-              child: Icon(
-                Icons.edit,
-                size: 20.s,
-                color: AppColors.white,
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.zero, // Border width
+            height: size != null ? size!.s : double.infinity,
+            width: size != null ? size!.s : double.infinity,
+            decoration: BoxDecoration(
+              color: AppColors.gray.withOpacity(0.5),
+              borderRadius: BorderRadius.circular(
+                size != null ? (size! / 2).s : 10.s,
               ),
             ),
-          )
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(
+                size != null ? (size! / 2).s : 10.s,
+              ),
+              child: imageView(theme),
+            ),
+          ),
+          if (onFileSubmitted != null)
+            Positioned(
+              right: 0,
+              bottom: 0,
+              child: Container(
+                height: 32.s,
+                width: 32.s,
+                decoration: BoxDecoration(
+                  color: AppColors.primaryColor,
+                  borderRadius: BorderRadius.circular(16.s),
+                ),
+                child: Icon(
+                  Icons.edit,
+                  size: 20.s,
+                  color: AppColors.white,
+                ),
+              ),
+            )
         ],
       ),
     );
+  }
+
+  Widget imageView(ThemeData theme) {
+    if (file?.path != null) {
+      return Image.file(
+        File(file!.path),
+        fit: BoxFit.fill,
+      );
+    } else if (photoUrl != null && photoUrl != '') {
+      return CachedNetworkImage(
+        imageUrl: photoUrl ?? '',
+        progressIndicatorBuilder: (context, url, progress) => Center(
+          child: CircularProgressIndicator(
+            value: progress.progress,
+          ),
+        ),
+        errorWidget: (context, url, error) => const Icon(Icons.image),
+        fadeInDuration: const Duration(seconds: 3),
+        fit: BoxFit.fill,
+      );
+    } else {
+      return Center(
+        child: Text(
+          name.asInitialCharacter(),
+          style: theme.textTheme.bodyMedium?.copyWith(
+            fontSize: size != null ? (size! / 2 - 20).ms : 25.ms,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      );
+    }
+  }
+
+  void handleTap(BuildContext context) {
+    if (enabled) {
+      MyBottomSheet.showImagePickerSheet(
+        context: context,
+        pickGallery: () async {
+          final photo = await MediaSelection.pickImage(
+            context: context,
+            source: ImageSource.gallery,
+          );
+          onFileSubmitted?.call(photo);
+        },
+        pickCamera: () async {
+          final photo = await MediaSelection.pickImage(
+            context: context,
+            source: ImageSource.camera,
+          );
+          onFileSubmitted?.call(photo);
+        },
+      );
+    }
   }
 }

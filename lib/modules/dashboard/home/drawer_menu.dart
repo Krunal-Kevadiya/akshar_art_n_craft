@@ -3,20 +3,23 @@ import 'package:flutter/material.dart';
 import '../../../assets/assets.dart';
 import '../../../models/models.dart';
 import '../../../themes/themes.dart';
+import '../../../utils/utils.dart';
+import '../../../widgets/widgets.dart';
 
+// ignore: must_be_immutable
 class DrawerMenu extends StatelessWidget {
   DrawerMenu({
-    super.key,
-    this.user,
     required this.currentItem,
     required this.onSelectedItem,
+    super.key,
+    this.user,
   }) {
     data = MockDatas.getDrawerMenu(
       name: user?.displayName,
       email: user?.email,
       url: user?.photoUrl,
-      isLogin: user != null,
-      isAdmin: user?.type == 'admin',
+      isLogin: true, //user != null,
+      isAdmin: true, //user?.type == 'admin',
     );
   }
   final UserModel? user;
@@ -62,32 +65,34 @@ class DrawerMenu extends StatelessWidget {
   }
 
   Widget buildHeader({
-    String? url,
     required String name,
-    String? email,
     required ThemeData theme,
     required VoidCallback onClicked,
+    String? url,
+    String? email,
   }) {
-    return InkWell(
+    return GestureDetector(
       onTap: onClicked,
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 20.vs, horizontal: 15.s),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CircleAvatar(
-              radius: 35.s,
-              backgroundImage: url != null ? NetworkImage(url) : null,
+            ProfileAvatar(
+              size: 70,
+              photoUrl: url,
+              name: name.asInitialCharacter(),
+              enabled: false,
             ),
             SizedBox(height: 10.vs),
             Text(
               name,
-              style: theme.textTheme.caption
+              style: theme.textTheme.bodySmall
                   ?.copyWith(fontWeight: FontWeight.w600),
             ),
             Text(
               email ?? '',
-              style: theme.textTheme.caption
+              style: theme.textTheme.bodySmall
                   ?.copyWith(fontWeight: FontWeight.w300, fontSize: 12.ms),
             )
           ],
@@ -104,7 +109,7 @@ class DrawerMenu extends StatelessWidget {
           padding: EdgeInsets.only(left: 10.s),
           child: Text(
             text,
-            style: theme.textTheme.caption?.copyWith(
+            style: theme.textTheme.bodySmall?.copyWith(
               fontWeight: FontWeight.w200,
             ),
           ),
@@ -117,20 +122,24 @@ class DrawerMenu extends StatelessWidget {
   Widget buildMenuItem({
     required String text,
     required ThemeData theme,
-    IconData? icon,
     required bool isDarkTheme,
     required VoidCallback onClicked,
+    IconData? icon,
   }) {
     return ListTile(
-      leading:
-          Icon(icon, color: isDarkTheme ? AppColors.black : AppColors.white),
+      leading: Icon(
+        icon,
+        size: 25.s,
+        color: isDarkTheme ? AppColors.black : AppColors.white,
+      ),
       title: Text(
         text,
-        style: theme.textTheme.caption?.copyWith(
+        style: theme.textTheme.bodySmall?.copyWith(
           fontWeight: FontWeight.normal,
         ),
       ),
       onTap: onClicked,
+      horizontalTitleGap: 10.s,
       selectedTileColor: isDarkTheme ? AppColors.black26 : AppColors.white26,
       selected: currentItem.text == text,
       style: ListTileStyle.drawer,

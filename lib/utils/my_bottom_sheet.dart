@@ -62,10 +62,10 @@ class MyBottomSheet {
       widget: Column(
         children: [
           ListTile(
-            leading: const Icon(Icons.image_outlined),
+            leading: Icon(Icons.image_outlined, size: 25.s),
             title: Text(
               SheetString.pickFromGalleryLabel.tr(),
-              style: theme.textTheme.overline?.copyWith(fontSize: 16.ms),
+              style: theme.textTheme.labelSmall?.copyWith(fontSize: 16.ms),
             ),
             onTap: () {
               Navigator.pop(context);
@@ -73,10 +73,10 @@ class MyBottomSheet {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.camera),
+            leading: Icon(Icons.camera, size: 25.s),
             title: Text(
               SheetString.pickFromCameraLabel.tr(),
-              style: theme.textTheme.overline?.copyWith(fontSize: 16.ms),
+              style: theme.textTheme.labelSmall?.copyWith(fontSize: 16.ms),
             ),
             onTap: () {
               Navigator.pop(context);
@@ -84,10 +84,10 @@ class MyBottomSheet {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.cancel),
+            leading: Icon(Icons.cancel, size: 25.s),
             title: Text(
               SheetString.cancelButton.tr(),
-              style: theme.textTheme.overline?.copyWith(fontSize: 16.ms),
+              style: theme.textTheme.labelSmall?.copyWith(fontSize: 16.ms),
             ),
             onTap: () => Navigator.pop(context),
           )
@@ -100,10 +100,10 @@ class MyBottomSheet {
     required BuildContext context,
     required String title,
     required String message,
-    String? svg,
     required String labelPositive,
-    String? labelNegative,
     required VoidCallback pickPositive,
+    String? svg,
+    String? labelNegative,
     VoidCallback? pickNegative,
   }) {
     final theme = Theme.of(context);
@@ -124,7 +124,7 @@ class MyBottomSheet {
           Text(
             title,
             textAlign: TextAlign.center,
-            style: theme.textTheme.overline
+            style: theme.textTheme.labelSmall
                 ?.copyWith(fontSize: 16.ms, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 5.s),
@@ -133,7 +133,7 @@ class MyBottomSheet {
             child: Text(
               message,
               textAlign: TextAlign.center,
-              style: theme.textTheme.overline?.copyWith(
+              style: theme.textTheme.labelSmall?.copyWith(
                 fontSize: 16.ms,
                 fontWeight: FontWeight.normal,
                 color: AppColors.gray,
@@ -147,10 +147,11 @@ class MyBottomSheet {
               Expanded(
                 child: ListTile(
                   minLeadingWidth: 30.s,
-                  leading: const Icon(Icons.cancel),
+                  leading: Icon(Icons.cancel, size: 25.s),
                   title: Text(
                     labelNegative ?? SheetString.cancelButton.tr(),
-                    style: theme.textTheme.overline?.copyWith(fontSize: 16.ms),
+                    style:
+                        theme.textTheme.labelSmall?.copyWith(fontSize: 16.ms),
                   ),
                   onTap: () {
                     Navigator.pop(context);
@@ -163,10 +164,11 @@ class MyBottomSheet {
               Expanded(
                 child: ListTile(
                   minLeadingWidth: 30.s,
-                  leading: const Icon(Icons.image_outlined),
+                  leading: Icon(Icons.image_outlined, size: 25.s),
                   title: Text(
                     labelPositive,
-                    style: theme.textTheme.overline?.copyWith(fontSize: 16.ms),
+                    style:
+                        theme.textTheme.labelSmall?.copyWith(fontSize: 16.ms),
                   ),
                   onTap: () {
                     Navigator.pop(context);

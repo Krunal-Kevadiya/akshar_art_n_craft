@@ -5,15 +5,18 @@ import '../providers/providers.dart';
 import '../services/services.dart';
 
 class AuthWidgetBuilder extends StatelessWidget {
-  const AuthWidgetBuilder(
-      {super.key, required this.builder, required this.databaseBuilder,});
+  const AuthWidgetBuilder({
+    required this.builder,
+    required this.databaseBuilder,
+    super.key,
+  });
   final Widget Function(BuildContext, AsyncSnapshot<UserModel?>) builder;
   final FirestoreDatabase Function(BuildContext context, String uid)
       databaseBuilder;
 
   @override
   Widget build(BuildContext context) {
-    final authService = Provider.of<AuthProvider>(context, listen: false);
+    final authService = Provider.of<AuthProvider>(context);
     return StreamBuilder<UserModel?>(
       stream: authService.user,
       builder: (BuildContext context, AsyncSnapshot<UserModel?> snapshot) {

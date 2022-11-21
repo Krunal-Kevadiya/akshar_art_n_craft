@@ -22,39 +22,29 @@ class ForgotPage extends StatelessWidget {
           topImage: Images.signupTop,
           bottomImageWidthFactor: 35,
           child: Column(
-              children: <Widget>[
-                CustomAppBar(
-                    isFullScreen: true,
-                    isBackAllow: true,
-                    title: ForgotPasswordString.forgotPasswordTitle
-                        .tr()
-                        .toUpperCase(),),
-                Row(
-                  children: [
-                    const Spacer(),
-                    Expanded(
-                      flex: 8,
-                      child: SvgPicture.asset(
-                        Vectors.forgotPassword,
-                        height: 400.s,
-                        fit: BoxFit.fitWidth,
-                      ),
+            children: <Widget>[
+              CustomAppBar(
+                isFullScreen: true,
+                isBackAllow: true,
+                title:
+                    ForgotPasswordString.forgotPasswordTitle.tr().toUpperCase(),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 25.s),
+                child: Column(
+                  children: <Widget>[
+                    SvgPicture.asset(
+                      Vectors.forgotPassword,
+                      height: 400.s,
+                      fit: BoxFit.fitWidth,
                     ),
-                    const Spacer(),
+                    SizedBox(height: 32.vs),
+                    const ForgotForm(),
                   ],
                 ),
-                SizedBox(height: 32.vs),
-                Row(
-                  children: const [
-                    Spacer(),
-                    Expanded(
-                      flex: 8,
-                      child: ForgotForm(),
-                    ),
-                    Spacer(),
-                  ],
-                )
-              ],),
+              ),
+            ],
+          ),
         ),
       ),
     );

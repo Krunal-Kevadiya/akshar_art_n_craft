@@ -22,31 +22,19 @@ class ProfileForm extends StatefulWidget {
 class _ProfileFormState extends State<ProfileForm> {
   XFile? _file;
   GlobalKey<FormState>? _profileFormKey;
-  late FocusNode _nameFocusNode;
-  late FocusNode _emailFocusNode;
-  late FocusNode _phoneFocusNode;
-  late FocusNode _passwordFocusNode;
-  late FocusNode _confirmPasswordFocusNode;
-  TextEditingController? _nameController;
-  TextEditingController? _emailController;
-  TextEditingController? _phoneController;
-  TextEditingController? _passwordController;
-  TextEditingController? _confirmPasswordController;
+  late List<FocusNode> _focusNode;
+  late List<TextEditingController> _controller;
 
   @override
   void initState() {
     super.initState();
     _profileFormKey = GlobalKey();
-    _nameFocusNode = FocusNode();
-    _emailFocusNode = FocusNode();
-    _phoneFocusNode = FocusNode();
-    _passwordFocusNode = FocusNode();
-    _confirmPasswordFocusNode = FocusNode();
-    _nameController = TextEditingController();
-    _emailController = TextEditingController();
-    _phoneController = TextEditingController();
-    _passwordController = TextEditingController();
-    _confirmPasswordController = TextEditingController();
+    _focusNode = List<FocusNode>.generate(5, (int index) => FocusNode());
+    _controller = List<TextEditingController>.generate(
+      5,
+      (int index) => TextEditingController(),
+    );
+    _focusNode[0].requestFocus();
   }
 
   @override
@@ -54,16 +42,12 @@ class _ProfileFormState extends State<ProfileForm> {
     super.dispose();
     _file = null;
     _profileFormKey = null;
-    _nameFocusNode.unfocus();
-    _emailFocusNode.unfocus();
-    _phoneFocusNode.unfocus();
-    _passwordFocusNode.unfocus();
-    _confirmPasswordFocusNode.unfocus();
-    _nameController?.dispose();
-    _emailController?.dispose();
-    _phoneController?.dispose();
-    _passwordController?.dispose();
-    _confirmPasswordController?.dispose();
+    for (final node in _focusNode) {
+      node.unfocus();
+    }
+    for (final input in _controller) {
+      input.dispose();
+    }
   }
 
   @override
@@ -74,16 +58,17 @@ class _ProfileFormState extends State<ProfileForm> {
       stream: authProvider.user,
       builder: (context, snapshot) {
         final user = snapshot.data as UserModel?;
-        updateControllers(user);
-
+        if (user != null && authProvider.status != Status.profiling) {
+          updateControllers(user);
+        }
         return Form(
           key: _profileFormKey,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           child: Column(
             children: [
-              SizedBox(height: 32.vs),
               ProfileAvatar(
                 file: _file,
+                size: 110,
                 photoUrl: user?.photoUrl,
                 name: user?.displayName ?? '',
                 onFileSubmitted: (photo) {
@@ -94,79 +79,79 @@ class _ProfileFormState extends State<ProfileForm> {
               SizedBox(height: 32.vs),
               RoundedInput(
                 autoFocus: true,
-                focusNode: _nameFocusNode,
-                controller: _nameController,
+                focusNode: _focusNode[0],
+                controller: _controller[0],
                 prefixIcon: Icons.person,
                 hintText: SignUpString.nameHint.tr(),
                 validator: Validations.name,
                 onEditingComplete: () => fieldFocusChange(
                   context: context,
-                  from: _nameFocusNode,
-                  to: _emailFocusNode,
+                  from: _focusNode[0],
+                  to: _focusNode[1],
                 ),
                 enabled: authProvider.status != Status.profiling,
               ),
               SizedBox(height: 16.vs),
               RoundedInput(
-                controller: _emailController,
-                focusNode: _emailFocusNode,
+                controller: _controller[1],
+                focusNode: _focusNode[1],
                 prefixIcon: Icons.email_rounded,
                 hintText: SignInString.emailHint.tr(),
                 validator: Validations.email,
                 onEditingComplete: () => fieldFocusChange(
                   context: context,
-                  from: _emailFocusNode,
-                  to: _phoneFocusNode,
+                  from: _focusNode[1],
+                  to: _focusNode[2],
                 ),
                 enabled: authProvider.status != Status.profiling,
               ),
               SizedBox(height: 16.vs),
               RoundedInput(
-                controller: _phoneController,
-                focusNode: _phoneFocusNode,
+                controller: _controller[2],
+                focusNode: _focusNode[2],
                 prefixIcon: Icons.phone,
                 hintText: ProfileString.phoneHint.tr(),
                 validator: Validations.phone,
                 onEditingComplete: () => fieldFocusChange(
                   context: context,
-                  from: _phoneFocusNode,
-                  to: _passwordFocusNode,
+                  from: _focusNode[2],
+                  to: _focusNode[3],
                 ),
                 enabled: authProvider.status != Status.profiling,
               ),
               SizedBox(height: 16.vs),
               RoundedInput(
-                controller: _passwordController,
+                controller: _controller[3],
                 prefixIcon: Icons.lock,
                 maxLines: 1,
-                focusNode: _passwordFocusNode,
+                focusNode: _focusNode[3],
                 hintText: SignInString.passwordHint.tr(),
                 obscureTextWithSuffixIcon: true,
                 validator: Validations.changePassword,
                 onEditingComplete: () => fieldFocusChange(
                   context: context,
-                  from: _passwordFocusNode,
-                  to: _confirmPasswordFocusNode,
+                  from: _focusNode[3],
+                  to: _focusNode[4],
                 ),
                 enabled: authProvider.status != Status.profiling,
               ),
               SizedBox(height: 16.vs),
               RoundedInput(
-                controller: _confirmPasswordController,
+                controller: _controller[4],
                 prefixIcon: Icons.lock_outline,
                 maxLines: 1,
-                focusNode: _confirmPasswordFocusNode,
+                focusNode: _focusNode[4],
                 hintText: ProfileString.confirmPasswordHint.tr(),
                 obscureTextWithSuffixIcon: true,
-                validator:
-                    Validations.confirmPassword(_passwordController?.text),
+                validator: Validations.confirmPassword(_controller[3].text),
                 textInputAction: TextInputAction.done,
-                onEditingComplete: _confirmPasswordFocusNode.unfocus,
+                onEditingComplete: _focusNode[4].unfocus,
                 onFieldSubmitted: (_) {
                   _isValidate(authProvider);
                 },
                 enabled: authProvider.status != Status.profiling,
               ),
+              const Spacer(),
               SizedBox(height: 16.vs),
               ConditionBaseWidget(
                 isLoading: authProvider.status == Status.profiling,
@@ -185,28 +170,28 @@ class _ProfileFormState extends State<ProfileForm> {
     );
   }
 
-  void updateControllers(UserModel? user) {
-    _nameController?.text = user?.displayName ?? '';
-    _nameController?.selection = TextSelection.fromPosition(
-      TextPosition(offset: _nameController?.text.length ?? 0),
+  void updateControllers(UserModel user) {
+    _controller[0] = TextEditingController(text: user.displayName ?? '');
+    _controller[0].selection = TextSelection.fromPosition(
+      TextPosition(offset: _controller[0].text.length),
     );
-    _emailController?.text = user?.email ?? '';
-    _emailController?.selection = TextSelection.fromPosition(
-      TextPosition(offset: _emailController?.text.length ?? 0),
+    _controller[1] = TextEditingController(text: user.email ?? '');
+    _controller[1].selection = TextSelection.fromPosition(
+      TextPosition(offset: _controller[1].text.length),
     );
-    _phoneController?.text = user?.phoneNumber ?? '';
-    _phoneController?.selection = TextSelection.fromPosition(
-      TextPosition(offset: _phoneController?.text.length ?? 0),
+    _controller[2] = TextEditingController(text: user.phoneNumber ?? '');
+    _controller[2].selection = TextSelection.fromPosition(
+      TextPosition(offset: _controller[2].text.length),
     );
   }
 
   Future<void> _isValidate(AuthProvider authProvider) async {
-    if (_profileFormKey!.currentState!.validate()) {
+    if (_profileFormKey?.currentState?.validate() ?? false) {
       final result = await authProvider.updateProfile(
-        _nameController!.text,
-        _emailController!.text,
-        _phoneController!.text,
-        _passwordController!.text,
+        _controller[0].text,
+        _controller[1].text,
+        _controller[2].text,
+        _controller[3].text,
         _file,
       );
       if (!mounted) return;
@@ -217,6 +202,8 @@ class _ProfileFormState extends State<ProfileForm> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(ProfileString.msgUpdatedProfile.tr())),
         );
+        setState(() => _file = null);
+        _focusNode[0].requestFocus();
       });
     }
   }

@@ -1,13 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../constants/strings.dart';
-import '../themes/themes.dart';
 
 class AlreadyHaveAnAccount extends StatelessWidget {
   const AlreadyHaveAnAccount({
+    required this.press,
     super.key,
     this.signin = true,
-    required this.press,
   });
   final bool signin;
   final VoidCallback press;
@@ -15,9 +14,7 @@ class AlreadyHaveAnAccount extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDarkTheme = theme.brightness == Brightness.dark;
-    final color =
-        isDarkTheme ? AppColors.primaryLightColor : AppColors.primaryColor;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -25,7 +22,9 @@ class AlreadyHaveAnAccount extends StatelessWidget {
           signin
               ? SignInString.signInDescription.tr()
               : SignUpString.signUpDescription.tr(),
-          style: TextStyle(color: color),
+          style: theme.textTheme.bodyLarge?.copyWith(
+            fontWeight: FontWeight.w400,
+          ),
         ),
         GestureDetector(
           onTap: press,
@@ -33,8 +32,7 @@ class AlreadyHaveAnAccount extends StatelessWidget {
             signin
                 ? SignUpString.signUpTitle.tr()
                 : SignInString.signInTitle.tr(),
-            style: TextStyle(
-              color: color,
+            style: theme.textTheme.bodyLarge?.copyWith(
               fontWeight: FontWeight.bold,
             ),
           ),

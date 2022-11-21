@@ -37,7 +37,8 @@ class MediaSelection {
       }
       return null;
     } else if (source == ImageSource.gallery) {
-      RationaleModel requestRationale, requestBlocked;
+      RationaleModel requestRationale;
+      RationaleModel requestBlocked;
       if (Platform.isAndroid) {
         requestRationale = RationaleModel(
           title: SheetString.pmStorageTitle.tr(),

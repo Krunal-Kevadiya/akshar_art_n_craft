@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../utils/utils.dart';
 
 class ThemeProvider extends ChangeNotifier {
-
   ThemeProvider() {
     _sharedPrefHelper = SharedPreferenceHelper();
   }

@@ -42,38 +42,45 @@ class MyPermission {
   ) async {
     if (await permission.shouldShowRequestRationale &&
         (await permission.isDenied || await permission.isRestricted)) {
-      await MyBottomSheet.showPermissionSheet(
-        context: context,
-        title: requestRationale.title,
-        message: requestRationale.message,
-        labelPositive: requestRationale.buttonPositive,
-        labelNegative: requestRationale.buttonNegative,
-        svg: requestRationale.svg,
-        pickPositive: () {},
-      );
+      if (context.mounted) {
+        await MyBottomSheet.showPermissionSheet(
+          context: context,
+          title: requestRationale.title,
+          message: requestRationale.message,
+          labelPositive: requestRationale.buttonPositive,
+          labelNegative: requestRationale.buttonNegative,
+          svg: requestRationale.svg,
+          pickPositive: () {},
+        );
+      }
       return Future<bool>.value(false);
     }
     if (await permission.isPermanentlyDenied) {
-      await MyBottomSheet.showPermissionSheet(
-        context: context,
-        title: requestBlocked.title,
-        message: requestBlocked.message,
-        labelPositive: requestBlocked.buttonPositive,
-        labelNegative: requestRationale.buttonNegative,
-        svg: requestBlocked.svg,
-        pickPositive: openAppSettings,
-      );
+      if (context.mounted) {
+        await MyBottomSheet.showPermissionSheet(
+          context: context,
+          title: requestBlocked.title,
+          message: requestBlocked.message,
+          labelPositive: requestBlocked.buttonPositive,
+          labelNegative: requestRationale.buttonNegative,
+          svg: requestBlocked.svg,
+          pickPositive: openAppSettings,
+        );
+      }
       return Future<bool>.value(false);
     }
     if (await permission.isGranted || await permission.isLimited) {
       return Future<bool>.value(true);
     }
-    return checkPermissionStatus(
-      context,
-      permission,
-      requestRationale,
-      requestBlocked,
-      await permission.request(),
-    );
+    if (context.mounted) {
+      return checkPermissionStatus(
+        context,
+        permission,
+        requestRationale,
+        requestBlocked,
+        await permission.request(),
+      );
+    }
+    return Future<bool>.value(false);
   }
 }

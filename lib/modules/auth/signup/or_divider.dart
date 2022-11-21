@@ -9,7 +9,6 @@ class OrDivider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDarkTheme = theme.brightness == Brightness.dark;
 
     return Container(
       margin: EdgeInsets.symmetric(vertical: 2.hp),
@@ -21,11 +20,9 @@ class OrDivider extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 10.s),
             child: Text(
               SignUpString.orLabel.tr().toUpperCase(),
-              style: theme.textTheme.overline?.copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: isDarkTheme
-                      ? AppColors.primaryLightColor
-                      : AppColors.primaryColor,),
+              style: theme.textTheme.bodyLarge?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
           buildDivider(),

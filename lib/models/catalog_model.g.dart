@@ -7,11 +7,11 @@ part of 'catalog_model.dart';
 // **************************************************************************
 
 CatalogModel _$CatalogModelFromJson(Map<String, dynamic> json) => CatalogModel(
-      id: json['id'] as String,
+      id: json['id'] as int,
       name: json['name'] as String,
-      description: json['description'] as String?,
-      photoUrl: json['photoUrl'] as String?,
+      description: json['description'] as String,
       delete: json['delete'] as bool,
+      photoUrl: json['photoUrl'] as String?,
     );
 
 Map<String, dynamic> _$CatalogModelToJson(CatalogModel instance) =>
@@ -19,6 +19,6 @@ Map<String, dynamic> _$CatalogModelToJson(CatalogModel instance) =>
       'id': instance.id,
       'name': instance.name,
       'description': instance.description,
-      'photoUrl': instance.photoUrl,
       'delete': instance.delete,
+      'photoUrl': instance.photoUrl,
     };

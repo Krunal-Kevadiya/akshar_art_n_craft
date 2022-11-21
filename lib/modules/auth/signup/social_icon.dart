@@ -4,9 +4,9 @@ import '../../../themes/themes.dart';
 
 class SocialIcon extends StatelessWidget {
   const SocialIcon({
-    super.key,
     required this.icon,
     required this.press,
+    super.key,
   });
   final String icon;
   final VoidCallback press;
@@ -30,12 +30,15 @@ class SocialIcon extends StatelessWidget {
           ),
           shape: BoxShape.circle,
         ),
-        child: SvgPicture.asset(icon,
-            height: 20.s,
-            width: 20.s,
-            color: isDarkTheme
-                ? AppColors.primaryLightColor
-                : AppColors.primaryColor,),
+        child: SvgPicture.asset(
+          icon,
+          height: 20.s,
+          width: 20.s,
+          colorFilter: ColorFilter.mode(
+            isDarkTheme ? AppColors.primaryLightColor : AppColors.primaryColor,
+            BlendMode.srcIn,
+          ),
+        ),
       ),
     );
   }

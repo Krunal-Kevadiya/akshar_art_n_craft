@@ -15,15 +15,10 @@ class CustomTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
-      primarySwatch: colorSwatch,
       fontFamily: appFontFamily,
       canvasColor: AppColors.white,
-      backgroundColor: AppColors.white,
+      cardColor: AppColors.primaryLightColor,
       scaffoldBackgroundColor: AppColors.white,
-      colorScheme: ColorScheme.fromSwatch().copyWith(
-        secondary: colorSwatch.shade500,
-        brightness: Brightness.light,
-      ),
       iconTheme: const IconThemeData(color: AppColors.black),
       textSelectionTheme: TextSelectionThemeData(
         cursorColor: primaryColor,
@@ -45,7 +40,7 @@ class CustomTheme {
         ),
         helperStyle: TextStyle(
           fontSize: 14.ms,
-          color: AppColors.blue,
+          color: AppColors.assets,
           fontWeight: FontWeight.w300,
         ),
         hintStyle: TextStyle(
@@ -72,7 +67,7 @@ class CustomTheme {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(99.s)),
-          borderSide: BorderSide(color: AppColors.blue, width: 2.s),
+          borderSide: BorderSide(color: AppColors.assets, width: 2.s),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(99.s)),
@@ -122,12 +117,20 @@ class CustomTheme {
         ),
       ),
       textTheme: TextTheme(
-        caption: TextStyle(
+        bodySmall: TextStyle(
           color: AppColors.white,
           fontSize: 14.ms,
         ),
-        overline: TextStyle(
+        labelSmall: TextStyle(
           color: AppColors.black,
+          fontSize: 14.ms,
+        ),
+        bodyLarge: TextStyle(
+          color: AppColors.primaryColor,
+          fontSize: 14.ms,
+        ),
+        bodyMedium: TextStyle(
+          color: AppColors.assets,
           fontSize: 14.ms,
         ),
       ),
@@ -141,6 +144,19 @@ class CustomTheme {
           fontWeight: FontWeight.bold,
         ),
       ),
+      progressIndicatorTheme: const ProgressIndicatorThemeData(
+        circularTrackColor: AppColors.primaryLightColor,
+        linearTrackColor: AppColors.primaryLightColor,
+        color: AppColors.assets,
+        refreshBackgroundColor: AppColors.primaryLightColor,
+      ),
+      colorScheme: ColorScheme.fromSwatch(
+        primarySwatch: colorSwatch,
+      ).copyWith(
+        secondary: colorSwatch.shade500,
+        background: AppColors.white,
+        brightness: Brightness.light,
+      ),
     );
   }
 
@@ -152,15 +168,10 @@ class CustomTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
-      primarySwatch: colorSwatch,
       fontFamily: appFontFamily,
       canvasColor: AppColors.offBlack,
-      backgroundColor: AppColors.offBlack,
+      cardColor: AppColors.primaryLightColor,
       scaffoldBackgroundColor: AppColors.offBlack,
-      colorScheme: ColorScheme.fromSwatch().copyWith(
-        secondary: colorSwatch.shade500,
-        brightness: Brightness.dark,
-      ),
       iconTheme: const IconThemeData(color: AppColors.white),
       textSelectionTheme: TextSelectionThemeData(
         cursorColor: primaryColor,
@@ -182,7 +193,7 @@ class CustomTheme {
         ),
         helperStyle: TextStyle(
           fontSize: 14.ms,
-          color: AppColors.blue,
+          color: AppColors.assets,
           fontWeight: FontWeight.w300,
         ),
         hintStyle: TextStyle(
@@ -209,7 +220,7 @@ class CustomTheme {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(99.s)),
-          borderSide: BorderSide(color: AppColors.blue, width: 2.s),
+          borderSide: BorderSide(color: AppColors.assets, width: 2.s),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(99.s)),
@@ -259,12 +270,20 @@ class CustomTheme {
         ),
       ),
       textTheme: TextTheme(
-        caption: TextStyle(
+        bodySmall: TextStyle(
           color: AppColors.black,
           fontSize: 14.ms,
         ),
-        overline: TextStyle(
+        labelSmall: TextStyle(
           color: AppColors.white,
+          fontSize: 14.ms,
+        ),
+        bodyLarge: TextStyle(
+          color: AppColors.primaryLightColor,
+          fontSize: 14.ms,
+        ),
+        bodyMedium: TextStyle(
+          color: AppColors.assets,
           fontSize: 14.ms,
         ),
       ),
@@ -277,6 +296,19 @@ class CustomTheme {
           fontSize: 16.ms,
           fontWeight: FontWeight.bold,
         ),
+      ),
+      progressIndicatorTheme: const ProgressIndicatorThemeData(
+        circularTrackColor: AppColors.primaryLightColor,
+        linearTrackColor: AppColors.primaryLightColor,
+        color: AppColors.assets,
+        refreshBackgroundColor: AppColors.primaryLightColor,
+      ),
+      colorScheme: ColorScheme.fromSwatch(
+        primarySwatch: colorSwatch,
+      ).copyWith(
+        secondary: colorSwatch.shade500,
+        background: AppColors.offBlack,
+        brightness: Brightness.dark,
       ),
     );
   }

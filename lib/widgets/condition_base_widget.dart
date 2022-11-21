@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
 class ConditionBaseWidget extends StatelessWidget {
-  const ConditionBaseWidget(
-      {super.key,
-      required this.isLoading,
-      required this.isSeenProgress,
-      required this.myWidget,});
+  const ConditionBaseWidget({
+    required this.isLoading,
+    required this.isSeenProgress,
+    required this.myWidget,
+    super.key,
+  });
 
-  final bool isLoading, isSeenProgress;
+  final bool isLoading;
+  final bool isSeenProgress;
   final Widget myWidget;
 
   @override
@@ -18,9 +20,7 @@ class ConditionBaseWidget extends StatelessWidget {
       );
     }
     if (isLoading && !isSeenProgress) {
-      return const Center(
-        
-      );
+      return const Center();
     }
     return myWidget;
   }

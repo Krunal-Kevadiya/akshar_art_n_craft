@@ -1,3 +1,4 @@
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
@@ -9,14 +10,22 @@ import '../modules/modules.dart';
 class Navigation {
   Navigation._();
 
-  static Map<String, Widget Function(BuildContext context, {Object? arguments})>
-      routes = {
+  static Map<
+      String,
+      Widget Function(
+        BuildContext context, {
+        Map<String, dynamic>? arguments,
+      })> routes = {
     Routes.root: (context, {arguments}) => const IndicatorPage(),
     Routes.welcome: (context, {arguments}) => const WelcomePage(),
     Routes.signIn: (context, {arguments}) => const SignInPage(),
     Routes.signUp: (context, {arguments}) => const SignUpPage(),
     Routes.forgot: (context, {arguments}) => const ForgotPage(),
+    Routes.verify: (context, {arguments}) => const VerifyPage(),
     Routes.home: (context, {arguments}) => const HomePage(),
+    Routes.productList: (context, {arguments}) => ProductListPage(
+          model: arguments != null ? arguments['model'] as CatalogModel : null,
+        ),
   };
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
@@ -65,13 +74,10 @@ class Navigation {
   ) {
     if (userSnapshot.connectionState == ConnectionState.active) {
       if (userSnapshot.hasData) {
-        if (userSnapshot.data?.emailVerified == true) {
+        if ((userSnapshot.data?.emailVerified ?? false) == true) {
           return const HomePage();
         } else {
-          print('verify');
-          // ScaffoldMessenger.of(context).showSnackBar(
-          //   SnackBar(content: Text(ErrorString.fbVerifyEmailError.tr())),
-          // );
+          return const VerifyPage();
         }
       }
       return const WelcomePage();
@@ -81,52 +87,55 @@ class Navigation {
 
   static Widget getDrawerScreen(DrawerMenuModel currentItem) {
     switch (currentItem.routes) {
-      case DrawerString.homeMenu:
+      case DrawerMenuString.home:
         return const HomeView();
-      case DrawerString.categoryMenu:
+      case DrawerMenuString.category:
         return CatalogPage(
           title: CatalogString.categoryTitle.tr(),
           type: FirestoreOperationType.category,
         );
-      case DrawerString.subCategoryMenu:
+      case DrawerMenuString.subCategory:
         return CatalogPage(
           title: CatalogString.subCategoryTitle.tr(),
           type: FirestoreOperationType.subCategory,
         );
-      case DrawerString.brandMenu:
+      case DrawerMenuString.brand:
         return CatalogPage(
           title: CatalogString.brandTitle.tr(),
           type: FirestoreOperationType.brand,
         );
-      case DrawerString.fabricMenu:
+      case DrawerMenuString.fabric:
         return CatalogPage(
           title: CatalogString.fabricTitle.tr(),
           type: FirestoreOperationType.fabric,
         );
-      case DrawerString.productMenu:
-        return const HomeView();
-      case DrawerString.shopByCategoryMenu:
-        return const HomeView();
-      case DrawerString.videosMenu:
-        return const HomeView();
-      case DrawerString.signInMenu:
-        return const HomeView();
-      case DrawerString.wishlistMenu:
-        return const HomeView();
-      case DrawerString.ordersMenu:
-        return const HomeView();
-      case DrawerString.profileMenu:
+      case DrawerMenuString.product:
+        return ProductPage(
+          title: ProductString.productTitle.tr(),
+          type: FirestoreOperationType.product,
+        );
+      case DrawerMenuString.shopByCategory:
+        return const CategoryPage();
+      case DrawerMenuString.videos:
+        return const VideosPage();
+      case DrawerMenuString.signIn:
+        return const SignInPage();
+      case DrawerMenuString.wishlist:
+        return const WishlistPage();
+      case DrawerMenuString.orders:
+        return const OrdersPage();
+      case DrawerMenuString.profile:
         return const ProfilePage();
-      case DrawerString.testimonialsMenu:
-        return const HomeView();
-      case DrawerString.contactUsMenu:
-        return const HomeView();
-      case DrawerString.aboutUsMenu:
-        return const HomeView();
-      case DrawerString.shareAppMenu:
-        return const HomeView();
-      case DrawerString.rateUsMenu:
-        return const HomeView();
+      case DrawerMenuString.testimonials:
+        return const TestimonialsPage();
+      case DrawerMenuString.contactUs:
+        return const ContactUsPage();
+      case DrawerMenuString.aboutUs:
+        return const AboutUsPage();
+      case DrawerMenuString.shareApp:
+        return const ShareAppPage();
+      case DrawerMenuString.rateUs:
+        return const RateUsPage();
       default:
         return const HomeView();
     }
@@ -135,16 +144,34 @@ class Navigation {
   static Widget getCatalogBottomTabScreen(
     int? index,
     FirestoreOperationType type,
+    CurvedNavigationBarState? navBarState,
   ) {
     switch (index) {
       case 0:
-        return CatalogAddEdit(type: type);
+        return CatalogAddEdit(type: type, navBarState: navBarState);
       case 1:
-        return const CatalogList();
+        return CatalogList(type: type, navBarState: navBarState);
       case 2:
-        return const CatalogDeleteList();
+        return CatalogDeleteList(type: type, navBarState: navBarState);
       default:
-        return CatalogAddEdit(type: type);
+        return CatalogAddEdit(type: type, navBarState: navBarState);
+    }
+  }
+
+  static Widget getProductBottomTabScreen(
+    int? index,
+    FirestoreOperationType type,
+    CurvedNavigationBarState? navBarState,
+  ) {
+    switch (index) {
+      case 0:
+        return ProductAddEdit(type: type, navBarState: navBarState);
+      case 1:
+        return ProductList(type: type, navBarState: navBarState);
+      case 2:
+        return ProductDeleteList(type: type, navBarState: navBarState);
+      default:
+        return ProductAddEdit(type: type, navBarState: navBarState);
     }
   }
 }
