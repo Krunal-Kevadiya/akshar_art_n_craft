@@ -22,10 +22,11 @@ class OrDivider extends StatelessWidget {
             child: Text(
               SignUpString.orLabel.tr().toUpperCase(),
               style: theme.textTheme.overline?.copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: isDarkTheme
-                      ? AppColors.primaryLightColor
-                      : AppColors.primaryColor,),
+                fontWeight: FontWeight.w600,
+                color: isDarkTheme
+                    ? AppColors.primaryLightColor
+                    : AppColors.primaryColor,
+              ),
             ),
           ),
           buildDivider(),

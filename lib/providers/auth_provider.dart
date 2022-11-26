@@ -78,13 +78,15 @@ class AuthProvider extends ChangeNotifier {
     final docSnapshot =
         await _firestore.collection(FirestorePath.users).doc(user.uid).get();
     final type = docSnapshot.data()?['type'] as String? ?? 'user';
+    final phoneNumber =
+        docSnapshot.data()?['phone'] as String? ?? user.phoneNumber;
 
     return UserModel(
       uid: user.uid,
       email: user.email,
       emailVerified: user.emailVerified,
       displayName: user.displayName,
-      phoneNumber: user.phoneNumber,
+      phoneNumber: phoneNumber,
       photoUrl: user.photoURL,
       type: type,
     );
@@ -120,7 +122,10 @@ class AuthProvider extends ChangeNotifier {
         final userDetails = <String, dynamic>{
           'type': 'admin',
         };
-        await _firestore.collection('users').doc(user.uid).set(userDetails);
+        await _firestore
+            .collection('users')
+            .doc(user.uid)
+            .set(userDetails, SetOptions(merge: true));
         await user.sendEmailVerification();
       }
       final userModel =
@@ -217,7 +222,6 @@ class AuthProvider extends ChangeNotifier {
       notifyListeners();
       await _auth.currentUser?.updateDisplayName(name);
       await _auth.currentUser?.updateEmail(email);
-      //await _auth.currentUser?.updatePhoneNumber(phone);
       if (password != '') {
         await _auth.currentUser?.updatePassword(password);
       }
@@ -232,6 +236,13 @@ class AuthProvider extends ChangeNotifier {
         final uploadTask = await ref.putFile(File(file.path), metadata);
         final downloadUrl = await uploadTask.ref.getDownloadURL();
         await _auth.currentUser?.updatePhotoURL(downloadUrl);
+        final userDetails = <String, dynamic>{
+          'phone': 'phone',
+        };
+        await _firestore
+            .collection('users')
+            .doc(_auth.currentUser?.uid)
+            .set(userDetails, SetOptions(merge: true));
       }
       _status = Status.unauthenticated;
       notifyListeners();

@@ -6,6 +6,8 @@ import '../../../assets/assets.dart';
 import '../../../constants/constants.dart';
 import '../../../models/models.dart';
 import '../../../services/services.dart';
+import '../../../themes/themes.dart';
+import '../../../utils/utils.dart';
 import '../../../widgets/widgets.dart';
 
 class CatalogList extends StatelessWidget {
@@ -17,78 +19,92 @@ class CatalogList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final firestoreDatabase =
         Provider.of<FirestoreDatabase>(context, listen: false);
+
     return StreamBuilder(
       stream: firestoreDatabase.getAllCatalog(type, false),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           final lists = (snapshot.data ?? []) as List<CatalogModel>;
           if (lists.isNotEmpty) {
-            return ListView.separated(
+            return GridView.builder(
               itemCount: lists.length,
+              padding: EdgeInsets.symmetric(horizontal: 10.s, vertical: 10.vs),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 5.s,
+                mainAxisSpacing: 5.vs,
+              ),
               itemBuilder: (context, index) {
-                return Dismissible(
-                  background: ColoredBox(
-                    color: Colors.red,
-                    child: Center(
-                      child: Text(
-                        CatalogString.deleteButton.tr(),
-                        style: TextStyle(color: Theme.of(context).canvasColor),
-                      ),
+                return Card(
+                  child: Dismissible(
+                    background: slideRightBackground(context),
+                    secondaryBackground: slideLeftBackground(context),
+                    key: Key('${lists[index].id}'),
+                    onDismissed: (direction) {
+                      handleDismissed(
+                        direction,
+                        context,
+                        firestoreDatabase,
+                        lists,
+                        index,
+                      );
+                    },
+                    child: Stack(
+                      children: [
+                        ProfileAvatar(
+                          photoUrl: lists[index].photoUrl,
+                          name: lists[index].name,
+                          enabled: false,
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: AppColors.black.withOpacity(0.5),
+                              borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(10.s),
+                                bottomRight: Radius.circular(10.s),
+                              ),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 5.s,
+                              vertical: 5.vs,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  lists[index].name.trim().capitalize(),
+                                  style: theme.textTheme.caption?.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 13.ms,
+                                  ),
+                                ),
+                                Text(
+                                  lists[index]
+                                          .description
+                                          ?.trim()
+                                          .capitalize() ??
+                                      '',
+                                  maxLines: 2,
+                                  style: theme.textTheme.caption?.copyWith(
+                                    fontWeight: FontWeight.w300,
+                                    fontSize: 12.ms,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  key: Key('${lists[index].id}'),
-                  onDismissed: (direction) {
-                    final deleteItem = CatalogModel(
-                      id: lists[index].id,
-                      name: lists[index].name,
-                      description: lists[index].description,
-                      photoUrl: lists[index].photoUrl,
-                      delete: true,
-                    );
-                    firestoreDatabase.deleteCatalog(
-                      type,
-                      deleteItem,
-                    );
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          CatalogString.deletedTitle.tr() + lists[index].name,
-                        ),
-                        duration: const Duration(seconds: 3),
-                        action: SnackBarAction(
-                          label: CatalogString.undoButton.tr(),
-                          onPressed: () {
-                            final deleteItem = CatalogModel(
-                              id: lists[index].id,
-                              name: lists[index].name,
-                              description: lists[index].description,
-                              photoUrl: lists[index].photoUrl,
-                              delete: false,
-                            );
-                            firestoreDatabase.deleteCatalog(
-                              type,
-                              deleteItem,
-                            );
-                          },
-                        ),
-                      ),
-                    );
-                  },
-                  child: ListTile(
-                    title: Text(lists[index].name),
-                    onTap: () {
-                      // Navigator.of(context).pushNamed(
-                      //   Routes.create_edit_todo,
-                      //   arguments: lists[index],
-                      // );
-                    },
-                  ),
                 );
-              },
-              separatorBuilder: (context, index) {
-                return const Divider(height: 0.5);
               },
             );
           } else {
@@ -111,5 +127,116 @@ class CatalogList extends StatelessWidget {
         }
       },
     );
+  }
+
+  Widget slideLeftBackground(BuildContext context) {
+    return Card(
+      color: AppColors.red,
+      margin: EdgeInsets.zero,
+      child: Align(
+        alignment: Alignment.centerRight,
+        child: Padding(
+          padding: EdgeInsets.only(right: 10.s),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              const Expanded(child: Spacer()),
+              Icon(
+                Icons.delete,
+                size: 25.s,
+                color: AppColors.white,
+              ),
+              SizedBox(
+                width: 5.s,
+              ),
+              Text(
+                CatalogString.deleteButton.tr(),
+                style: TextStyle(color: Theme.of(context).canvasColor),
+                textAlign: TextAlign.right,
+              ),
+              const Expanded(child: Spacer()),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget slideRightBackground(BuildContext context) {
+    return Card(
+      color: AppColors.green,
+      margin: EdgeInsets.zero,
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Padding(
+          padding: EdgeInsets.only(left: 10.s),
+          child: Column(
+            children: <Widget>[
+              const Expanded(child: Spacer()),
+              Icon(
+                Icons.edit,
+                size: 25.s,
+                color: AppColors.white,
+              ),
+              SizedBox(
+                width: 5.s,
+              ),
+              Text(
+                CatalogString.editButton.tr(),
+                style: TextStyle(color: Theme.of(context).canvasColor),
+                textAlign: TextAlign.left,
+              ),
+              const Expanded(child: Spacer()),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void handleDismissed(
+    DismissDirection direction,
+    BuildContext context,
+    FirestoreDatabase firestoreDatabase,
+    List<CatalogModel> lists,
+    int index,
+  ) {
+    if (direction == DismissDirection.endToStart) {
+      final deleteItem = CatalogModel(
+        id: lists[index].id,
+        name: lists[index].name,
+        description: lists[index].description,
+        photoUrl: lists[index].photoUrl,
+        delete: true,
+      );
+      firestoreDatabase.deleteCatalog(
+        type,
+        deleteItem,
+      );
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            CatalogString.deletedTitle.tr() + lists[index].name,
+          ),
+          duration: const Duration(seconds: 3),
+          action: SnackBarAction(
+            label: CatalogString.undoButton.tr(),
+            onPressed: () {
+              final deleteItem = CatalogModel(
+                id: lists[index].id,
+                name: lists[index].name,
+                description: lists[index].description,
+                photoUrl: lists[index].photoUrl,
+                delete: false,
+              );
+              firestoreDatabase.deleteCatalog(
+                type,
+                deleteItem,
+              );
+            },
+          ),
+        ),
+      );
+    }
   }
 }

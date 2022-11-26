@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 
 import '../../../constants/constants.dart';
 import '../../../models/models.dart';
-import '../../../navigators/navigators.dart';
 import '../../../services/services.dart';
 import '../../../themes/themes.dart';
 import '../../../utils/utils.dart';
@@ -27,9 +26,10 @@ class _CatalogAddEditState extends State<CatalogAddEdit> {
   TextEditingController? _nameController;
   TextEditingController? _descriptionController;
   XFile? _file;
+  final String _photoUrl = '';
   bool _isLoading = false;
   int? _id;
-  bool _deleted = false;
+  final bool _deleted = false;
 
   @override
   void initState() {
@@ -39,17 +39,21 @@ class _CatalogAddEditState extends State<CatalogAddEdit> {
     _descriptionController = TextEditingController();
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final _todoModel =
-        ModalRoute.of(context)?.settings.arguments as CatalogModel?;
-    _id = _todoModel?.id;
-    _deleted = _todoModel?.delete ?? false;
-    _nameController = TextEditingController(text: _todoModel?.name ?? '');
-    _descriptionController =
-        TextEditingController(text: _todoModel?.description ?? '');
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   final arguments =
+  //       ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+  //   if (arguments != null && arguments.isNotEmpty == true) {
+  //     final _todoModel = CatalogModel.fromJson(arguments);
+  //     _id = _todoModel.id;
+  //     _photoUrl = _todoModel.photoUrl;
+  //     _deleted = _todoModel.delete;
+  //     _nameController = TextEditingController(text: _todoModel.name);
+  //     _descriptionController =
+  //         TextEditingController(text: _todoModel.description);
+  //   }
+  // }
 
   @override
   void dispose() {
@@ -66,20 +70,20 @@ class _CatalogAddEditState extends State<CatalogAddEdit> {
     final firestoreDatabase =
         Provider.of<FirestoreDatabase>(context, listen: false);
 
-    return SingleChildScrollView(
-      child: Row(
-        children: [
-          const Spacer(),
-          Expanded(
-            flex: 8,
+    return CustomScrollView(
+      slivers: <Widget>[
+        SliverFillRemaining(
+          hasScrollBody: false,
+          child: Padding(
+            padding: EdgeInsets.all(25.s),
             child: Form(
               key: _catalogFormKey,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               child: Column(
                 children: [
-                  SizedBox(height: 32.vs),
                   ProfileAvatar(
                     file: _file,
+                    photoUrl: _photoUrl,
                     name: _nameController?.text ?? '',
                     onFileSubmitted: (photo) {
                       setState(() => _file = photo);
@@ -111,7 +115,8 @@ class _CatalogAddEditState extends State<CatalogAddEdit> {
                     },
                     enabled: !_isLoading,
                   ),
-                  SizedBox(height: 32.vs),
+                  const Expanded(child: Spacer()),
+                  SizedBox(height: 16.vs),
                   ConditionBaseWidget(
                     isLoading: _isLoading,
                     isSeenProgress: true,
@@ -126,9 +131,8 @@ class _CatalogAddEditState extends State<CatalogAddEdit> {
               ),
             ),
           ),
-          const Spacer(),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -142,8 +146,10 @@ class _CatalogAddEditState extends State<CatalogAddEdit> {
                 id: documentIdFromCurrentDate(),
                 name: _nameController!.text,
                 description: _descriptionController!.text,
+                photoUrl: _photoUrl,
                 delete: _deleted,
               ),
+              _file,
             )
           : await firestoreDatabase.updateCatalog(
               widget.type,
@@ -151,20 +157,19 @@ class _CatalogAddEditState extends State<CatalogAddEdit> {
                 id: _id ?? documentIdFromCurrentDate(),
                 name: _nameController!.text,
                 description: _descriptionController!.text,
+                photoUrl: _photoUrl,
                 delete: _deleted,
               ),
+              _file,
             );
       if (!mounted) return;
-      setState(() => _isLoading = false);
+      setState(() => {_isLoading = false, _file = null});
       result.when((error) {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(error.toString())));
       }, (success) {
-        Navigator.pushNamedAndRemoveUntil(
-          context,
-          Routes.home,
-          ModalRoute.withName(Routes.root),
-        );
+        _nameController = TextEditingController();
+        _descriptionController = TextEditingController();
       });
     }
   }

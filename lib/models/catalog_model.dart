@@ -17,7 +17,7 @@ class CatalogModel {
   final int id;
   final String name;
   final String? description;
-  final String? photoUrl;
+  String? photoUrl;
   final bool delete;
 
   Map<String, dynamic> toJson() => _$CatalogModelToJson(this);

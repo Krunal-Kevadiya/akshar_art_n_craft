@@ -132,4 +132,15 @@ class Validations {
     }
     return null;
   };
+
+  static FormFieldValidator<String>? comment = (comment) {
+    if (comment == null || comment.isEmpty) {
+      return ErrorString.emptyCommentError.tr();
+    }
+    comment = comment.trim();
+    if (comment.length < 4) {
+      return ErrorString.lengthCommentError.tr();
+    }
+    return null;
+  };
 }

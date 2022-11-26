@@ -81,12 +81,14 @@ class _RoundedInputState extends State<RoundedInput> {
         prefixIcon: widget.prefixIcon != null
             ? Icon(
                 widget.prefixIcon,
+                size: 25.s,
                 color: widget.iconColor,
               )
             : null,
         suffixIcon: widget.suffixIcon != null
             ? Icon(
                 widget.suffixIcon,
+                size: 25.s,
                 color: widget.iconColor,
               )
             : widget.obscureTextWithSuffixIcon
@@ -94,6 +96,7 @@ class _RoundedInputState extends State<RoundedInput> {
                     onTap: _toggle,
                     child: Icon(
                       _obscureText ? Icons.visibility : Icons.visibility_off,
+                      size: 25.s,
                       color: widget.iconColor,
                     ),
                   )

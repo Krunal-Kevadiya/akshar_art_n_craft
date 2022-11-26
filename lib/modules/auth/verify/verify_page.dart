@@ -14,12 +14,12 @@ class VerifyPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Verify Email'),
+        title: Text(VerifyEmailString.verifyEmailTitle.tr()),
         elevation: 0,
       ),
       body: Center(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.s),
+          padding: EdgeInsets.symmetric(horizontal: 25.s),
           child: Text(
             ErrorString.fbVerifyEmailError.tr(),
             textAlign: TextAlign.center,

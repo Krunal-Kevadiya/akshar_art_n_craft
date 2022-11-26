@@ -45,9 +45,9 @@ class _CatalogPageState extends State<CatalogPage> {
         key: _bottomNavigationKey,
         height: 60.s,
         items: <Widget>[
-          Icon(Icons.add, size: 30.s, color: AppColors.white),
-          Icon(Icons.list, size: 30.s, color: AppColors.white),
-          Icon(Icons.delete_sweep, size: 30.s, color: AppColors.white),
+          Icon(Icons.add, size: 25.s, color: AppColors.white),
+          Icon(Icons.list, size: 25.s, color: AppColors.white),
+          Icon(Icons.delete_sweep, size: 25.s, color: AppColors.white),
         ],
         color: AppColors.primaryColor,
         buttonBackgroundColor: AppColors.primaryColor,

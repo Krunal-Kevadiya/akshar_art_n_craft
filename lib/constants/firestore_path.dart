@@ -9,6 +9,8 @@ class FirestorePath {
   static String brand(int id) => 'brand/$id';
   static String fabrics = 'fabric';
   static String fabric(int id) => 'fabric/$id';
+  static String products = 'product';
+  static String product(int id) => 'product/$id';
   static String favorites(String uid, int productId) => 'favorites/$uid';
   static String testimonials = 'testimonial';
   static String testimonial(int id) => 'testimonial/$id';
@@ -21,5 +23,6 @@ enum FirestoreOperationType {
   brand,
   fabric,
   favorites,
-  testimonial
+  testimonial,
+  product,
 }

@@ -6,4 +6,6 @@ class Images {
   static const String mainBottom = '$prefix/img_main_bottom.png';
   static const String mainTop = '$prefix/img_main_top.png';
   static const String signupTop = '$prefix/img_signup_top.png';
+  static const String logo = '$prefix/img_logo.png';
+  static const String banner = '$prefix/img_banner.png';
 }

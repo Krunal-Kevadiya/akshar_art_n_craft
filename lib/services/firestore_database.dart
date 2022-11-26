@@ -1,11 +1,15 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:multiple_result/multiple_result.dart';
 
 import './firestore_service.dart';
 import '../constants/constants.dart';
 import '../models/models.dart';
+import '../utils/utils.dart';
 
 class FirestoreDatabase {
   FirestoreDatabase({required this.uid});
@@ -45,9 +49,21 @@ class FirestoreDatabase {
   Future<Result<Exception, bool>> addCatalog(
     FirestoreOperationType type,
     CatalogModel model,
+    XFile? file,
   ) async {
     final path = getCatalogPath(type, model.id);
     if (path != null) {
+      if (file != null) {
+        final ref =
+            FirebaseStorage.instance.ref().child(type.name).child(file.getName);
+        final metadata = SettableMetadata(
+          contentType: 'image/${file.getExtension}',
+          customMetadata: {'picked-file-path': file.path},
+        );
+        final uploadTask = await ref.putFile(File(file.path), metadata);
+        final downloadUrl = await uploadTask.ref.getDownloadURL();
+        model.photoUrl = downloadUrl;
+      }
       return _firestoreService.add(
         path: path,
         data: model.toJson(),
@@ -59,9 +75,21 @@ class FirestoreDatabase {
   Future<Result<Exception, bool>> updateCatalog(
     FirestoreOperationType type,
     CatalogModel model,
+    XFile? file,
   ) async {
     final path = getCatalogPath(type, model.id);
     if (path != null) {
+      if (file != null) {
+        final ref =
+            FirebaseStorage.instance.ref().child(type.name).child(file.getName);
+        final metadata = SettableMetadata(
+          contentType: 'image/${file.getExtension}',
+          customMetadata: {'picked-file-path': file.path},
+        );
+        final uploadTask = await ref.putFile(File(file.path), metadata);
+        final downloadUrl = await uploadTask.ref.getDownloadURL();
+        model.photoUrl = downloadUrl;
+      }
       return _firestoreService.update(
         path: path,
         data: model.toJson(),
@@ -86,6 +114,7 @@ class FirestoreDatabase {
 
   Stream<List<CatalogModel>>? getAllCatalog(
     FirestoreOperationType type,
+    // ignore: avoid_positional_boolean_parameters
     bool isDelete,
   ) {
     final path = getCatalogPath(type, null);
@@ -115,6 +144,20 @@ class FirestoreDatabase {
     return null;
   }
 
+  Future<Result<Exception, bool>> addTestimonial(
+    FirestoreOperationType type,
+    TestimonialModel model,
+  ) async {
+    final path = getCatalogPath(type, model.id);
+    if (path != null) {
+      return _firestoreService.add(
+        path: path,
+        data: model.toJson(),
+      );
+    }
+    return Error(Exception(ErrorString.pathNotFoundError.tr()));
+  }
+
   Stream<List<TestimonialModel>>? getAllTestimonial(
     FirestoreOperationType type,
   ) {
@@ -134,7 +177,7 @@ class FirestoreDatabase {
   //   final batchUpdate = FirebaseFirestore.instance.batch();
 
   //   final querySnapshot = await FirebaseFirestore.instance
-  //       .collection(FirestorePath.todos(uid))
+  //       .collection(FirestorePath.todo(uid))
   //       .get();
 
   //   for (DocumentSnapshot ds in querySnapshot.docs) {
@@ -147,7 +190,7 @@ class FirestoreDatabase {
   //   final batchDelete = FirebaseFirestore.instance.batch();
 
   //   final querySnapshot = await FirebaseFirestore.instance
-  //       .collection(FirestorePath.todos(uid))
+  //       .collection(FirestorePath.todo(uid))
   //       .where('complete', isEqualTo: true)
   //       .get();
 

@@ -5,6 +5,7 @@ import '../../../models/models.dart';
 import '../../../themes/themes.dart';
 import '../../../utils/utils.dart';
 
+// ignore: must_be_immutable
 class DrawerMenu extends StatelessWidget {
   DrawerMenu({
     super.key,
@@ -16,8 +17,8 @@ class DrawerMenu extends StatelessWidget {
       name: user?.displayName,
       email: user?.email,
       url: user?.photoUrl,
-      isLogin: user != null,
-      isAdmin: user?.type == 'admin',
+      isLogin: true, //user != null,
+      isAdmin: true, //user?.type == 'admin',
     );
   }
   final UserModel? user;
@@ -134,8 +135,11 @@ class DrawerMenu extends StatelessWidget {
     required VoidCallback onClicked,
   }) {
     return ListTile(
-      leading:
-          Icon(icon, color: isDarkTheme ? AppColors.black : AppColors.white),
+      leading: Icon(
+        icon,
+        size: 25.s,
+        color: isDarkTheme ? AppColors.black : AppColors.white,
+      ),
       title: Text(
         text,
         style: theme.textTheme.caption?.copyWith(

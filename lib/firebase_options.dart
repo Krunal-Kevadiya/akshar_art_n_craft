@@ -39,6 +39,7 @@ class DefaultFirebaseOptions {
           'DefaultFirebaseOptions have not been configured for linux - '
           'you can reconfigure this by running the FlutterFire CLI again.',
         );
+      // ignore: no_default_cases
       default:
         throw UnsupportedError(
           'DefaultFirebaseOptions are not supported for this platform.',
@@ -69,8 +70,10 @@ class DefaultFirebaseOptions {
     messagingSenderId: '341542748178',
     projectId: 'akshar-art-and-craft',
     storageBucket: 'akshar-art-and-craft.appspot.com',
-    androidClientId: '341542748178-prj0cfbhru60vsqebh8eg3d4hltjlc8v.apps.googleusercontent.com',
-    iosClientId: '341542748178-7qap4cn7cgacc85tk825hcf4gkt3tacv.apps.googleusercontent.com',
+    androidClientId:
+        '341542748178-prj0cfbhru60vsqebh8eg3d4hltjlc8v.apps.googleusercontent.com',
+    iosClientId:
+        '341542748178-7qap4cn7cgacc85tk825hcf4gkt3tacv.apps.googleusercontent.com',
     iosBundleId: 'com.akshar.artncraft.aksharArtNCraft',
   );
 }

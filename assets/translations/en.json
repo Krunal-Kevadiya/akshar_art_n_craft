@@ -11,6 +11,7 @@
   "orLabel": "OR",
   "signUpDescription": "Already have an Account ? ",
   "forgotPasswordTitle": "Forgot Password",
+  "verifyEmailTitle": "Verify Email",
   "signInError": "Invalid email and/or password",
   "emptyNameError": "Please enter name",
   "lengthNameError": "Name must be at least 4 characters long",
@@ -34,6 +35,8 @@
   "fbUnknownError": "An error occured. Please try again later.",
   "emptyDescriptionError": "Please enter description",
   "lengthDescriptionError": "Description must be at least 4 characters long",
+  "emptyCommentError": "Please enter comment",
+  "lengthCommentError": "Comment must be at least 4 characters long",
   "shopForMenuTitle": "Shop for",
   "homeMenu": "Home",
   "categoryMenu": "Category",
@@ -94,9 +97,11 @@
   "byAddress": "By Address",
   "byAddressDesc": "84/85 maniba park soc. NR. sitanagar chowk. bombay mkt to punagam road surat-395010",
   "byPhone": "By Phone",
-  "byPhoneName": "shradhha",
+  "byPhoneName": "Shradhha",
   "byPhoneNo": "+91 8469031539",
   "byEmail": "By Email",
   "byEmailDesc": "info.wholesalecatalog@gmail.com",
-  "shareApp": "Share App"
+  "shareApp": "Wholesale catalog is your global online shopping destination specializing in women's ethnic wear. Would you like to share this app with others.",
+  "rating": "Rating",
+  "commentLabel": "Comment"
 }

@@ -21,20 +21,19 @@ class AboutUsPage extends StatelessWidget {
         leading: const MenuButton(),
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(20.s),
-          child: Column(
-            children: <Widget>[
-              Center(
-                child: Image.asset(
-                  Images.mainTop,
-                  width: 30.wp,
-                  height: 35.wp,
-                  fit: BoxFit.fill,
-                ),
+        child: Column(
+          children: <Widget>[
+            Center(
+              child: Image.asset(
+                Images.banner,
+                width: 100.wp,
+                height: 64.5.wp,
+                fit: BoxFit.fill,
               ),
-              SizedBox(height: 16.vs),
-              Text(
+            ),
+            Padding(
+              padding: EdgeInsets.all(25.s),
+              child: Text(
                 AboutUsString.aboutUs.tr(),
                 textAlign: TextAlign.justify,
                 style: theme.textTheme.overline?.copyWith(
@@ -45,8 +44,8 @@ class AboutUsPage extends StatelessWidget {
                       : AppColors.primaryColor,
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

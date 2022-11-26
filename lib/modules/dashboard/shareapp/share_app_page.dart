@@ -20,39 +20,50 @@ class ShareAppPage extends StatelessWidget {
         elevation: 0,
         leading: const MenuButton(),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(20.s),
-          child: Column(
-            children: <Widget>[
-              Center(
-                child: Image.asset(
-                  Images.mainTop,
-                  width: 30.wp,
-                  height: 35.wp,
-                  fit: BoxFit.fill,
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverFillRemaining(
+            hasScrollBody: false,
+            child: Column(
+              children: [
+                Center(
+                  child: Image.asset(
+                    Images.banner,
+                    width: 100.wp,
+                    height: 64.5.wp,
+                    fit: BoxFit.fill,
+                  ),
                 ),
-              ),
-              SizedBox(height: 16.vs),
-              Text(
-                ShareAppString.shareApp.tr(),
-                textAlign: TextAlign.center,
-                style: theme.textTheme.overline?.copyWith(
-                  fontSize: 15.ms,
-                  fontWeight: FontWeight.w600,
-                  color: isDarkTheme
-                      ? AppColors.primaryLightColor
-                      : AppColors.primaryColor,
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.all(25.s),
+                    child: Column(
+                      children: <Widget>[
+                        Text(
+                          ShareAppString.shareApp.tr(),
+                          textAlign: TextAlign.center,
+                          style: theme.textTheme.overline?.copyWith(
+                            fontSize: 15.ms,
+                            fontWeight: FontWeight.w600,
+                            color: isDarkTheme
+                                ? AppColors.primaryLightColor
+                                : AppColors.primaryColor,
+                          ),
+                        ),
+                        const Expanded(child: Spacer()),
+                        SizedBox(height: 16.vs),
+                        RoundedButton(
+                          title: DrawerString.shareAppMenu.tr().toUpperCase(),
+                          press: () {},
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-              SizedBox(height: 16.vs),
-              RoundedButton(
-                title: DrawerString.shareAppMenu.tr().toUpperCase(),
-                press: () {},
-              )
-            ],
-          ),
-        ),
+              ],
+            ),
+          )
+        ],
       ),
     );
   }

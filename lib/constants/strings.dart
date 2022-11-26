@@ -64,6 +64,8 @@ class ErrorString {
   static const String invalidPhoneError = 'invalidPhoneError';
   static const String fbVerifyEmailError = 'fbVerifyEmailError';
   static const String pathNotFoundError = 'pathNotFoundError';
+  static const String emptyCommentError = 'emptyCommentError';
+  static const String lengthCommentError = 'lengthCommentError';
 }
 
 class SignInString {
@@ -89,6 +91,12 @@ class ForgotPasswordString {
   ForgotPasswordString._();
 
   static const String forgotPasswordTitle = 'forgotPasswordTitle';
+}
+
+class VerifyEmailString {
+  VerifyEmailString._();
+
+  static const String verifyEmailTitle = 'verifyEmailTitle';
 }
 
 class DrawerString {
@@ -166,4 +174,11 @@ class ShareAppString {
   ShareAppString._();
 
   static const String shareApp = 'shareApp';
+}
+
+class RateUsString {
+  RateUsString._();
+
+  static const String rating = 'rating';
+  static const String commentLabel = 'commentLabel';
 }

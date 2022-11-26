@@ -23,33 +23,38 @@ class EmptyContent extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Image.asset(
-            topImage,
-            width: 30.wp,
-            height: 35.wp,
-            fit: BoxFit.fill,
-          ),
-          SizedBox(height: 20.vs),
-          Text(
-            title,
-            style:
-                theme.textTheme.caption?.copyWith(fontWeight: FontWeight.w600),
-          ),
-          SizedBox(height: 5.vs),
-          Text(
-            message,
-            style: theme.textTheme.caption
-                ?.copyWith(fontWeight: FontWeight.w300, fontSize: 12.ms),
-          ),
-          SizedBox(height: 10.vs),
-          RoundedButton(
-            title: CatalogString.addButton.tr().toUpperCase(),
-            press: press,
-          )
-        ],
+      child: Padding(
+        padding: EdgeInsets.all(25.s),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Image.asset(
+              topImage,
+              width: 30.wp,
+              height: 35.wp,
+              fit: BoxFit.fill,
+            ),
+            SizedBox(height: 40.vs),
+            Text(
+              title,
+              style: theme.textTheme.overline
+                  ?.copyWith(fontWeight: FontWeight.w600, fontSize: 16.ms),
+            ),
+            SizedBox(height: 10.vs),
+            Text(
+              message,
+              style: theme.textTheme.overline
+                  ?.copyWith(fontWeight: FontWeight.w300, fontSize: 14.ms),
+            ),
+            const Expanded(
+              child: Spacer(),
+            ),
+            RoundedButton(
+              title: CatalogString.addButton.tr().toUpperCase(),
+              press: press,
+            )
+          ],
+        ),
       ),
     );
   }

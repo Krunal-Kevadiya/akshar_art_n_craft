@@ -22,39 +22,28 @@ class ForgotPage extends StatelessWidget {
           topImage: Images.signupTop,
           bottomImageWidthFactor: 35,
           child: Column(
-              children: <Widget>[
-                CustomAppBar(
-                    isFullScreen: true,
-                    isBackAllow: true,
-                    title: ForgotPasswordString.forgotPasswordTitle
-                        .tr()
-                        .toUpperCase(),),
-                Row(
-                  children: [
-                    const Spacer(),
-                    Expanded(
-                      flex: 8,
-                      child: SvgPicture.asset(
-                        Vectors.forgotPassword,
-                        height: 400.s,
-                        fit: BoxFit.fitWidth,
-                      ),
-                    ),
-                    const Spacer(),
-                  ],
+            children: <Widget>[
+              CustomAppBar(
+                isFullScreen: true,
+                isBackAllow: true,
+                title:
+                    ForgotPasswordString.forgotPasswordTitle.tr().toUpperCase(),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 25.s),
+                child: SvgPicture.asset(
+                  Vectors.forgotPassword,
+                  height: 400.s,
+                  fit: BoxFit.fitWidth,
                 ),
-                SizedBox(height: 32.vs),
-                Row(
-                  children: const [
-                    Spacer(),
-                    Expanded(
-                      flex: 8,
-                      child: ForgotForm(),
-                    ),
-                    Spacer(),
-                  ],
-                )
-              ],),
+              ),
+              SizedBox(height: 32.vs),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 25.s),
+                child: const ForgotForm(),
+              )
+            ],
+          ),
         ),
       ),
     );

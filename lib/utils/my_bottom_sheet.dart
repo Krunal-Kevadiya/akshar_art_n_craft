@@ -62,7 +62,7 @@ class MyBottomSheet {
       widget: Column(
         children: [
           ListTile(
-            leading: const Icon(Icons.image_outlined),
+            leading: Icon(Icons.image_outlined, size: 25.s),
             title: Text(
               SheetString.pickFromGalleryLabel.tr(),
               style: theme.textTheme.overline?.copyWith(fontSize: 16.ms),
@@ -73,7 +73,7 @@ class MyBottomSheet {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.camera),
+            leading: Icon(Icons.camera, size: 25.s),
             title: Text(
               SheetString.pickFromCameraLabel.tr(),
               style: theme.textTheme.overline?.copyWith(fontSize: 16.ms),
@@ -84,7 +84,7 @@ class MyBottomSheet {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.cancel),
+            leading: Icon(Icons.cancel, size: 25.s),
             title: Text(
               SheetString.cancelButton.tr(),
               style: theme.textTheme.overline?.copyWith(fontSize: 16.ms),
@@ -147,7 +147,7 @@ class MyBottomSheet {
               Expanded(
                 child: ListTile(
                   minLeadingWidth: 30.s,
-                  leading: const Icon(Icons.cancel),
+                  leading: Icon(Icons.cancel, size: 25.s),
                   title: Text(
                     labelNegative ?? SheetString.cancelButton.tr(),
                     style: theme.textTheme.overline?.copyWith(fontSize: 16.ms),
@@ -163,7 +163,7 @@ class MyBottomSheet {
               Expanded(
                 child: ListTile(
                   minLeadingWidth: 30.s,
-                  leading: const Icon(Icons.image_outlined),
+                  leading: Icon(Icons.image_outlined, size: 25.s),
                   title: Text(
                     labelPositive,
                     style: theme.textTheme.overline?.copyWith(fontSize: 16.ms),

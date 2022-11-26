@@ -17,22 +17,16 @@ class ProfilePage extends StatelessWidget {
         elevation: 0,
         leading: const MenuButton(),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            SizedBox(height: 16.vs),
-            Row(
-              children: const [
-                Spacer(),
-                Expanded(
-                  flex: 8,
-                  child: ProfileForm(),
-                ),
-                Spacer(),
-              ],
-            )
-          ],
-        ),
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverFillRemaining(
+            hasScrollBody: false,
+            child: Padding(
+              padding: EdgeInsets.all(25.s),
+              child: const ProfileForm(),
+            ),
+          ),
+        ],
       ),
     );
   }

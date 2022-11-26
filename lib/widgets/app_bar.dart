@@ -8,6 +8,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.title,
     this.isFullScreen = false,
     this.isBackAllow = false,
+    // ignore: avoid_field_initializers_in_const_classes
   }) : preferredSize = const Size.fromHeight(kToolbarHeight);
 
   final String? title;
@@ -28,6 +29,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           ? IconButton(
               icon: Icon(
                 Icons.arrow_back,
+                size: 25.s,
                 color: isFullScreen ? AppColors.black : AppColors.white,
               ),
               onPressed: () {

@@ -9,6 +9,7 @@ class TestimonialModel {
     required this.name,
     this.phone,
     this.comment,
+    this.rating,
   });
 
   factory TestimonialModel.fromJson(Map<String, dynamic> json) =>
@@ -17,6 +18,7 @@ class TestimonialModel {
   final String name;
   final String? phone;
   final String? comment;
+  final double? rating;
 
   Map<String, dynamic> toJson() => _$TestimonialModelToJson(this);
 

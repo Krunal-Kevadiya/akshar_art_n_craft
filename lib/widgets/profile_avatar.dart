@@ -26,66 +26,86 @@ class ProfileAvatar extends StatelessWidget {
     final theme = Theme.of(context);
     return GestureDetector(
       onTap: () {
-        if (enabled) {
-          MyBottomSheet.showImagePickerSheet(
-            context: context,
-            pickGallery: () async {
-              final photo = await MediaSelection.pickImage(
-                context: context,
-                source: ImageSource.gallery,
-              );
-              onFileSubmitted!(photo);
-            },
-            pickCamera: () async {
-              final photo = await MediaSelection.pickImage(
-                context: context,
-                source: ImageSource.camera,
-              );
-              onFileSubmitted!(photo);
-            },
-          );
-        }
+        handleTap(context);
       },
       child: Stack(
-        children: [
-          CircleAvatar(
-            radius: 55.s,
-            backgroundColor: AppColors.gray.withOpacity(0.5),
-            backgroundImage: file?.path != null
-                ? FileImage(File(file!.path))
-                : photoUrl != null
-                    ? NetworkImage(photoUrl ?? '') as ImageProvider
-                    : null,
-            child: file?.path == null && photoUrl == null
-                ? Text(
-                    name.asInitialCharacter(),
-                    style: theme.textTheme.caption?.copyWith(
-                      color: AppColors.primaryLightColor,
-                      fontSize: 35.ms,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  )
-                : null,
-          ),
-          Positioned(
-            right: 0,
-            bottom: 0,
-            child: Container(
-              height: 32.s,
-              width: 32.s,
-              decoration: BoxDecoration(
-                color: AppColors.primaryColor,
-                borderRadius: BorderRadius.circular(16.s),
-              ),
-              child: Icon(
-                Icons.edit,
-                size: 20.s,
-                color: AppColors.white,
-              ),
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.zero, // Border width
+            height: onFileSubmitted != null ? 110.s : double.infinity,
+            width: onFileSubmitted != null ? 110.s : double.infinity,
+            decoration: BoxDecoration(
+              color: AppColors.gray.withOpacity(0.5),
+              borderRadius:
+                  BorderRadius.circular(onFileSubmitted != null ? 55.s : 10.s),
             ),
-          )
+            child: ClipRRect(
+              borderRadius:
+                  BorderRadius.circular(onFileSubmitted != null ? 55.s : 10.s),
+              child: file?.path != null
+                  ? Image.file(
+                      File(file!.path),
+                      fit: BoxFit.fill,
+                    )
+                  : file?.path == null && photoUrl != null && photoUrl != ''
+                      ? Image.network(
+                          photoUrl ?? '',
+                          fit: BoxFit.fill,
+                        )
+                      : Center(
+                          child: Text(
+                            name.asInitialCharacter(),
+                            style: theme.textTheme.caption?.copyWith(
+                              color: AppColors.primaryColor,
+                              fontSize: onFileSubmitted != null ? 35.ms : 25.ms,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+            ),
+          ),
+          if (onFileSubmitted != null)
+            Positioned(
+              right: 0,
+              bottom: 0,
+              child: Container(
+                height: 32.s,
+                width: 32.s,
+                decoration: BoxDecoration(
+                  color: AppColors.primaryColor,
+                  borderRadius: BorderRadius.circular(16.s),
+                ),
+                child: Icon(
+                  Icons.edit,
+                  size: 20.s,
+                  color: AppColors.white,
+                ),
+              ),
+            )
         ],
       ),
     );
+  }
+
+  void handleTap(BuildContext context) {
+    if (enabled) {
+      MyBottomSheet.showImagePickerSheet(
+        context: context,
+        pickGallery: () async {
+          final photo = await MediaSelection.pickImage(
+            context: context,
+            source: ImageSource.gallery,
+          );
+          onFileSubmitted!(photo);
+        },
+        pickCamera: () async {
+          final photo = await MediaSelection.pickImage(
+            context: context,
+            source: ImageSource.camera,
+          );
+          onFileSubmitted!(photo);
+        },
+      );
+    }
   }
 }

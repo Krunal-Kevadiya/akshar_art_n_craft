@@ -22,17 +22,11 @@ class WelcomeImage extends StatelessWidget {
               ?.copyWith(fontSize: 16.ms, fontWeight: FontWeight.w800),
         ),
         SizedBox(height: 32.vs),
-        Row(
-          children: [
-            const Spacer(),
-            Expanded(
-              flex: 8,
-              child: SvgPicture.asset(
-                Vectors.chat,
-              ),
-            ),
-            const Spacer(),
-          ],
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 25.s),
+          child: SvgPicture.asset(
+            Vectors.chat,
+          ),
         ),
         SizedBox(height: 32.vs),
       ],

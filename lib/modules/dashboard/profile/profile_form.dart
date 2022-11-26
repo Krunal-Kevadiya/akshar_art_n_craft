@@ -74,14 +74,14 @@ class _ProfileFormState extends State<ProfileForm> {
       stream: authProvider.user,
       builder: (context, snapshot) {
         final user = snapshot.data as UserModel?;
-        updateControllers(user);
-
+        if (user != null && authProvider.status != Status.profiling) {
+          updateControllers(user);
+        }
         return Form(
           key: _profileFormKey,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           child: Column(
             children: [
-              SizedBox(height: 32.vs),
               ProfileAvatar(
                 file: _file,
                 photoUrl: user?.photoUrl,
@@ -167,6 +167,7 @@ class _ProfileFormState extends State<ProfileForm> {
                 },
                 enabled: authProvider.status != Status.profiling,
               ),
+              const Expanded(child: Spacer()),
               SizedBox(height: 16.vs),
               ConditionBaseWidget(
                 isLoading: authProvider.status == Status.profiling,
@@ -185,16 +186,16 @@ class _ProfileFormState extends State<ProfileForm> {
     );
   }
 
-  void updateControllers(UserModel? user) {
-    _nameController?.text = user?.displayName ?? '';
+  void updateControllers(UserModel user) {
+    _nameController = TextEditingController(text: user.displayName ?? '');
     _nameController?.selection = TextSelection.fromPosition(
       TextPosition(offset: _nameController?.text.length ?? 0),
     );
-    _emailController?.text = user?.email ?? '';
+    _emailController = TextEditingController(text: user.email ?? '');
     _emailController?.selection = TextSelection.fromPosition(
       TextPosition(offset: _emailController?.text.length ?? 0),
     );
-    _phoneController?.text = user?.phoneNumber ?? '';
+    _phoneController = TextEditingController(text: user.phoneNumber ?? '');
     _phoneController?.selection = TextSelection.fromPosition(
       TextPosition(offset: _phoneController?.text.length ?? 0),
     );

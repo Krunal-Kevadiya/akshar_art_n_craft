@@ -45,7 +45,7 @@ class CustomTheme {
         ),
         helperStyle: TextStyle(
           fontSize: 14.ms,
-          color: AppColors.blue,
+          color: AppColors.assets,
           fontWeight: FontWeight.w300,
         ),
         hintStyle: TextStyle(
@@ -72,7 +72,7 @@ class CustomTheme {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(99.s)),
-          borderSide: BorderSide(color: AppColors.blue, width: 2.s),
+          borderSide: BorderSide(color: AppColors.assets, width: 2.s),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(99.s)),
@@ -182,7 +182,7 @@ class CustomTheme {
         ),
         helperStyle: TextStyle(
           fontSize: 14.ms,
-          color: AppColors.blue,
+          color: AppColors.assets,
           fontWeight: FontWeight.w300,
         ),
         hintStyle: TextStyle(
@@ -209,7 +209,7 @@ class CustomTheme {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(99.s)),
-          borderSide: BorderSide(color: AppColors.blue, width: 2.s),
+          borderSide: BorderSide(color: AppColors.assets, width: 2.s),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(99.s)),

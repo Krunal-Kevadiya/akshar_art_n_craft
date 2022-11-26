@@ -71,7 +71,6 @@ class Navigation {
           return const VerifyPage();
         }
       }
-      return const HomePage();
       return const WelcomePage();
     }
     return const IndicatorPage();

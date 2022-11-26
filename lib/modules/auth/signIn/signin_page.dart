@@ -28,42 +28,30 @@ class SignInPage extends StatelessWidget {
                 isBackAllow: true,
                 title: SignInString.signInTitle.tr().toUpperCase(),
               ),
-              Row(
-                children: [
-                  const Spacer(),
-                  Expanded(
-                    flex: 8,
-                    child: SvgPicture.asset(Vectors.signin),
-                  ),
-                  const Spacer(),
-                ],
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 25.s),
+                child: SvgPicture.asset(Vectors.signin),
               ),
               SizedBox(height: 32.vs),
-              Row(
-                children: [
-                  const Spacer(),
-                  Expanded(
-                    flex: 8,
-                    child: SignInForm(
-                      navigationCallback: (routeName) {
-                        Navigator.pushNamed(
-                          context,
-                          routeName,
-                          arguments: {'currentWidget': context.widget},
-                        );
-                      },
-                      homeCallback: () {
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          Routes.home,
-                          ModalRoute.withName(Routes.root),
-                          arguments: {'currentWidget': context.widget},
-                        );
-                      },
-                    ),
-                  ),
-                  const Spacer(),
-                ],
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 25.s),
+                child: SignInForm(
+                  navigationCallback: (routeName) {
+                    Navigator.pushNamed(
+                      context,
+                      routeName,
+                      arguments: {'currentWidget': context.widget},
+                    );
+                  },
+                  homeCallback: () {
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      Routes.home,
+                      ModalRoute.withName(Routes.root),
+                      arguments: {'currentWidget': context.widget},
+                    );
+                  },
+                ),
               )
             ],
           ),
