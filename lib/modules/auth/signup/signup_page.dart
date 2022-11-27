@@ -32,30 +32,31 @@ class SignUpPage extends StatelessWidget {
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 25.s),
-                child: SvgPicture.asset(Vectors.signup),
-              ),
-              SizedBox(height: 16.vs),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 25.s),
-                child: SignUpForm(
-                  navigationCallback: (routeName) {
-                    Navigator.pushNamed(
-                      context,
-                      routeName,
-                      arguments: {'currentWidget': context.widget},
-                    );
-                  },
-                  homeCallback: () {
-                    Navigator.pushNamedAndRemoveUntil(
-                      context,
-                      Routes.home,
-                      ModalRoute.withName(Routes.root),
-                      arguments: {'currentWidget': context.widget},
-                    );
-                  },
+                child: Column(
+                  children: <Widget>[
+                    SvgPicture.asset(Vectors.signup),
+                    SizedBox(height: 16.vs),
+                    SignUpForm(
+                      navigationCallback: (routeName) {
+                        Navigator.pushNamed(
+                          context,
+                          routeName,
+                          arguments: {'currentWidget': context.widget},
+                        );
+                      },
+                      homeCallback: () {
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          Routes.home,
+                          ModalRoute.withName(Routes.root),
+                          arguments: {'currentWidget': context.widget},
+                        );
+                      },
+                    ),
+                    const SocialSignUp()
+                  ],
                 ),
               ),
-              const SocialSignUp()
             ],
           ),
         ),

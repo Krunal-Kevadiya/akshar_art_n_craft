@@ -45,27 +45,29 @@ class _ForgotFormState extends State<ForgotForm> {
       child: Column(
         children: [
           RoundedInput(
-              autoFocus: true,
-              controller: _emailController,
-              prefixIcon: Icons.email_rounded,
-              hintText: SignInString.emailHint.tr(),
-              validator: Validations.email,
-              textInputAction: TextInputAction.done,
-              onFieldSubmitted: (_) {
-                _isValidate(authProvider);
-              },
-              enabled: authProvider.status != Status.forgetting,),
+            autoFocus: true,
+            controller: _emailController,
+            prefixIcon: Icons.email_rounded,
+            hintText: SignInString.emailHint.tr(),
+            validator: Validations.email,
+            textInputAction: TextInputAction.done,
+            onFieldSubmitted: (_) {
+              _isValidate(authProvider);
+            },
+            enabled: authProvider.status != Status.forgetting,
+          ),
           SizedBox(height: 16.vs),
           ConditionBaseWidget(
-              isLoading: authProvider.status == Status.forgetting,
-              isSeenProgress: true,
-              myWidget: RoundedButton(
-                  title: ForgotPasswordString.forgotPasswordTitle
-                      .tr()
-                      .toUpperCase(),
-                  press: () {
-                    _isValidate(authProvider);
-                  },),)
+            isLoading: authProvider.status == Status.forgetting,
+            isSeenProgress: true,
+            myWidget: RoundedButton(
+              title:
+                  ForgotPasswordString.forgotPasswordTitle.tr().toUpperCase(),
+              press: () {
+                _isValidate(authProvider);
+              },
+            ),
+          )
         ],
       ),
     );

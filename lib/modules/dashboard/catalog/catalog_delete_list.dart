@@ -24,89 +24,12 @@ class CatalogDeleteList extends StatelessWidget {
         Provider.of<FirestoreDatabase>(context, listen: false);
 
     return StreamBuilder(
-      stream: firestoreDatabase.getAllCatalog(type, true),
+      stream: firestoreDatabase.getAllCatalog(type: type, isDelete: true),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           final lists = (snapshot.data ?? []) as List<CatalogModel>;
           if (lists.isNotEmpty) {
-            return GridView.builder(
-              itemCount: lists.length,
-              padding: EdgeInsets.symmetric(horizontal: 10.s, vertical: 10.vs),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 5.s,
-                mainAxisSpacing: 5.vs,
-              ),
-              itemBuilder: (context, index) {
-                return Card(
-                  child: Dismissible(
-                    background: slideRightBackground(context),
-                    secondaryBackground: slideLeftBackground(context),
-                    key: Key('${lists[index].id}'),
-                    onDismissed: (direction) {
-                      handleDismissed(
-                        direction,
-                        context,
-                        firestoreDatabase,
-                        lists,
-                        index,
-                      );
-                    },
-                    child: Stack(
-                      children: [
-                        ProfileAvatar(
-                          photoUrl: lists[index].photoUrl,
-                          name: lists[index].name,
-                          enabled: false,
-                        ),
-                        Positioned(
-                          bottom: 0,
-                          left: 0,
-                          right: 0,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: AppColors.black.withOpacity(0.5),
-                              borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(10.s),
-                                bottomRight: Radius.circular(10.s),
-                              ),
-                            ),
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 5.s,
-                              vertical: 5.vs,
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  lists[index].name.trim().capitalize(),
-                                  style: theme.textTheme.caption?.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 13.ms,
-                                  ),
-                                ),
-                                Text(
-                                  lists[index]
-                                          .description
-                                          ?.trim()
-                                          .capitalize() ??
-                                      '',
-                                  maxLines: 2,
-                                  style: theme.textTheme.caption?.copyWith(
-                                    fontWeight: FontWeight.w300,
-                                    fontSize: 12.ms,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            );
+            return catalogList(theme, lists, firestoreDatabase);
           } else {
             return EmptyContent(
               topImage: Images.mainTop,
@@ -126,6 +49,103 @@ class CatalogDeleteList extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         }
       },
+    );
+  }
+
+  Widget catalogList(
+    ThemeData theme,
+    List<CatalogModel> lists,
+    FirestoreDatabase firestoreDatabase,
+  ) {
+    return GridView.builder(
+      itemCount: lists.length,
+      padding: EdgeInsets.symmetric(horizontal: 10.s, vertical: 10.vs),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 5.s,
+        mainAxisSpacing: 5.vs,
+      ),
+      itemBuilder: (context, index) {
+        return Card(
+          child: Dismissible(
+            background: slideRightBackground(context),
+            secondaryBackground: slideLeftBackground(context),
+            key: Key('${lists[index].id}'),
+            onDismissed: (direction) {
+              handleDismissed(
+                direction,
+                context,
+                firestoreDatabase,
+                lists,
+                index,
+              );
+            },
+            child: catalogCard(theme, lists, index),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget catalogCard(
+    ThemeData theme,
+    List<CatalogModel> lists,
+    int index,
+  ) {
+    return Stack(
+      children: [
+        ProfileAvatar(
+          photoUrl: lists[index].photoUrl,
+          name: lists[index].name,
+          enabled: false,
+        ),
+        Positioned(
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: Container(
+            decoration: BoxDecoration(
+              color: AppColors.black.withOpacity(0.5),
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(10.s),
+                bottomRight: Radius.circular(10.s),
+              ),
+            ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 5.s,
+              vertical: 5.vs,
+            ),
+            child: titleAndDescription(theme, lists, index),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget titleAndDescription(
+    ThemeData theme,
+    List<CatalogModel> lists,
+    int index,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          lists[index].name.trim().capitalize(),
+          style: theme.textTheme.caption?.copyWith(
+            fontWeight: FontWeight.w600,
+            fontSize: 13.ms,
+          ),
+        ),
+        Text(
+          lists[index].description?.trim().capitalize() ?? '',
+          maxLines: 2,
+          style: theme.textTheme.caption?.copyWith(
+            fontWeight: FontWeight.w300,
+            fontSize: 12.ms,
+          ),
+        )
+      ],
     );
   }
 

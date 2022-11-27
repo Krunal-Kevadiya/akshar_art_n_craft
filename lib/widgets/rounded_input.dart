@@ -77,67 +77,77 @@ class _RoundedInputState extends State<RoundedInput> {
           ?.copyWith(fontSize: 14.ms, fontWeight: FontWeight.w400),
       minLines: widget.minLines,
       maxLines: widget.maxLines,
-      decoration: InputDecoration(
-        prefixIcon: widget.prefixIcon != null
-            ? Icon(
-                widget.prefixIcon,
-                size: 25.s,
-                color: widget.iconColor,
-              )
-            : null,
-        suffixIcon: widget.suffixIcon != null
-            ? Icon(
-                widget.suffixIcon,
-                size: 25.s,
-                color: widget.iconColor,
-              )
-            : widget.obscureTextWithSuffixIcon
-                ? GestureDetector(
-                    onTap: _toggle,
-                    child: Icon(
-                      _obscureText ? Icons.visibility : Icons.visibility_off,
-                      size: 25.s,
-                      color: widget.iconColor,
-                    ),
-                  )
-                : null,
-        labelText: widget.hintText,
-        contentPadding: EdgeInsets.only(
-          top: isMultiLines ? 10.s : 0,
-          bottom: isMultiLines ? 10.s : 0,
-          right: isMultiLines ? 10.s : 0,
-        ),
-        enabledBorder:
-            (theme.inputDecorationTheme.enabledBorder as OutlineInputBorder?)
-                ?.copyWith(
-          borderRadius:
-              BorderRadius.all(Radius.circular(isMultiLines ? 20.s : 99.s)),
-        ),
-        disabledBorder:
-            (theme.inputDecorationTheme.disabledBorder as OutlineInputBorder?)
-                ?.copyWith(
-          borderRadius:
-              BorderRadius.all(Radius.circular(isMultiLines ? 20.s : 99.s)),
-        ),
-        focusedBorder:
-            (theme.inputDecorationTheme.focusedBorder as OutlineInputBorder?)
-                ?.copyWith(
-          borderRadius:
-              BorderRadius.all(Radius.circular(isMultiLines ? 20.s : 99.s)),
-        ),
-        errorBorder:
-            (theme.inputDecorationTheme.errorBorder as OutlineInputBorder?)
-                ?.copyWith(
-          borderRadius:
-              BorderRadius.all(Radius.circular(isMultiLines ? 20.s : 99.s)),
-        ),
-        focusedErrorBorder: (theme.inputDecorationTheme.focusedErrorBorder
-                as OutlineInputBorder?)
-            ?.copyWith(
-          borderRadius:
-              BorderRadius.all(Radius.circular(isMultiLines ? 20.s : 99.s)),
-        ),
+      decoration: customInputDecoration(
+        theme: theme,
+        isMultiLines: isMultiLines,
       ).applyDefaults(theme.inputDecorationTheme),
+    );
+  }
+
+  InputDecoration customInputDecoration({
+    required ThemeData theme,
+    bool isMultiLines = false,
+  }) {
+    return InputDecoration(
+      prefixIcon: widget.prefixIcon != null
+          ? Icon(
+              widget.prefixIcon,
+              size: 25.s,
+              color: widget.iconColor,
+            )
+          : null,
+      suffixIcon: widget.suffixIcon != null
+          ? Icon(
+              widget.suffixIcon,
+              size: 25.s,
+              color: widget.iconColor,
+            )
+          : widget.obscureTextWithSuffixIcon
+              ? GestureDetector(
+                  onTap: _toggle,
+                  child: Icon(
+                    _obscureText ? Icons.visibility : Icons.visibility_off,
+                    size: 25.s,
+                    color: widget.iconColor,
+                  ),
+                )
+              : null,
+      labelText: widget.hintText,
+      contentPadding: EdgeInsets.only(
+        top: isMultiLines ? 10.s : 0,
+        bottom: isMultiLines ? 10.s : 0,
+        right: isMultiLines ? 10.s : 0,
+      ),
+      enabledBorder:
+          (theme.inputDecorationTheme.enabledBorder as OutlineInputBorder?)
+              ?.copyWith(
+        borderRadius:
+            BorderRadius.all(Radius.circular(isMultiLines ? 20.s : 99.s)),
+      ),
+      disabledBorder:
+          (theme.inputDecorationTheme.disabledBorder as OutlineInputBorder?)
+              ?.copyWith(
+        borderRadius:
+            BorderRadius.all(Radius.circular(isMultiLines ? 20.s : 99.s)),
+      ),
+      focusedBorder:
+          (theme.inputDecorationTheme.focusedBorder as OutlineInputBorder?)
+              ?.copyWith(
+        borderRadius:
+            BorderRadius.all(Radius.circular(isMultiLines ? 20.s : 99.s)),
+      ),
+      errorBorder:
+          (theme.inputDecorationTheme.errorBorder as OutlineInputBorder?)
+              ?.copyWith(
+        borderRadius:
+            BorderRadius.all(Radius.circular(isMultiLines ? 20.s : 99.s)),
+      ),
+      focusedErrorBorder:
+          (theme.inputDecorationTheme.focusedErrorBorder as OutlineInputBorder?)
+              ?.copyWith(
+        borderRadius:
+            BorderRadius.all(Radius.circular(isMultiLines ? 20.s : 99.s)),
+      ),
     );
   }
 }

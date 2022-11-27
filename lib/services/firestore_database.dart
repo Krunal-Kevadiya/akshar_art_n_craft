@@ -39,9 +39,8 @@ class FirestoreDatabase {
         return id != null
             ? FirestorePath.subCategory(id)
             : FirestorePath.subCategories;
-      // ignore: no_default_cases
-      default:
-        return null;
+      case FirestoreOperationType.product:
+        return id != null ? FirestorePath.product(id) : FirestorePath.products;
     }
   }
 
@@ -112,11 +111,10 @@ class FirestoreDatabase {
     return Error(Exception(ErrorString.pathNotFoundError.tr()));
   }
 
-  Stream<List<CatalogModel>>? getAllCatalog(
-    FirestoreOperationType type,
-    // ignore: avoid_positional_boolean_parameters
-    bool isDelete,
-  ) {
+  Stream<List<CatalogModel>>? getAllCatalog({
+    required FirestoreOperationType type,
+    bool isDelete = false,
+  }) {
     final path = getCatalogPath(type, null);
     if (path != null) {
       return _firestoreService.collectionStream(

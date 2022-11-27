@@ -34,22 +34,9 @@ class ContactUsPage extends StatelessWidget {
               padding: EdgeInsets.all(25.s),
               child: Column(
                 children: <Widget>[
-                  Container(
-                    width: 90.wp,
-                    padding: EdgeInsets.all(5.s),
-                    margin: EdgeInsets.only(bottom: 10.vs),
-                    decoration: const BoxDecoration(
-                      color: AppColors.assets,
-                    ),
-                    child: Text(
-                      ContactUsString.byAddress.tr(),
-                      textAlign: TextAlign.center,
-                      style: theme.textTheme.overline?.copyWith(
-                        fontSize: 15.ms,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.white,
-                      ),
-                    ),
+                  header(
+                    theme,
+                    ContactUsString.byAddress.tr(),
                   ),
                   Text(
                     ContactUsString.byAddressDesc.tr(),
@@ -60,73 +47,15 @@ class ContactUsPage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 16.vs),
-                  Container(
-                    width: 90.wp,
-                    padding: EdgeInsets.all(5.s),
-                    margin: EdgeInsets.only(bottom: 10.vs),
-                    decoration: const BoxDecoration(
-                      color: AppColors.assets,
-                    ),
-                    child: Text(
-                      ContactUsString.byPhone.tr(),
-                      textAlign: TextAlign.center,
-                      style: theme.textTheme.overline?.copyWith(
-                        fontSize: 15.ms,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.white,
-                      ),
-                    ),
+                  header(
+                    theme,
+                    ContactUsString.byPhone.tr(),
                   ),
-                  Column(
-                    children: ContactUsString.byPhoneDesc
-                        .map(
-                          (item) => ListTile(
-                            leading: Container(
-                              height: 100.hp,
-                              width: 20.s,
-                              alignment: Alignment.center,
-                              child: Icon(
-                                Icons.call,
-                                size: 30.s,
-                                color: AppColors.green,
-                              ),
-                            ),
-                            title: Text(
-                              item.name.tr(),
-                              style: theme.textTheme.overline?.copyWith(
-                                fontSize: 15.ms,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            subtitle: Text(
-                              item.phone?.tr() ?? '',
-                              style: theme.textTheme.overline?.copyWith(
-                                fontSize: 15.ms,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            style: ListTileStyle.list,
-                          ),
-                        )
-                        .toList(),
-                  ),
+                  phoneList(theme),
                   SizedBox(height: 16.vs),
-                  Container(
-                    width: 90.wp,
-                    padding: EdgeInsets.all(5.s),
-                    margin: EdgeInsets.only(bottom: 10.vs),
-                    decoration: const BoxDecoration(
-                      color: AppColors.assets,
-                    ),
-                    child: Text(
-                      ContactUsString.byEmail.tr(),
-                      textAlign: TextAlign.center,
-                      style: theme.textTheme.overline?.copyWith(
-                        fontSize: 15.ms,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.white,
-                      ),
-                    ),
+                  header(
+                    theme,
+                    ContactUsString.byEmail.tr(),
                   ),
                   Text(
                     ContactUsString.byEmailDesc.tr(),
@@ -142,6 +71,62 @@ class ContactUsPage extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget header(ThemeData theme, String data) {
+    return Container(
+      width: 90.wp,
+      padding: EdgeInsets.all(5.s),
+      margin: EdgeInsets.only(bottom: 10.vs),
+      decoration: const BoxDecoration(
+        color: AppColors.assets,
+      ),
+      child: Text(
+        data,
+        textAlign: TextAlign.center,
+        style: theme.textTheme.overline?.copyWith(
+          fontSize: 15.ms,
+          fontWeight: FontWeight.w600,
+          color: AppColors.white,
+        ),
+      ),
+    );
+  }
+
+  Widget phoneList(ThemeData theme) {
+    return Column(
+      children: ContactUsString.byPhoneDesc
+          .map(
+            (item) => ListTile(
+              leading: Container(
+                height: 100.hp,
+                width: 20.s,
+                alignment: Alignment.center,
+                child: Icon(
+                  Icons.call,
+                  size: 30.s,
+                  color: AppColors.green,
+                ),
+              ),
+              title: Text(
+                item.name.tr(),
+                style: theme.textTheme.overline?.copyWith(
+                  fontSize: 15.ms,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              subtitle: Text(
+                item.phone?.tr() ?? '',
+                style: theme.textTheme.overline?.copyWith(
+                  fontSize: 15.ms,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              style: ListTileStyle.list,
+            ),
+          )
+          .toList(),
     );
   }
 }

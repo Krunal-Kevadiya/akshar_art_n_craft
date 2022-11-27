@@ -123,7 +123,7 @@ class AuthProvider extends ChangeNotifier {
           'type': 'admin',
         };
         await _firestore
-            .collection('users')
+            .collection(FirestorePath.users)
             .doc(user.uid)
             .set(userDetails, SetOptions(merge: true));
         await user.sendEmailVerification();
@@ -227,8 +227,10 @@ class AuthProvider extends ChangeNotifier {
       }
       await _auth.currentUser?.reload();
       if (file != null) {
-        final ref =
-            FirebaseStorage.instance.ref().child('user').child(file.getName);
+        final ref = FirebaseStorage.instance
+            .ref()
+            .child(FirestoreOperationType.user.name)
+            .child(file.getName);
         final metadata = SettableMetadata(
           contentType: 'image/${file.getExtension}',
           customMetadata: {'picked-file-path': file.path},
@@ -240,7 +242,7 @@ class AuthProvider extends ChangeNotifier {
           'phone': 'phone',
         };
         await _firestore
-            .collection('users')
+            .collection(FirestorePath.users)
             .doc(_auth.currentUser?.uid)
             .set(userDetails, SetOptions(merge: true));
       }

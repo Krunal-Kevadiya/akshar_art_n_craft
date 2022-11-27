@@ -20,7 +20,7 @@ class SignInPage extends StatelessWidget {
         child: Background(
           topLeft: 0,
           bottomRight: 0,
-          bottomImageWidthFactor: 35,
+          bottomImageWidthFactor: 35.s,
           child: Column(
             children: <Widget>[
               CustomAppBar(
@@ -30,29 +30,30 @@ class SignInPage extends StatelessWidget {
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 25.s),
-                child: SvgPicture.asset(Vectors.signin),
-              ),
-              SizedBox(height: 32.vs),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 25.s),
-                child: SignInForm(
-                  navigationCallback: (routeName) {
-                    Navigator.pushNamed(
-                      context,
-                      routeName,
-                      arguments: {'currentWidget': context.widget},
-                    );
-                  },
-                  homeCallback: () {
-                    Navigator.pushNamedAndRemoveUntil(
-                      context,
-                      Routes.home,
-                      ModalRoute.withName(Routes.root),
-                      arguments: {'currentWidget': context.widget},
-                    );
-                  },
+                child: Column(
+                  children: <Widget>[
+                    SvgPicture.asset(Vectors.signin),
+                    SizedBox(height: 32.vs),
+                    SignInForm(
+                      navigationCallback: (routeName) {
+                        Navigator.pushNamed(
+                          context,
+                          routeName,
+                          arguments: {'currentWidget': context.widget},
+                        );
+                      },
+                      homeCallback: () {
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          Routes.home,
+                          ModalRoute.withName(Routes.root),
+                          arguments: {'currentWidget': context.widget},
+                        );
+                      },
+                    )
+                  ],
                 ),
-              )
+              ),
             ],
           ),
         ),

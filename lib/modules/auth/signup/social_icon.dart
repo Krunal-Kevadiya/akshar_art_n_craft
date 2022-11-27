@@ -30,12 +30,14 @@ class SocialIcon extends StatelessWidget {
           ),
           shape: BoxShape.circle,
         ),
-        child: SvgPicture.asset(icon,
-            height: 20.s,
-            width: 20.s,
-            color: isDarkTheme
-                ? AppColors.primaryLightColor
-                : AppColors.primaryColor,),
+        child: SvgPicture.asset(
+          icon,
+          height: 20.s,
+          width: 20.s,
+          color: isDarkTheme
+              ? AppColors.primaryLightColor
+              : AppColors.primaryColor,
+        ),
       ),
     );
   }

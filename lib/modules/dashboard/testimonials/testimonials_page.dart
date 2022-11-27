@@ -14,8 +14,7 @@ class TestimonialsPage extends StatelessWidget {
   const TestimonialsPage({
     super.key,
   });
-  // ignore: avoid_field_initializers_in_const_classes
-  final FirestoreOperationType type = FirestoreOperationType.testimonial;
+  FirestoreOperationType get type => FirestoreOperationType.testimonial;
 
   @override
   Widget build(BuildContext context) {
@@ -103,53 +102,57 @@ class TestimonialsPage extends StatelessWidget {
               ),
             ),
             SizedBox(height: 5.vs),
-            Align(
-              alignment: Alignment.centerRight,
-              child: RatingBar.builder(
-                itemSize: 30.s,
-                glow: false,
-                initialRating: model.rating ?? 0,
-                allowHalfRating: true,
-                ignoreGestures: true,
-                itemBuilder: (context, index) {
-                  switch (index) {
-                    case 0:
-                      return const Icon(
-                        Icons.sentiment_very_dissatisfied,
-                        color: Colors.red,
-                      );
-                    case 1:
-                      return const Icon(
-                        Icons.sentiment_dissatisfied,
-                        color: Colors.redAccent,
-                      );
-                    case 2:
-                      return const Icon(
-                        Icons.sentiment_neutral,
-                        color: Colors.amber,
-                      );
-                    case 3:
-                      return const Icon(
-                        Icons.sentiment_satisfied,
-                        color: Colors.lightGreen,
-                      );
-                    case 4:
-                      return const Icon(
-                        Icons.sentiment_very_satisfied,
-                        color: Colors.green,
-                      );
-                    default:
-                      return const Icon(
-                        Icons.sentiment_very_dissatisfied,
-                        color: Colors.red,
-                      );
-                  }
-                },
-                onRatingUpdate: (value) {},
-              ),
-            )
+            ratingView(model)
           ],
         ),
+      ),
+    );
+  }
+
+  Widget ratingView(TestimonialModel model) {
+    return Align(
+      alignment: Alignment.centerRight,
+      child: RatingBar.builder(
+        itemSize: 30.s,
+        glow: false,
+        initialRating: model.rating ?? 0,
+        allowHalfRating: true,
+        ignoreGestures: true,
+        itemBuilder: (context, index) {
+          switch (index) {
+            case 0:
+              return const Icon(
+                Icons.sentiment_very_dissatisfied,
+                color: Colors.red,
+              );
+            case 1:
+              return const Icon(
+                Icons.sentiment_dissatisfied,
+                color: Colors.redAccent,
+              );
+            case 2:
+              return const Icon(
+                Icons.sentiment_neutral,
+                color: Colors.amber,
+              );
+            case 3:
+              return const Icon(
+                Icons.sentiment_satisfied,
+                color: Colors.lightGreen,
+              );
+            case 4:
+              return const Icon(
+                Icons.sentiment_very_satisfied,
+                color: Colors.green,
+              );
+            default:
+              return const Icon(
+                Icons.sentiment_very_dissatisfied,
+                color: Colors.red,
+              );
+          }
+        },
+        onRatingUpdate: (value) {},
       ),
     );
   }

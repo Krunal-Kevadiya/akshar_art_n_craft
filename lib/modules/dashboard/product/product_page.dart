@@ -1,3 +1,4 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -15,8 +16,7 @@ class ProductPage extends StatefulWidget {
   const ProductPage({
     super.key,
   });
-  // ignore: avoid_field_initializers_in_const_classes
-  final FirestoreOperationType type = FirestoreOperationType.product;
+  FirestoreOperationType get type => FirestoreOperationType.product;
 
   @override
   State<ProductPage> createState() => _ProductPageState();
@@ -31,6 +31,8 @@ class _ProductPageState extends State<ProductPage> {
   bool _isLoading = false;
   int? _id;
   final bool _deleted = false;
+
+  String? selectedValue;
 
   @override
   void initState() {
@@ -66,6 +68,7 @@ class _ProductPageState extends State<ProductPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final focusScope = FocusScope.of(context);
     final firestoreDatabase =
         Provider.of<FirestoreDatabase>(context, listen: false);
@@ -89,6 +92,7 @@ class _ProductPageState extends State<ProductPage> {
                   children: [
                     ProfileAvatar(
                       file: _file,
+                      size: 110,
                       photoUrl: _photoUrl,
                       name: _nameController?.text ?? '',
                       onFileSubmitted: (photo) {
@@ -107,44 +111,36 @@ class _ProductPageState extends State<ProductPage> {
                       enabled: !_isLoading,
                     ),
                     SizedBox(height: 16.vs),
-                    RoundedInput(
-                      autoFocus: true,
-                      controller: _nameController,
-                      prefixIcon: Icons.style,
-                      validator: Validations.name,
-                      hintText: 'Category',
-                      onEditingComplete: focusScope.nextFocus,
-                      enabled: !_isLoading,
+                    dropDown(
+                      theme,
+                      Icons.style,
+                      'Category',
+                      firestoreDatabase,
+                      FirestoreOperationType.category,
                     ),
                     SizedBox(height: 16.vs),
-                    RoundedInput(
-                      autoFocus: true,
-                      controller: _nameController,
-                      prefixIcon: Icons.widgets,
-                      validator: Validations.name,
-                      hintText: 'Subcategory',
-                      onEditingComplete: focusScope.nextFocus,
-                      enabled: !_isLoading,
+                    dropDown(
+                      theme,
+                      Icons.widgets,
+                      'Subcategory',
+                      firestoreDatabase,
+                      FirestoreOperationType.subCategory,
                     ),
                     SizedBox(height: 16.vs),
-                    RoundedInput(
-                      autoFocus: true,
-                      controller: _nameController,
-                      prefixIcon: Icons.sell,
-                      validator: Validations.name,
-                      hintText: 'Brand',
-                      onEditingComplete: focusScope.nextFocus,
-                      enabled: !_isLoading,
+                    dropDown(
+                      theme,
+                      Icons.sell,
+                      'Brand',
+                      firestoreDatabase,
+                      FirestoreOperationType.brand,
                     ),
                     SizedBox(height: 16.vs),
-                    RoundedInput(
-                      autoFocus: true,
-                      controller: _nameController,
-                      prefixIcon: Icons.dns,
-                      validator: Validations.name,
-                      hintText: 'Fabric',
-                      onEditingComplete: focusScope.nextFocus,
-                      enabled: !_isLoading,
+                    dropDown(
+                      theme,
+                      Icons.dns,
+                      'Fabric',
+                      firestoreDatabase,
+                      FirestoreOperationType.fabric,
                     ),
                     SizedBox(height: 16.vs),
                     RoundedInput(
@@ -221,7 +217,6 @@ class _ProductPageState extends State<ProductPage> {
                       },
                       enabled: !_isLoading,
                     ),
-                    const Expanded(child: Spacer()),
                     SizedBox(height: 16.vs),
                     ConditionBaseWidget(
                       isLoading: _isLoading,
@@ -239,6 +234,131 @@ class _ProductPageState extends State<ProductPage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget dropDown(
+    ThemeData theme,
+    IconData prefixIcon,
+    String hintText,
+    FirestoreDatabase firestoreDatabase,
+    FirestoreOperationType type,
+  ) {
+    return StreamBuilder(
+      stream: firestoreDatabase.getAllCatalog(type: type),
+      builder: (context, snapshot) {
+        final list = (snapshot.data ?? []) as List<CatalogModel>;
+        return DropdownButtonFormField2(
+          decoration: customInputDecoration(
+            theme: theme,
+            hintText: hintText,
+            prefixIcon: prefixIcon,
+          ),
+          isExpanded: true,
+          dropdownWidth: 85.wp,
+          offset: const Offset(-45, 0),
+          icon: Icon(
+            Icons.arrow_drop_down,
+            size: 25.s,
+            color: AppColors.primaryColor,
+          ),
+          buttonHeight: 48.s,
+          buttonPadding: EdgeInsets.only(right: 10.s),
+          dropdownDecoration: BoxDecoration(
+            color: AppColors.primaryLightColor,
+            borderRadius: BorderRadius.circular(15.s),
+          ),
+          items: list
+              .map(
+                (item) => DropdownMenuItem<CatalogModel>(
+                  value: item,
+                  child: Text(
+                    item.name,
+                    style: theme.textTheme.overline?.copyWith(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 14.ms,
+                    ),
+                  ),
+                ),
+              )
+              .toList(),
+          validator: (value) {
+            if (value == null) {
+              return 'Please select gender.';
+            }
+            return null;
+          },
+          onChanged: (value) {
+            //Do something when changing the item if you want.
+          },
+          onSaved: (value) {
+            selectedValue = value.toString();
+          },
+        );
+      },
+    );
+  }
+
+  InputDecoration customInputDecoration({
+    required ThemeData theme,
+    bool isMultiLines = false,
+    IconData? suffixIcon,
+    IconData? prefixIcon,
+    required String hintText,
+    Color? iconColor,
+  }) {
+    return InputDecoration(
+      isDense: false,
+      prefixIcon: prefixIcon != null
+          ? Icon(
+              prefixIcon,
+              size: 25.s,
+              color: iconColor,
+            )
+          : null,
+      suffixIcon: suffixIcon != null
+          ? Icon(
+              suffixIcon,
+              size: 25.s,
+              color: iconColor,
+            )
+          : null,
+      labelText: hintText,
+      contentPadding: EdgeInsets.only(
+        top: isMultiLines ? 10.s : 0,
+        bottom: isMultiLines ? 10.s : 0,
+        right: isMultiLines ? 10.s : 0,
+      ),
+      enabledBorder:
+          (theme.inputDecorationTheme.enabledBorder as OutlineInputBorder?)
+              ?.copyWith(
+        borderRadius:
+            BorderRadius.all(Radius.circular(isMultiLines ? 20.s : 99.s)),
+      ),
+      disabledBorder:
+          (theme.inputDecorationTheme.disabledBorder as OutlineInputBorder?)
+              ?.copyWith(
+        borderRadius:
+            BorderRadius.all(Radius.circular(isMultiLines ? 20.s : 99.s)),
+      ),
+      focusedBorder:
+          (theme.inputDecorationTheme.focusedBorder as OutlineInputBorder?)
+              ?.copyWith(
+        borderRadius:
+            BorderRadius.all(Radius.circular(isMultiLines ? 20.s : 99.s)),
+      ),
+      errorBorder:
+          (theme.inputDecorationTheme.errorBorder as OutlineInputBorder?)
+              ?.copyWith(
+        borderRadius:
+            BorderRadius.all(Radius.circular(isMultiLines ? 20.s : 99.s)),
+      ),
+      focusedErrorBorder:
+          (theme.inputDecorationTheme.focusedErrorBorder as OutlineInputBorder?)
+              ?.copyWith(
+        borderRadius:
+            BorderRadius.all(Radius.circular(isMultiLines ? 20.s : 99.s)),
       ),
     );
   }

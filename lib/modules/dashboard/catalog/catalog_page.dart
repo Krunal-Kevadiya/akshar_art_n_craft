@@ -1,6 +1,7 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
+import '../../../assets/assets.dart';
 import '../../../constants/constants.dart';
 import '../../../navigators/navigators.dart';
 import '../../../themes/themes.dart';
@@ -44,11 +45,7 @@ class _CatalogPageState extends State<CatalogPage> {
       bottomNavigationBar: CurvedNavigationBar(
         key: _bottomNavigationKey,
         height: 60.s,
-        items: <Widget>[
-          Icon(Icons.add, size: 25.s, color: AppColors.white),
-          Icon(Icons.list, size: 25.s, color: AppColors.white),
-          Icon(Icons.delete_sweep, size: 25.s, color: AppColors.white),
-        ],
+        items: MockDatas.getCatalogMenu(),
         color: AppColors.primaryColor,
         buttonBackgroundColor: AppColors.primaryColor,
         backgroundColor: AppColors.transparent,

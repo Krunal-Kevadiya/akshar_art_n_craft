@@ -82,115 +82,137 @@ class _RateUsPageState extends State<RateUsPage> {
                 hasScrollBody: false,
                 child: Padding(
                   padding: EdgeInsets.all(25.s),
-                  child: Form(
-                    key: _rateUsFormKey,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    child: Column(
-                      children: [
-                        SizedBox(height: 32.vs),
-                        RoundedInput(
-                          autoFocus: true,
-                          controller: _nameController,
-                          prefixIcon: Icons.person_rounded,
-                          validator: Validations.name,
-                          hintText: CatalogString.nameLabel.tr(),
-                          onEditingComplete: focusScope.nextFocus,
-                          enabled: !_isLoading,
-                        ),
-                        SizedBox(height: 16.vs),
-                        RoundedInput(
-                          controller: _commentController,
-                          prefixIcon: Icons.description,
-                          minLines: 3,
-                          maxLines: 5,
-                          validator: Validations.comment,
-                          hintText: RateUsString.commentLabel.tr(),
-                          textInputAction: TextInputAction.done,
-                          onEditingComplete: focusScope.unfocus,
-                          onFieldSubmitted: (_) {
-                            _isValidate(firestoreDatabase);
-                          },
-                          enabled: !_isLoading,
-                        ),
-                        SizedBox(height: 16.vs),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            RateUsString.rating.tr(),
-                            textAlign: TextAlign.left,
-                            style: theme.textTheme.overline?.copyWith(
-                              fontSize: 15.ms,
-                              fontWeight: FontWeight.w700,
-                              color: isDarkTheme
-                                  ? AppColors.primaryLightColor
-                                  : AppColors.primaryColor,
-                            ),
-                          ),
-                        ),
-                        RatingBar.builder(
-                          itemSize: 50.s,
-                          glow: false,
-                          allowHalfRating: true,
-                          itemBuilder: (context, index) {
-                            switch (index) {
-                              case 0:
-                                return const Icon(
-                                  Icons.sentiment_very_dissatisfied,
-                                  color: Colors.red,
-                                );
-                              case 1:
-                                return const Icon(
-                                  Icons.sentiment_dissatisfied,
-                                  color: Colors.redAccent,
-                                );
-                              case 2:
-                                return const Icon(
-                                  Icons.sentiment_neutral,
-                                  color: Colors.amber,
-                                );
-                              case 3:
-                                return const Icon(
-                                  Icons.sentiment_satisfied,
-                                  color: Colors.lightGreen,
-                                );
-                              case 4:
-                                return const Icon(
-                                  Icons.sentiment_very_satisfied,
-                                  color: Colors.green,
-                                );
-                              default:
-                                return const Icon(
-                                  Icons.sentiment_very_dissatisfied,
-                                  color: Colors.red,
-                                );
-                            }
-                          },
-                          onRatingUpdate: (value) {
-                            setState(() => _rating = value);
-                          },
-                        ),
-                        SizedBox(height: 16.vs),
-                        const Expanded(
-                          child: Spacer(),
-                        ),
-                        ConditionBaseWidget(
-                          isLoading: false,
-                          isSeenProgress: true,
-                          myWidget: RoundedButton(
-                            title: CatalogString.addButton.tr().toUpperCase(),
-                            press: () {
-                              _isValidate(firestoreDatabase);
-                            },
-                          ),
-                        )
-                      ],
-                    ),
+                  child: rateUsForm(
+                    focusScope: focusScope,
+                    theme: theme,
+                    isDarkTheme: isDarkTheme,
+                    firestoreDatabase: firestoreDatabase,
                   ),
                 ),
               ),
             ],
           ),
         );
+      },
+    );
+  }
+
+  Widget rateUsForm({
+    required FocusScopeNode focusScope,
+    required ThemeData theme,
+    required bool isDarkTheme,
+    required FirestoreDatabase firestoreDatabase,
+  }) {
+    return Form(
+      key: _rateUsFormKey,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      child: Column(
+        children: [
+          SizedBox(height: 32.vs),
+          RoundedInput(
+            autoFocus: true,
+            controller: _nameController,
+            prefixIcon: Icons.person_rounded,
+            validator: Validations.name,
+            hintText: CatalogString.nameLabel.tr(),
+            onEditingComplete: focusScope.nextFocus,
+            enabled: !_isLoading,
+          ),
+          SizedBox(height: 16.vs),
+          RoundedInput(
+            controller: _commentController,
+            prefixIcon: Icons.description,
+            minLines: 3,
+            maxLines: 5,
+            validator: Validations.comment,
+            hintText: RateUsString.commentLabel.tr(),
+            textInputAction: TextInputAction.done,
+            onEditingComplete: focusScope.unfocus,
+            onFieldSubmitted: (_) {
+              _isValidate(firestoreDatabase);
+            },
+            enabled: !_isLoading,
+          ),
+          SizedBox(height: 16.vs),
+          ratingTitle(theme: theme, isDarkTheme: isDarkTheme),
+          ratingView(),
+          SizedBox(height: 16.vs),
+          const Expanded(
+            child: Spacer(),
+          ),
+          ConditionBaseWidget(
+            isLoading: false,
+            isSeenProgress: true,
+            myWidget: RoundedButton(
+              title: CatalogString.addButton.tr().toUpperCase(),
+              press: () {
+                _isValidate(firestoreDatabase);
+              },
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget ratingTitle({required ThemeData theme, required bool isDarkTheme}) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Text(
+        RateUsString.rating.tr(),
+        textAlign: TextAlign.left,
+        style: theme.textTheme.overline?.copyWith(
+          fontSize: 15.ms,
+          fontWeight: FontWeight.w700,
+          color: isDarkTheme
+              ? AppColors.primaryLightColor
+              : AppColors.primaryColor,
+        ),
+      ),
+    );
+  }
+
+  Widget ratingView() {
+    return RatingBar.builder(
+      itemSize: 50.s,
+      glow: false,
+      allowHalfRating: true,
+      itemBuilder: (context, index) {
+        switch (index) {
+          case 0:
+            return const Icon(
+              Icons.sentiment_very_dissatisfied,
+              color: Colors.red,
+            );
+          case 1:
+            return const Icon(
+              Icons.sentiment_dissatisfied,
+              color: Colors.redAccent,
+            );
+          case 2:
+            return const Icon(
+              Icons.sentiment_neutral,
+              color: Colors.amber,
+            );
+          case 3:
+            return const Icon(
+              Icons.sentiment_satisfied,
+              color: Colors.lightGreen,
+            );
+          case 4:
+            return const Icon(
+              Icons.sentiment_very_satisfied,
+              color: Colors.green,
+            );
+          default:
+            return const Icon(
+              Icons.sentiment_very_dissatisfied,
+              color: Colors.red,
+            );
+        }
+      },
+      onRatingUpdate: (value) {
+        setState(() => _rating = value);
       },
     );
   }

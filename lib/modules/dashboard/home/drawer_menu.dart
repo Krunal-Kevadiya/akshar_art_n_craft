@@ -4,6 +4,7 @@ import '../../../assets/assets.dart';
 import '../../../models/models.dart';
 import '../../../themes/themes.dart';
 import '../../../utils/utils.dart';
+import '../../../widgets/widgets.dart';
 
 // ignore: must_be_immutable
 class DrawerMenu extends StatelessWidget {
@@ -77,20 +78,11 @@ class DrawerMenu extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CircleAvatar(
-              radius: 35.s,
-              backgroundColor: AppColors.gray.withOpacity(0.5),
-              backgroundImage: url != null ? NetworkImage(url) : null,
-              child: url == null
-                  ? Text(
-                      name.asInitialCharacter(),
-                      style: theme.textTheme.caption?.copyWith(
-                        color: AppColors.primaryLightColor,
-                        fontSize: 15.ms,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )
-                  : null,
+            ProfileAvatar(
+              size: 70,
+              photoUrl: url,
+              name: name.asInitialCharacter(),
+              enabled: false,
             ),
             SizedBox(height: 10.vs),
             Text(

@@ -84,6 +84,7 @@ class _ProfileFormState extends State<ProfileForm> {
             children: [
               ProfileAvatar(
                 file: _file,
+                size: 110,
                 photoUrl: user?.photoUrl,
                 name: user?.displayName ?? '',
                 onFileSubmitted: (photo) {

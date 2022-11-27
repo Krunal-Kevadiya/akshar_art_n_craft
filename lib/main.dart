@@ -17,21 +17,26 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(EasyLocalization(
+  runApp(
+    EasyLocalization(
       supportedLocales: Translations.supportedLocales,
       path: Translations.path, // <-- change the path of the translation files
       fallbackLocale: Translations.fallbackLocale,
       child: AutoResponsive(
-          builder: (context) => MultiProvider(
-                  providers: [
-                    ChangeNotifierProvider<AuthProvider>(
-                      create: (context) => AuthProvider(),
-                    ),
-                    ChangeNotifierProvider<ThemeProvider>(
-                      create: (context) => ThemeProvider(),
-                    ),
-                  ],
-                  child: MyApp(
-                      databaseBuilder: (_, uid) =>
-                          FirestoreDatabase(uid: uid),),),),),);
+        builder: (context) => MultiProvider(
+          providers: [
+            ChangeNotifierProvider<AuthProvider>(
+              create: (context) => AuthProvider(),
+            ),
+            ChangeNotifierProvider<ThemeProvider>(
+              create: (context) => ThemeProvider(),
+            ),
+          ],
+          child: MyApp(
+            databaseBuilder: (_, uid) => FirestoreDatabase(uid: uid),
+          ),
+        ),
+      ),
+    ),
+  );
 }

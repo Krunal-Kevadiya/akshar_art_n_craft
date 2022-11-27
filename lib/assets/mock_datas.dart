@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../constants/constants.dart';
 import '../../../models/models.dart';
+import '../themes/themes.dart';
 
 class MockDatas {
   MockDatas._();
@@ -168,5 +169,13 @@ class MockDatas {
     ]);
 
     return list;
+  }
+
+  static List<Widget> getCatalogMenu() {
+    return [
+      Icon(Icons.add, size: 25.s, color: AppColors.white),
+      Icon(Icons.list, size: 25.s, color: AppColors.white),
+      Icon(Icons.delete_sweep, size: 25.s, color: AppColors.white),
+    ];
   }
 }

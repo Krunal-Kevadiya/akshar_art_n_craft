@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import '../themes/themes.dart';
 
 class RoundedButton extends StatelessWidget {
-  const RoundedButton(
-      {super.key,
-      required this.title,
-      required this.press,
-      this.backgroundColor,
-      this.textColor,
-      this.fontSize,});
+  const RoundedButton({
+    super.key,
+    required this.title,
+    required this.press,
+    this.backgroundColor,
+    this.textColor,
+    this.fontSize,
+  });
 
   final String title;
   final VoidCallback press;
@@ -21,22 +22,27 @@ class RoundedButton extends StatelessWidget {
     final bgColor = updateBackgroundColor(theme);
     final txtColor = updateTextColor(theme, bgColor);
     return SizedBox(
-        width: 100.wp,
-        height: 45.s,
-        child: ElevatedButton(
-            onPressed: press,
-            style: theme.elevatedButtonTheme.style?.copyWith(
-              backgroundColor: MaterialStateProperty.resolveWith((states) {
-                return states.contains(MaterialState.disabled)
-                    ? bgColor.withOpacity(0.5)
-                    : bgColor;
-              }),
-            ),
-            child: Text(title,
-                style: theme.textTheme.caption?.copyWith(
-                    color: txtColor,
-                    fontSize: fontSize?.ms ?? 14.ms,
-                    fontWeight: FontWeight.bold,),),),);
+      width: 100.wp,
+      height: 45.s,
+      child: ElevatedButton(
+        onPressed: press,
+        style: theme.elevatedButtonTheme.style?.copyWith(
+          backgroundColor: MaterialStateProperty.resolveWith((states) {
+            return states.contains(MaterialState.disabled)
+                ? bgColor.withOpacity(0.5)
+                : bgColor;
+          }),
+        ),
+        child: Text(
+          title,
+          style: theme.textTheme.caption?.copyWith(
+            color: txtColor,
+            fontSize: fontSize?.ms ?? 14.ms,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
   }
 
   Color updateBackgroundColor(ThemeData theme) {

@@ -76,63 +76,71 @@ class _CatalogAddEditState extends State<CatalogAddEdit> {
           hasScrollBody: false,
           child: Padding(
             padding: EdgeInsets.all(25.s),
-            child: Form(
-              key: _catalogFormKey,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              child: Column(
-                children: [
-                  ProfileAvatar(
-                    file: _file,
-                    photoUrl: _photoUrl,
-                    name: _nameController?.text ?? '',
-                    onFileSubmitted: (photo) {
-                      setState(() => _file = photo);
-                    },
-                    enabled: !_isLoading,
-                  ),
-                  SizedBox(height: 32.vs),
-                  RoundedInput(
-                    autoFocus: true,
-                    controller: _nameController,
-                    prefixIcon: Icons.category,
-                    validator: Validations.name,
-                    hintText: CatalogString.nameLabel.tr(),
-                    onEditingComplete: focusScope.nextFocus,
-                    enabled: !_isLoading,
-                  ),
-                  SizedBox(height: 16.vs),
-                  RoundedInput(
-                    controller: _descriptionController,
-                    prefixIcon: Icons.description,
-                    minLines: 3,
-                    maxLines: 5,
-                    validator: Validations.description,
-                    hintText: CatalogString.descriptionLabel.tr(),
-                    textInputAction: TextInputAction.done,
-                    onEditingComplete: focusScope.unfocus,
-                    onFieldSubmitted: (_) {
-                      _isValidate(firestoreDatabase);
-                    },
-                    enabled: !_isLoading,
-                  ),
-                  const Expanded(child: Spacer()),
-                  SizedBox(height: 16.vs),
-                  ConditionBaseWidget(
-                    isLoading: _isLoading,
-                    isSeenProgress: true,
-                    myWidget: RoundedButton(
-                      title: CatalogString.addButton.tr().toUpperCase(),
-                      press: () {
-                        _isValidate(firestoreDatabase);
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            child: addEditForm(focusScope, firestoreDatabase),
           ),
         ),
       ],
+    );
+  }
+
+  Widget addEditForm(
+    FocusScopeNode focusScope,
+    FirestoreDatabase firestoreDatabase,
+  ) {
+    return Form(
+      key: _catalogFormKey,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      child: Column(
+        children: [
+          ProfileAvatar(
+            file: _file,
+            size: 110,
+            photoUrl: _photoUrl,
+            name: _nameController?.text ?? '',
+            onFileSubmitted: (photo) {
+              setState(() => _file = photo);
+            },
+            enabled: !_isLoading,
+          ),
+          SizedBox(height: 32.vs),
+          RoundedInput(
+            autoFocus: true,
+            controller: _nameController,
+            prefixIcon: Icons.category,
+            validator: Validations.name,
+            hintText: CatalogString.nameLabel.tr(),
+            onEditingComplete: focusScope.nextFocus,
+            enabled: !_isLoading,
+          ),
+          SizedBox(height: 16.vs),
+          RoundedInput(
+            controller: _descriptionController,
+            prefixIcon: Icons.description,
+            minLines: 3,
+            maxLines: 5,
+            validator: Validations.description,
+            hintText: CatalogString.descriptionLabel.tr(),
+            textInputAction: TextInputAction.done,
+            onEditingComplete: focusScope.unfocus,
+            onFieldSubmitted: (_) {
+              _isValidate(firestoreDatabase);
+            },
+            enabled: !_isLoading,
+          ),
+          const Expanded(child: Spacer()),
+          SizedBox(height: 16.vs),
+          ConditionBaseWidget(
+            isLoading: _isLoading,
+            isSeenProgress: true,
+            myWidget: RoundedButton(
+              title: CatalogString.addButton.tr().toUpperCase(),
+              press: () {
+                _isValidate(firestoreDatabase);
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 

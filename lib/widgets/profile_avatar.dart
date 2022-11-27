@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -11,10 +12,12 @@ class ProfileAvatar extends StatelessWidget {
     super.key,
     this.file,
     this.photoUrl,
+    this.size,
     required this.name,
     this.onFileSubmitted,
     required this.enabled,
   });
+  final double? size;
   final bool enabled;
   final XFile? file;
   final String? photoUrl;
@@ -32,36 +35,19 @@ class ProfileAvatar extends StatelessWidget {
         children: <Widget>[
           Container(
             padding: EdgeInsets.zero, // Border width
-            height: onFileSubmitted != null ? 110.s : double.infinity,
-            width: onFileSubmitted != null ? 110.s : double.infinity,
+            height: size != null ? size!.s : double.infinity,
+            width: size != null ? size!.s : double.infinity,
             decoration: BoxDecoration(
               color: AppColors.gray.withOpacity(0.5),
-              borderRadius:
-                  BorderRadius.circular(onFileSubmitted != null ? 55.s : 10.s),
+              borderRadius: BorderRadius.circular(
+                size != null ? (size! / 2).s : 10.s,
+              ),
             ),
             child: ClipRRect(
-              borderRadius:
-                  BorderRadius.circular(onFileSubmitted != null ? 55.s : 10.s),
-              child: file?.path != null
-                  ? Image.file(
-                      File(file!.path),
-                      fit: BoxFit.fill,
-                    )
-                  : file?.path == null && photoUrl != null && photoUrl != ''
-                      ? Image.network(
-                          photoUrl ?? '',
-                          fit: BoxFit.fill,
-                        )
-                      : Center(
-                          child: Text(
-                            name.asInitialCharacter(),
-                            style: theme.textTheme.caption?.copyWith(
-                              color: AppColors.primaryColor,
-                              fontSize: onFileSubmitted != null ? 35.ms : 25.ms,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
+              borderRadius: BorderRadius.circular(
+                size != null ? (size! / 2).s : 10.s,
+              ),
+              child: imageView(theme),
             ),
           ),
           if (onFileSubmitted != null)
@@ -85,6 +71,38 @@ class ProfileAvatar extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Widget imageView(ThemeData theme) {
+    if (file?.path != null) {
+      return Image.file(
+        File(file!.path),
+        fit: BoxFit.fill,
+      );
+    } else if (photoUrl != null && photoUrl != '') {
+      return CachedNetworkImage(
+        imageUrl: photoUrl ?? '',
+        progressIndicatorBuilder: (context, url, progress) => Center(
+          child: CircularProgressIndicator(
+            value: progress.progress,
+          ),
+        ),
+        errorWidget: (context, url, error) => const Icon(Icons.error),
+        fadeInDuration: const Duration(seconds: 3),
+        fit: BoxFit.fill,
+      );
+    } else {
+      return Center(
+        child: Text(
+          name.asInitialCharacter(),
+          style: theme.textTheme.caption?.copyWith(
+            color: AppColors.primaryColor,
+            fontSize: size != null ? (size! / 2 - 20).ms : 25.ms,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      );
+    }
   }
 
   void handleTap(BuildContext context) {

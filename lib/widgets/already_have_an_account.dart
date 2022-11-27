@@ -18,6 +18,7 @@ class AlreadyHaveAnAccount extends StatelessWidget {
     final isDarkTheme = theme.brightness == Brightness.dark;
     final color =
         isDarkTheme ? AppColors.primaryLightColor : AppColors.primaryColor;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[

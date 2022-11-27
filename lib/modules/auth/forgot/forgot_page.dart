@@ -31,17 +31,18 @@ class ForgotPage extends StatelessWidget {
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 25.s),
-                child: SvgPicture.asset(
-                  Vectors.forgotPassword,
-                  height: 400.s,
-                  fit: BoxFit.fitWidth,
+                child: Column(
+                  children: <Widget>[
+                    SvgPicture.asset(
+                      Vectors.forgotPassword,
+                      height: 400.s,
+                      fit: BoxFit.fitWidth,
+                    ),
+                    SizedBox(height: 32.vs),
+                    const ForgotForm(),
+                  ],
                 ),
               ),
-              SizedBox(height: 32.vs),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 25.s),
-                child: const ForgotForm(),
-              )
             ],
           ),
         ),
