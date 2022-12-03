@@ -15,7 +15,7 @@ class ContactUsPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(DrawerString.contactUsMenu.tr()),
+        title: Text(DrawerMenuString.contactUs.tr()),
         elevation: 0,
         leading: const MenuButton(),
       ),
@@ -36,7 +36,7 @@ class ContactUsPage extends StatelessWidget {
                 children: <Widget>[
                   header(
                     theme,
-                    ContactUsString.byAddress.tr(),
+                    ContactUsString.byAddressTitle.tr(),
                   ),
                   Text(
                     ContactUsString.byAddressDesc.tr(),
@@ -49,13 +49,13 @@ class ContactUsPage extends StatelessWidget {
                   SizedBox(height: 16.vs),
                   header(
                     theme,
-                    ContactUsString.byPhone.tr(),
+                    ContactUsString.byPhoneTitle.tr(),
                   ),
                   phoneList(theme),
                   SizedBox(height: 16.vs),
                   header(
                     theme,
-                    ContactUsString.byEmail.tr(),
+                    ContactUsString.byEmailTitle.tr(),
                   ),
                   Text(
                     ContactUsString.byEmailDesc.tr(),

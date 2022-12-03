@@ -92,6 +92,7 @@ class CatalogDeleteList extends StatelessWidget {
     List<CatalogModel> lists,
     int index,
   ) {
+    final isDarkTheme = theme.brightness == Brightness.dark;
     return Stack(
       children: [
         ProfileAvatar(
@@ -105,7 +106,8 @@ class CatalogDeleteList extends StatelessWidget {
           right: 0,
           child: Container(
             decoration: BoxDecoration(
-              color: AppColors.black.withOpacity(0.5),
+              color: (isDarkTheme ? AppColors.white : AppColors.black)
+                  .withOpacity(0.5),
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(10.s),
                 bottomRight: Radius.circular(10.s),
@@ -141,7 +143,7 @@ class CatalogDeleteList extends StatelessWidget {
           lists[index].description?.trim().capitalize() ?? '',
           maxLines: 2,
           style: theme.textTheme.caption?.copyWith(
-            fontWeight: FontWeight.w300,
+            fontWeight: FontWeight.w400,
             fontSize: 12.ms,
           ),
         )

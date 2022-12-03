@@ -87,7 +87,7 @@ class ProfileAvatar extends StatelessWidget {
             value: progress.progress,
           ),
         ),
-        errorWidget: (context, url, error) => const Icon(Icons.error),
+        errorWidget: (context, url, error) => const Icon(Icons.image),
         fadeInDuration: const Duration(seconds: 3),
         fit: BoxFit.fill,
       );
@@ -95,8 +95,7 @@ class ProfileAvatar extends StatelessWidget {
       return Center(
         child: Text(
           name.asInitialCharacter(),
-          style: theme.textTheme.caption?.copyWith(
-            color: AppColors.primaryColor,
+          style: theme.textTheme.bodyText2?.copyWith(
             fontSize: size != null ? (size! / 2 - 20).ms : 25.ms,
             fontWeight: FontWeight.bold,
           ),

@@ -24,7 +24,7 @@ class TestimonialsPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(DrawerString.testimonialsMenu.tr()),
+        title: Text(DrawerMenuString.testimonials.tr()),
         elevation: 0,
         leading: const MenuButton(),
       ),
@@ -77,6 +77,7 @@ class TestimonialsPage extends StatelessWidget {
               style: theme.textTheme.overline?.copyWith(
                 fontSize: 14.ms,
                 fontWeight: FontWeight.w600,
+                color: AppColors.black,
               ),
             ),
             Text(
@@ -84,14 +85,16 @@ class TestimonialsPage extends StatelessWidget {
               style: theme.textTheme.overline?.copyWith(
                 fontSize: 13.ms,
                 fontWeight: FontWeight.w400,
+                color: AppColors.gray,
               ),
             ),
             SizedBox(height: 5.vs),
             Text(
-              RateUsString.commentLabel.tr(),
+              RateUsString.commentHint.tr(),
               style: theme.textTheme.overline?.copyWith(
                 fontSize: 14.ms,
                 fontWeight: FontWeight.w600,
+                color: AppColors.black,
               ),
             ),
             Text(
@@ -99,6 +102,7 @@ class TestimonialsPage extends StatelessWidget {
               style: theme.textTheme.overline?.copyWith(
                 fontSize: 13.ms,
                 fontWeight: FontWeight.w400,
+                color: AppColors.gray,
               ),
             ),
             SizedBox(height: 5.vs),
@@ -118,6 +122,7 @@ class TestimonialsPage extends StatelessWidget {
         initialRating: model.rating ?? 0,
         allowHalfRating: true,
         ignoreGestures: true,
+        unratedColor: AppColors.gray,
         itemBuilder: (context, index) {
           switch (index) {
             case 0:

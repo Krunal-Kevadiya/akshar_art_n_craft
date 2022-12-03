@@ -19,6 +19,7 @@ class CustomTheme {
       fontFamily: appFontFamily,
       canvasColor: AppColors.white,
       backgroundColor: AppColors.white,
+      cardColor: AppColors.primaryLightColor,
       scaffoldBackgroundColor: AppColors.white,
       colorScheme: ColorScheme.fromSwatch().copyWith(
         secondary: colorSwatch.shade500,
@@ -130,6 +131,14 @@ class CustomTheme {
           color: AppColors.black,
           fontSize: 14.ms,
         ),
+        bodyText1: TextStyle(
+          color: AppColors.primaryColor,
+          fontSize: 14.ms,
+        ),
+        bodyText2: TextStyle(
+          color: AppColors.assets,
+          fontSize: 14.ms,
+        ),
       ),
       snackBarTheme: SnackBarThemeData(
         backgroundColor: primaryColor,
@@ -140,6 +149,12 @@ class CustomTheme {
           fontSize: 16.ms,
           fontWeight: FontWeight.bold,
         ),
+      ),
+      progressIndicatorTheme: const ProgressIndicatorThemeData(
+        circularTrackColor: AppColors.primaryLightColor,
+        linearTrackColor: AppColors.primaryLightColor,
+        color: AppColors.assets,
+        refreshBackgroundColor: AppColors.primaryLightColor,
       ),
     );
   }
@@ -156,6 +171,7 @@ class CustomTheme {
       fontFamily: appFontFamily,
       canvasColor: AppColors.offBlack,
       backgroundColor: AppColors.offBlack,
+      cardColor: AppColors.primaryLightColor,
       scaffoldBackgroundColor: AppColors.offBlack,
       colorScheme: ColorScheme.fromSwatch().copyWith(
         secondary: colorSwatch.shade500,
@@ -267,6 +283,14 @@ class CustomTheme {
           color: AppColors.white,
           fontSize: 14.ms,
         ),
+        bodyText1: TextStyle(
+          color: AppColors.primaryLightColor,
+          fontSize: 14.ms,
+        ),
+        bodyText2: TextStyle(
+          color: AppColors.assets,
+          fontSize: 14.ms,
+        ),
       ),
       snackBarTheme: SnackBarThemeData(
         backgroundColor: accentColor,
@@ -277,6 +301,12 @@ class CustomTheme {
           fontSize: 16.ms,
           fontWeight: FontWeight.bold,
         ),
+      ),
+      progressIndicatorTheme: const ProgressIndicatorThemeData(
+        circularTrackColor: AppColors.primaryLightColor,
+        linearTrackColor: AppColors.primaryLightColor,
+        color: AppColors.assets,
+        refreshBackgroundColor: AppColors.primaryLightColor,
       ),
     );
   }

@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 
 import '../../../constants/constants.dart';
 import '../../../models/models.dart';
-import '../../../navigators/navigators.dart';
 import '../../../services/services.dart';
 import '../../../themes/themes.dart';
 import '../../../utils/utils.dart';
@@ -24,22 +23,63 @@ class ProductPage extends StatefulWidget {
 
 class _ProductPageState extends State<ProductPage> {
   GlobalKey<FormState>? _catalogFormKey;
+  late FocusNode _nameFocusNode;
+  late FocusNode _categoryFocusNode;
+  late FocusNode _subcategoryFocusNode;
+  late FocusNode _brandFocusNode;
+  late FocusNode _fabricFocusNode;
+  late FocusNode _perPiecePriceFocusNode;
+  late FocusNode _totalDesignFocusNode;
+  late FocusNode _sizeFocusNode;
+  late FocusNode _weightFocusNode;
+  late FocusNode _moqFocusNode;
+  late FocusNode _gstFocusNode;
+  late FocusNode _descriptionFocusNode;
   TextEditingController? _nameController;
+  TextEditingController? _perPiecePriceController;
+  TextEditingController? _totalDesignController;
+  TextEditingController? _sizeController;
+  TextEditingController? _weightController;
+  TextEditingController? _moqController;
+  TextEditingController? _gstController;
   TextEditingController? _descriptionController;
+  TextEditingController? _dropdownSearchController;
+
   XFile? _file;
   final String _photoUrl = '';
   bool _isLoading = false;
   int? _id;
   final bool _deleted = false;
-
-  String? selectedValue;
+  CatalogModel? _selectedCategory;
+  CatalogModel? _selectedSubCategory;
+  CatalogModel? _selectedBrand;
+  CatalogModel? _selectedFabric;
 
   @override
   void initState() {
     super.initState();
     _catalogFormKey = GlobalKey();
+    _nameFocusNode = FocusNode();
+    _categoryFocusNode = FocusNode();
+    _subcategoryFocusNode = FocusNode();
+    _brandFocusNode = FocusNode();
+    _fabricFocusNode = FocusNode();
+    _perPiecePriceFocusNode = FocusNode();
+    _totalDesignFocusNode = FocusNode();
+    _sizeFocusNode = FocusNode();
+    _weightFocusNode = FocusNode();
+    _moqFocusNode = FocusNode();
+    _gstFocusNode = FocusNode();
+    _descriptionFocusNode = FocusNode();
     _nameController = TextEditingController();
+    _perPiecePriceController = TextEditingController();
+    _totalDesignController = TextEditingController();
+    _sizeController = TextEditingController();
+    _weightController = TextEditingController();
+    _moqController = TextEditingController();
+    _gstController = TextEditingController();
     _descriptionController = TextEditingController();
+    _dropdownSearchController = TextEditingController();
   }
 
   // @override
@@ -62,8 +102,27 @@ class _ProductPageState extends State<ProductPage> {
     super.dispose();
     _file = null;
     _catalogFormKey = null;
+    _nameFocusNode.unfocus();
+    _categoryFocusNode.unfocus();
+    _subcategoryFocusNode.unfocus();
+    _brandFocusNode.unfocus();
+    _fabricFocusNode.unfocus();
+    _perPiecePriceFocusNode.unfocus();
+    _totalDesignFocusNode.unfocus();
+    _sizeFocusNode.unfocus();
+    _weightFocusNode.unfocus();
+    _moqFocusNode.unfocus();
+    _gstFocusNode.unfocus();
+    _descriptionFocusNode.unfocus();
     _nameController?.dispose();
+    _perPiecePriceController?.dispose();
+    _totalDesignController?.dispose();
+    _sizeController?.dispose();
+    _weightController?.dispose();
+    _moqController?.dispose();
+    _gstController?.dispose();
     _descriptionController?.dispose();
+    _dropdownSearchController?.dispose();
   }
 
   @override
@@ -75,7 +134,7 @@ class _ProductPageState extends State<ProductPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(DrawerString.productMenu.tr()),
+        title: Text(DrawerMenuString.product.tr()),
         elevation: 0,
         leading: const MenuButton(),
       ),
@@ -104,102 +163,169 @@ class _ProductPageState extends State<ProductPage> {
                     RoundedInput(
                       autoFocus: true,
                       controller: _nameController,
+                      focusNode: _nameFocusNode,
                       prefixIcon: Icons.category,
                       validator: Validations.name,
                       hintText: CatalogString.nameLabel.tr(),
-                      onEditingComplete: focusScope.nextFocus,
+                      onEditingComplete: () => fieldFocusChange(
+                        context: context,
+                        from: _nameFocusNode,
+                        to: _categoryFocusNode,
+                      ),
                       enabled: !_isLoading,
                     ),
                     SizedBox(height: 16.vs),
                     dropDown(
-                      theme,
-                      Icons.style,
-                      'Category',
-                      firestoreDatabase,
-                      FirestoreOperationType.category,
+                      theme: theme,
+                      prefixIcon: Icons.style,
+                      hintText: DrawerMenuString.category.tr(),
+                      firestoreDatabase: firestoreDatabase,
+                      selectedValue: _selectedCategory,
+                      type: FirestoreOperationType.category,
+                      focusNode: _categoryFocusNode,
+                      onEditingComplete: () => fieldFocusChange(
+                        context: context,
+                        from: _categoryFocusNode,
+                        to: _subcategoryFocusNode,
+                      ),
+                      enabled: !_isLoading,
                     ),
                     SizedBox(height: 16.vs),
                     dropDown(
-                      theme,
-                      Icons.widgets,
-                      'Subcategory',
-                      firestoreDatabase,
-                      FirestoreOperationType.subCategory,
+                      theme: theme,
+                      prefixIcon: Icons.widgets,
+                      hintText: DrawerMenuString.subCategory.tr(),
+                      firestoreDatabase: firestoreDatabase,
+                      selectedValue: _selectedSubCategory,
+                      type: FirestoreOperationType.subCategory,
+                      focusNode: _subcategoryFocusNode,
+                      onEditingComplete: () => fieldFocusChange(
+                        context: context,
+                        from: _subcategoryFocusNode,
+                        to: _brandFocusNode,
+                      ),
+                      enabled: !_isLoading,
                     ),
                     SizedBox(height: 16.vs),
                     dropDown(
-                      theme,
-                      Icons.sell,
-                      'Brand',
-                      firestoreDatabase,
-                      FirestoreOperationType.brand,
+                      theme: theme,
+                      prefixIcon: Icons.sell,
+                      hintText: DrawerMenuString.brand.tr(),
+                      firestoreDatabase: firestoreDatabase,
+                      selectedValue: _selectedBrand,
+                      type: FirestoreOperationType.brand,
+                      focusNode: _brandFocusNode,
+                      onEditingComplete: () => fieldFocusChange(
+                        context: context,
+                        from: _brandFocusNode,
+                        to: _fabricFocusNode,
+                      ),
+                      enabled: !_isLoading,
                     ),
                     SizedBox(height: 16.vs),
                     dropDown(
-                      theme,
-                      Icons.dns,
-                      'Fabric',
-                      firestoreDatabase,
-                      FirestoreOperationType.fabric,
+                      theme: theme,
+                      prefixIcon: Icons.dns,
+                      hintText: DrawerMenuString.fabric.tr(),
+                      firestoreDatabase: firestoreDatabase,
+                      selectedValue: _selectedFabric,
+                      type: FirestoreOperationType.fabric,
+                      focusNode: _fabricFocusNode,
+                      onEditingComplete: () => fieldFocusChange(
+                        context: context,
+                        from: _fabricFocusNode,
+                        to: _perPiecePriceFocusNode,
+                      ),
+                      enabled: !_isLoading,
                     ),
                     SizedBox(height: 16.vs),
                     RoundedInput(
                       autoFocus: true,
-                      controller: _nameController,
+                      controller: _perPiecePriceController,
                       prefixIcon: Icons.price_check,
-                      validator: Validations.name,
-                      hintText: 'Per Piece Price',
-                      onEditingComplete: focusScope.nextFocus,
+                      validator: Validations.digit,
+                      hintText: ProductString.perPiecePriceHint.tr(),
+                      focusNode: _perPiecePriceFocusNode,
+                      onEditingComplete: () => fieldFocusChange(
+                        context: context,
+                        from: _perPiecePriceFocusNode,
+                        to: _totalDesignFocusNode,
+                      ),
                       enabled: !_isLoading,
                     ),
                     SizedBox(height: 16.vs),
                     RoundedInput(
                       autoFocus: true,
-                      controller: _nameController,
+                      controller: _totalDesignController,
                       prefixIcon: Icons.confirmation_number,
-                      validator: Validations.name,
-                      hintText: 'Total Design',
-                      onEditingComplete: focusScope.nextFocus,
+                      validator: Validations.digit,
+                      hintText: ProductString.totalDesignHint.tr(),
+                      focusNode: _totalDesignFocusNode,
+                      onEditingComplete: () => fieldFocusChange(
+                        context: context,
+                        from: _totalDesignFocusNode,
+                        to: _sizeFocusNode,
+                      ),
                       enabled: !_isLoading,
                     ),
                     SizedBox(height: 16.vs),
                     RoundedInput(
                       autoFocus: true,
-                      controller: _nameController,
+                      controller: _sizeController,
                       prefixIcon: Icons.format_size,
-                      validator: Validations.name,
-                      hintText: 'Size',
-                      onEditingComplete: focusScope.nextFocus,
+                      validator: Validations.size,
+                      hintText: ProductString.sizeHint.tr(),
+                      focusNode: _sizeFocusNode,
+                      onEditingComplete: () => fieldFocusChange(
+                        context: context,
+                        from: _sizeFocusNode,
+                        to: _weightFocusNode,
+                      ),
                       enabled: !_isLoading,
                     ),
                     SizedBox(height: 16.vs),
                     RoundedInput(
                       autoFocus: true,
-                      controller: _nameController,
+                      controller: _weightController,
                       prefixIcon: Icons.line_weight,
-                      validator: Validations.name,
-                      hintText: 'Weight',
-                      onEditingComplete: focusScope.nextFocus,
+                      validator: Validations.weight,
+                      hintText: ProductString.weightHint.tr(),
+                      focusNode: _weightFocusNode,
+                      onEditingComplete: () => fieldFocusChange(
+                        context: context,
+                        from: _weightFocusNode,
+                        to: _moqFocusNode,
+                      ),
                       enabled: !_isLoading,
                     ),
                     SizedBox(height: 16.vs),
                     RoundedInput(
                       autoFocus: true,
-                      controller: _nameController,
+                      controller: _moqController,
                       prefixIcon: Icons.category,
-                      validator: Validations.name,
-                      hintText: 'MOQ',
-                      onEditingComplete: focusScope.nextFocus,
+                      validator: Validations.moq,
+                      hintText: ProductString.moqHint.tr(),
+                      focusNode: _moqFocusNode,
+                      onEditingComplete: () => fieldFocusChange(
+                        context: context,
+                        from: _moqFocusNode,
+                        to: _gstFocusNode,
+                      ),
                       enabled: !_isLoading,
                     ),
                     SizedBox(height: 16.vs),
                     RoundedInput(
                       autoFocus: true,
-                      controller: _nameController,
+                      controller: _gstController,
                       prefixIcon: Icons.category,
-                      validator: Validations.name,
-                      hintText: 'GST',
-                      onEditingComplete: focusScope.nextFocus,
+                      validator: Validations.digit,
+                      hintText: ProductString.gstHint.tr(),
+                      focusNode: _gstFocusNode,
+                      onEditingComplete: () => fieldFocusChange(
+                        context: context,
+                        from: _gstFocusNode,
+                        to: _descriptionFocusNode,
+                      ),
                       enabled: !_isLoading,
                     ),
                     SizedBox(height: 16.vs),
@@ -211,7 +337,7 @@ class _ProductPageState extends State<ProductPage> {
                       validator: Validations.description,
                       hintText: CatalogString.descriptionLabel.tr(),
                       textInputAction: TextInputAction.done,
-                      onEditingComplete: focusScope.unfocus,
+                      onEditingComplete: _descriptionFocusNode.unfocus,
                       onFieldSubmitted: (_) {
                         _isValidate(firestoreDatabase);
                       },
@@ -238,18 +364,25 @@ class _ProductPageState extends State<ProductPage> {
     );
   }
 
-  Widget dropDown(
-    ThemeData theme,
-    IconData prefixIcon,
-    String hintText,
-    FirestoreDatabase firestoreDatabase,
-    FirestoreOperationType type,
-  ) {
+  Widget dropDown({
+    required ThemeData theme,
+    required IconData prefixIcon,
+    required String hintText,
+    required FirestoreDatabase firestoreDatabase,
+    required FirestoreOperationType type,
+    required FocusNode focusNode,
+    required VoidCallback onEditingComplete,
+    required bool enabled,
+    CatalogModel? selectedValue,
+  }) {
+    print(selectedValue);
+    final isDarkTheme = theme.brightness == Brightness.dark;
     return StreamBuilder(
       stream: firestoreDatabase.getAllCatalog(type: type),
       builder: (context, snapshot) {
         final list = (snapshot.data ?? []) as List<CatalogModel>;
-        return DropdownButtonFormField2(
+        return DropdownButtonFormField2<CatalogModel>(
+          focusNode: focusNode,
           decoration: customInputDecoration(
             theme: theme,
             hintText: hintText,
@@ -261,14 +394,37 @@ class _ProductPageState extends State<ProductPage> {
           icon: Icon(
             Icons.arrow_drop_down,
             size: 25.s,
-            color: AppColors.primaryColor,
+            color: isDarkTheme
+                ? AppColors.primaryLightColor
+                : AppColors.primaryColor,
           ),
           buttonHeight: 48.s,
+          buttonSplashColor: AppColors.transparent,
+          buttonHighlightColor: AppColors.transparent,
           buttonPadding: EdgeInsets.only(right: 10.s),
           dropdownDecoration: BoxDecoration(
             color: AppColors.primaryLightColor,
             borderRadius: BorderRadius.circular(15.s),
           ),
+          searchController: _dropdownSearchController,
+          searchInnerWidget: Padding(
+            padding: EdgeInsets.only(
+              top: 20.vs,
+              right: 10.s,
+              left: 10.s,
+            ),
+            child: TextFormField(
+              controller: _dropdownSearchController,
+              decoration: customInputDecoration(
+                theme: theme,
+                hintText:
+                    ProductString.searchLabel.tr(namedArgs: {'type': hintText}),
+              ).applyDefaults(theme.inputDecorationTheme),
+            ),
+          ),
+          searchMatchFn: (DropdownMenuItem<dynamic> item, String searchValue) {
+            return item.value.toString().contains(searchValue);
+          },
           items: list
               .map(
                 (item) => DropdownMenuItem<CatalogModel>(
@@ -278,88 +434,62 @@ class _ProductPageState extends State<ProductPage> {
                     style: theme.textTheme.overline?.copyWith(
                       fontWeight: FontWeight.w400,
                       fontSize: 14.ms,
+                      color: AppColors.black,
                     ),
                   ),
                 ),
               )
               .toList(),
-          validator: (value) {
+          value: selectedValue,
+          onChanged: enabled ? (CatalogModel? value) {} : null,
+          onMenuStateChange: (bool isOpen) {
+            if (!isOpen) {
+              _dropdownSearchController?.clear();
+            }
+          },
+          validator: (CatalogModel? value) {
             if (value == null) {
-              return 'Please select gender.';
+              switch (type) {
+                case FirestoreOperationType.category:
+                  return ErrorString.emptyCategory.tr();
+                case FirestoreOperationType.subCategory:
+                  return ErrorString.emptySubCategory.tr();
+                case FirestoreOperationType.brand:
+                  return ErrorString.emptyBrand.tr();
+                case FirestoreOperationType.fabric:
+                  return ErrorString.emptyFabric.tr();
+                // ignore: no_default_cases
+                default:
+                  return ErrorString.emptyDropdown.tr();
+              }
             }
             return null;
           },
-          onChanged: (value) {
-            //Do something when changing the item if you want.
-          },
-          onSaved: (value) {
-            selectedValue = value.toString();
+          onSaved: (CatalogModel? value) {
+            switch (type) {
+              case FirestoreOperationType.category:
+                setState(() => _selectedCategory = value);
+                onEditingComplete();
+                break;
+              case FirestoreOperationType.subCategory:
+                setState(() => _selectedSubCategory = value);
+                onEditingComplete();
+                break;
+              case FirestoreOperationType.brand:
+                setState(() => _selectedBrand = value);
+                onEditingComplete();
+                break;
+              case FirestoreOperationType.fabric:
+                setState(() => _selectedFabric = value);
+                onEditingComplete();
+                break;
+              // ignore: no_default_cases
+              default:
+                break;
+            }
           },
         );
       },
-    );
-  }
-
-  InputDecoration customInputDecoration({
-    required ThemeData theme,
-    bool isMultiLines = false,
-    IconData? suffixIcon,
-    IconData? prefixIcon,
-    required String hintText,
-    Color? iconColor,
-  }) {
-    return InputDecoration(
-      isDense: false,
-      prefixIcon: prefixIcon != null
-          ? Icon(
-              prefixIcon,
-              size: 25.s,
-              color: iconColor,
-            )
-          : null,
-      suffixIcon: suffixIcon != null
-          ? Icon(
-              suffixIcon,
-              size: 25.s,
-              color: iconColor,
-            )
-          : null,
-      labelText: hintText,
-      contentPadding: EdgeInsets.only(
-        top: isMultiLines ? 10.s : 0,
-        bottom: isMultiLines ? 10.s : 0,
-        right: isMultiLines ? 10.s : 0,
-      ),
-      enabledBorder:
-          (theme.inputDecorationTheme.enabledBorder as OutlineInputBorder?)
-              ?.copyWith(
-        borderRadius:
-            BorderRadius.all(Radius.circular(isMultiLines ? 20.s : 99.s)),
-      ),
-      disabledBorder:
-          (theme.inputDecorationTheme.disabledBorder as OutlineInputBorder?)
-              ?.copyWith(
-        borderRadius:
-            BorderRadius.all(Radius.circular(isMultiLines ? 20.s : 99.s)),
-      ),
-      focusedBorder:
-          (theme.inputDecorationTheme.focusedBorder as OutlineInputBorder?)
-              ?.copyWith(
-        borderRadius:
-            BorderRadius.all(Radius.circular(isMultiLines ? 20.s : 99.s)),
-      ),
-      errorBorder:
-          (theme.inputDecorationTheme.errorBorder as OutlineInputBorder?)
-              ?.copyWith(
-        borderRadius:
-            BorderRadius.all(Radius.circular(isMultiLines ? 20.s : 99.s)),
-      ),
-      focusedErrorBorder:
-          (theme.inputDecorationTheme.focusedErrorBorder as OutlineInputBorder?)
-              ?.copyWith(
-        borderRadius:
-            BorderRadius.all(Radius.circular(isMultiLines ? 20.s : 99.s)),
-      ),
     );
   }
 
@@ -391,16 +521,13 @@ class _ProductPageState extends State<ProductPage> {
             );
       if (!mounted) return;
       setState(() => _isLoading = false);
-      result.when((error) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(error.toString())));
-      }, (success) {
-        Navigator.pushNamedAndRemoveUntil(
-          context,
-          Routes.home,
-          ModalRoute.withName(Routes.root),
-        );
-      });
+      result.when(
+        (error) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(error.toString())));
+        },
+        (success) {},
+      );
     }
   }
 }

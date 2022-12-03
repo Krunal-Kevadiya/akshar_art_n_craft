@@ -19,19 +19,23 @@ class ForgotForm extends StatefulWidget {
 
 class _ForgotFormState extends State<ForgotForm> {
   GlobalKey<FormState>? _forgotFormKey;
+  late FocusNode _emailFocusNode;
   TextEditingController? _emailController;
 
   @override
   void initState() {
     super.initState();
     _forgotFormKey = GlobalKey();
+    _emailFocusNode = FocusNode();
     _emailController = TextEditingController();
+    _emailFocusNode.requestFocus();
   }
 
   @override
   void dispose() {
     super.dispose();
     _forgotFormKey = null;
+    _emailFocusNode.unfocus();
     _emailController?.dispose();
   }
 
@@ -47,10 +51,12 @@ class _ForgotFormState extends State<ForgotForm> {
           RoundedInput(
             autoFocus: true,
             controller: _emailController,
+            focusNode: _emailFocusNode,
             prefixIcon: Icons.email_rounded,
             hintText: SignInString.emailHint.tr(),
             validator: Validations.email,
             textInputAction: TextInputAction.done,
+            onEditingComplete: _emailFocusNode.unfocus,
             onFieldSubmitted: (_) {
               _isValidate(authProvider);
             },

@@ -78,51 +78,51 @@ class Navigation {
 
   static Widget getDrawerScreen(DrawerMenuModel currentItem) {
     switch (currentItem.routes) {
-      case DrawerString.homeMenu:
+      case DrawerMenuString.home:
         return const HomeView();
-      case DrawerString.categoryMenu:
+      case DrawerMenuString.category:
         return CatalogPage(
           title: CatalogString.categoryTitle.tr(),
           type: FirestoreOperationType.category,
         );
-      case DrawerString.subCategoryMenu:
+      case DrawerMenuString.subCategory:
         return CatalogPage(
           title: CatalogString.subCategoryTitle.tr(),
           type: FirestoreOperationType.subCategory,
         );
-      case DrawerString.brandMenu:
+      case DrawerMenuString.brand:
         return CatalogPage(
           title: CatalogString.brandTitle.tr(),
           type: FirestoreOperationType.brand,
         );
-      case DrawerString.fabricMenu:
+      case DrawerMenuString.fabric:
         return CatalogPage(
           title: CatalogString.fabricTitle.tr(),
           type: FirestoreOperationType.fabric,
         );
-      case DrawerString.productMenu:
+      case DrawerMenuString.product:
         return const ProductPage();
-      case DrawerString.shopByCategoryMenu:
+      case DrawerMenuString.shopByCategory:
         return const CategoryPage();
-      case DrawerString.videosMenu:
+      case DrawerMenuString.videos:
         return const VideosPage();
-      case DrawerString.signInMenu:
+      case DrawerMenuString.signIn:
         return const SignInPage();
-      case DrawerString.wishlistMenu:
+      case DrawerMenuString.wishlist:
         return const WishlistPage();
-      case DrawerString.ordersMenu:
+      case DrawerMenuString.orders:
         return const OrdersPage();
-      case DrawerString.profileMenu:
+      case DrawerMenuString.profile:
         return const ProfilePage();
-      case DrawerString.testimonialsMenu:
+      case DrawerMenuString.testimonials:
         return const TestimonialsPage();
-      case DrawerString.contactUsMenu:
+      case DrawerMenuString.contactUs:
         return const ContactUsPage();
-      case DrawerString.aboutUsMenu:
+      case DrawerMenuString.aboutUs:
         return const AboutUsPage();
-      case DrawerString.shareAppMenu:
+      case DrawerMenuString.shareApp:
         return const ShareAppPage();
-      case DrawerString.rateUsMenu:
+      case DrawerMenuString.rateUs:
         return const RateUsPage();
       default:
         return const HomeView();

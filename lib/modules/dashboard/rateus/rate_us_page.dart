@@ -58,7 +58,6 @@ class _RateUsPageState extends State<RateUsPage> {
     final firestoreDatabase =
         Provider.of<FirestoreDatabase>(context, listen: false);
     final theme = Theme.of(context);
-    final isDarkTheme = theme.brightness == Brightness.dark;
 
     return StreamBuilder(
       stream: authProvider.user,
@@ -72,7 +71,7 @@ class _RateUsPageState extends State<RateUsPage> {
         }
         return Scaffold(
           appBar: AppBar(
-            title: Text(DrawerString.rateUsMenu.tr()),
+            title: Text(DrawerMenuString.rateUs.tr()),
             elevation: 0,
             leading: const MenuButton(),
           ),
@@ -85,7 +84,6 @@ class _RateUsPageState extends State<RateUsPage> {
                   child: rateUsForm(
                     focusScope: focusScope,
                     theme: theme,
-                    isDarkTheme: isDarkTheme,
                     firestoreDatabase: firestoreDatabase,
                   ),
                 ),
@@ -100,7 +98,6 @@ class _RateUsPageState extends State<RateUsPage> {
   Widget rateUsForm({
     required FocusScopeNode focusScope,
     required ThemeData theme,
-    required bool isDarkTheme,
     required FirestoreDatabase firestoreDatabase,
   }) {
     return Form(
@@ -122,10 +119,10 @@ class _RateUsPageState extends State<RateUsPage> {
           RoundedInput(
             controller: _commentController,
             prefixIcon: Icons.description,
-            minLines: 3,
-            maxLines: 5,
+            //minLines: 3,
+            //maxLines: 5,
             validator: Validations.comment,
-            hintText: RateUsString.commentLabel.tr(),
+            hintText: RateUsString.commentHint.tr(),
             textInputAction: TextInputAction.done,
             onEditingComplete: focusScope.unfocus,
             onFieldSubmitted: (_) {
@@ -134,7 +131,7 @@ class _RateUsPageState extends State<RateUsPage> {
             enabled: !_isLoading,
           ),
           SizedBox(height: 16.vs),
-          ratingTitle(theme: theme, isDarkTheme: isDarkTheme),
+          ratingTitle(theme: theme),
           ratingView(),
           SizedBox(height: 16.vs),
           const Expanded(
@@ -155,18 +152,15 @@ class _RateUsPageState extends State<RateUsPage> {
     );
   }
 
-  Widget ratingTitle({required ThemeData theme, required bool isDarkTheme}) {
+  Widget ratingTitle({required ThemeData theme}) {
     return Align(
       alignment: Alignment.centerLeft,
       child: Text(
-        RateUsString.rating.tr(),
+        RateUsString.ratingLabel.tr(),
         textAlign: TextAlign.left,
-        style: theme.textTheme.overline?.copyWith(
+        style: theme.textTheme.bodyText1?.copyWith(
           fontSize: 15.ms,
           fontWeight: FontWeight.w700,
-          color: isDarkTheme
-              ? AppColors.primaryLightColor
-              : AppColors.primaryColor,
         ),
       ),
     );
@@ -177,6 +171,7 @@ class _RateUsPageState extends State<RateUsPage> {
       itemSize: 50.s,
       glow: false,
       allowHalfRating: true,
+      unratedColor: AppColors.gray,
       itemBuilder: (context, index) {
         switch (index) {
           case 0:

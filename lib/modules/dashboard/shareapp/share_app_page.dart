@@ -12,11 +12,10 @@ class ShareAppPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDarkTheme = theme.brightness == Brightness.dark;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(DrawerString.shareAppMenu.tr()),
+        title: Text(DrawerMenuString.shareApp.tr()),
         elevation: 0,
         leading: const MenuButton(),
       ),
@@ -40,20 +39,17 @@ class ShareAppPage extends StatelessWidget {
                     child: Column(
                       children: <Widget>[
                         Text(
-                          ShareAppString.shareApp.tr(),
+                          ShareAppString.shareAppDesc.tr(),
                           textAlign: TextAlign.center,
-                          style: theme.textTheme.overline?.copyWith(
+                          style: theme.textTheme.bodyText1?.copyWith(
                             fontSize: 15.ms,
                             fontWeight: FontWeight.w600,
-                            color: isDarkTheme
-                                ? AppColors.primaryLightColor
-                                : AppColors.primaryColor,
                           ),
                         ),
                         const Expanded(child: Spacer()),
                         SizedBox(height: 16.vs),
                         RoundedButton(
-                          title: DrawerString.shareAppMenu.tr().toUpperCase(),
+                          title: DrawerMenuString.shareApp.tr().toUpperCase(),
                           press: () {},
                         ),
                       ],

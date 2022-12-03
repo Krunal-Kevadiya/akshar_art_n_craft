@@ -16,47 +16,52 @@ class SignInPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      body: SingleChildScrollView(
-        child: Background(
-          topLeft: 0,
-          bottomRight: 0,
-          bottomImageWidthFactor: 35.s,
-          child: Column(
-            children: <Widget>[
-              CustomAppBar(
-                isFullScreen: true,
-                isBackAllow: true,
-                title: SignInString.signInTitle.tr().toUpperCase(),
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverFillRemaining(
+            hasScrollBody: false,
+            child: Background(
+              topLeft: 0,
+              bottomRight: 0,
+              bottomImageWidthFactor: 35.s,
+              child: Column(
+                children: <Widget>[
+                  CustomAppBar(
+                    isFullScreen: true,
+                    isBackAllow: true,
+                    title: SignInString.signInTitle.tr().toUpperCase(),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 25.s),
+                    child: Column(
+                      children: <Widget>[
+                        SvgPicture.asset(Vectors.signin),
+                        SizedBox(height: 32.vs),
+                        SignInForm(
+                          navigationCallback: (routeName) {
+                            Navigator.pushNamed(
+                              context,
+                              routeName,
+                              arguments: {'currentWidget': context.widget},
+                            );
+                          },
+                          homeCallback: () {
+                            Navigator.pushNamedAndRemoveUntil(
+                              context,
+                              Routes.home,
+                              ModalRoute.withName(Routes.root),
+                              arguments: {'currentWidget': context.widget},
+                            );
+                          },
+                        )
+                      ],
+                    ),
+                  ),
+                ],
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 25.s),
-                child: Column(
-                  children: <Widget>[
-                    SvgPicture.asset(Vectors.signin),
-                    SizedBox(height: 32.vs),
-                    SignInForm(
-                      navigationCallback: (routeName) {
-                        Navigator.pushNamed(
-                          context,
-                          routeName,
-                          arguments: {'currentWidget': context.widget},
-                        );
-                      },
-                      homeCallback: () {
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          Routes.home,
-                          ModalRoute.withName(Routes.root),
-                          arguments: {'currentWidget': context.widget},
-                        );
-                      },
-                    )
-                  ],
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

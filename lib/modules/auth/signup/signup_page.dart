@@ -30,7 +30,7 @@ class SignUpPage extends StatelessWidget {
                 isBackAllow: true,
                 title: SignUpString.signUpTitle.tr().toUpperCase(),
               ),
-              Padding(
+              Container(
                 padding: EdgeInsets.symmetric(horizontal: 25.s),
                 child: Column(
                   children: <Widget>[

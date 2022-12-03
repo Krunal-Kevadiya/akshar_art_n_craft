@@ -20,9 +20,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   DrawerMenuModel currentItem = DrawerMenuModel(
-    text: DrawerString.homeMenu.tr(),
+    text: DrawerMenuString.home.tr(),
     icon: Icons.cottage,
-    routes: DrawerString.homeMenu,
+    routes: DrawerMenuString.home,
     type: MenuType.menuItem,
   );
 
@@ -55,7 +55,7 @@ class _HomePageState extends State<HomePage> {
               user: user,
               onSelectedItem: (item) {
                 ZoomDrawer.of(context)!.close();
-                if (item.routes == DrawerString.logoutMenu) {
+                if (item.routes == DrawerMenuString.logout) {
                   authProvider.signOut().then(
                         (value) => {
                           Navigator.pushReplacementNamed(
@@ -84,15 +84,12 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(DrawerString.homeMenu.tr()),
+        title: Text(DrawerMenuString.home.tr()),
         elevation: 0,
         leading: const MenuButton(),
       ),
       body: const Center(
-        child: Text(
-          'Back Panel',
-          style: TextStyle(fontSize: 24, color: Colors.white),
-        ),
+        child: CircularProgressIndicator(),
       ),
     );
   }

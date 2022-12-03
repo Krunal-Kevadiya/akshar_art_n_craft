@@ -54,19 +54,19 @@ class AuthProvider extends ChangeNotifier {
     String errorMessage;
     switch (e.code) {
       case 'invalid-email':
-        errorMessage = ErrorString.fbInvalidEmailError.tr();
+        errorMessage = ErrorString.fbInvalidEmail.tr();
         break;
       case 'wrong-password':
-        errorMessage = ErrorString.fbWrongPasswordError.tr();
+        errorMessage = ErrorString.fbWrongPassword.tr();
         break;
       case 'weak-password':
-        errorMessage = ErrorString.fbWeakPasswordError.tr();
+        errorMessage = ErrorString.fbWeakPassword.tr();
         break;
       case 'email-already-in-use':
-        errorMessage = ErrorString.fbEmailAlreadyInUseError.tr();
+        errorMessage = ErrorString.fbEmailAlreadyInUse.tr();
         break;
       default:
-        errorMessage = ErrorString.fbUnknownError.tr();
+        errorMessage = ErrorString.fbUnknown.tr();
     }
     return errorMessage;
   }
@@ -135,7 +135,7 @@ class AuthProvider extends ChangeNotifier {
       if (userModel != null) {
         return Success(userModel);
       } else {
-        return Error(Exception(ErrorString.signInError.tr()));
+        return Error(Exception(ErrorString.signIn.tr()));
       }
     } on FirebaseAuthException catch (e) {
       _status = Status.unauthenticated;
@@ -167,7 +167,7 @@ class AuthProvider extends ChangeNotifier {
       if (userModel != null) {
         return Success(userModel);
       } else {
-        return Error(Exception(ErrorString.signInError.tr()));
+        return Error(Exception(ErrorString.signIn.tr()));
       }
     } on FirebaseAuthException catch (e) {
       _status = Status.unauthenticated;

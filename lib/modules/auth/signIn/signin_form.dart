@@ -24,6 +24,8 @@ class SignInForm extends StatefulWidget {
 
 class _SignInFormState extends State<SignInForm> {
   GlobalKey<FormState>? _signInFormKey;
+  late FocusNode _emailFocusNode;
+  late FocusNode _passwordFocusNode;
   TextEditingController? _emailController;
   TextEditingController? _passwordController;
 
@@ -31,14 +33,19 @@ class _SignInFormState extends State<SignInForm> {
   void initState() {
     super.initState();
     _signInFormKey = GlobalKey();
+    _emailFocusNode = FocusNode();
+    _passwordFocusNode = FocusNode();
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
+    _emailFocusNode.requestFocus();
   }
 
   @override
   void dispose() {
     super.dispose();
     _signInFormKey = null;
+    _emailFocusNode.unfocus();
+    _passwordFocusNode.unfocus();
     _emailController?.dispose();
     _passwordController?.dispose();
   }
@@ -46,8 +53,6 @@ class _SignInFormState extends State<SignInForm> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDarkTheme = theme.brightness == Brightness.dark;
-    final focusScope = FocusScope.of(context);
     final authProvider = Provider.of<AuthProvider>(context);
 
     return Form(
@@ -58,22 +63,28 @@ class _SignInFormState extends State<SignInForm> {
           RoundedInput(
             autoFocus: true,
             controller: _emailController,
+            focusNode: _emailFocusNode,
             prefixIcon: Icons.email_rounded,
             validator: Validations.email,
             hintText: SignInString.emailHint.tr(),
-            onEditingComplete: focusScope.nextFocus,
+            onEditingComplete: () => fieldFocusChange(
+              context: context,
+              from: _emailFocusNode,
+              to: _passwordFocusNode,
+            ),
             enabled: authProvider.status != Status.authenticating,
           ),
           SizedBox(height: 16.vs),
           RoundedInput(
             controller: _passwordController,
+            focusNode: _passwordFocusNode,
             prefixIcon: Icons.lock,
             validator: Validations.password,
             hintText: SignInString.passwordHint.tr(),
             maxLines: 1,
             obscureTextWithSuffixIcon: true,
             textInputAction: TextInputAction.done,
-            onEditingComplete: focusScope.unfocus,
+            onEditingComplete: _passwordFocusNode.unfocus,
             onFieldSubmitted: (_) {
               _isValidate(authProvider);
             },
@@ -101,12 +112,9 @@ class _SignInFormState extends State<SignInForm> {
               },
               child: Text(
                 SignInString.forgotPasswordLabel.tr(),
-                style: theme.textTheme.overline?.copyWith(
+                style: theme.textTheme.bodyText1?.copyWith(
                   fontSize: 14.ms,
                   fontWeight: FontWeight.w300,
-                  color: isDarkTheme
-                      ? AppColors.primaryLightColor
-                      : AppColors.primaryColor,
                 ),
                 textAlign: TextAlign.end,
               ),
@@ -141,7 +149,7 @@ class _SignInFormState extends State<SignInForm> {
         } else {
           authProvider.sendEmailVerification();
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(ErrorString.fbVerifyEmailError.tr())),
+            SnackBar(content: Text(ErrorString.fbVerifyEmail.tr())),
           );
         }
       });

@@ -41,6 +41,7 @@ class _SignUpFormState extends State<SignUpForm> {
     _nameController = TextEditingController();
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
+    _nameFocusNode.requestFocus();
   }
 
   @override
@@ -149,7 +150,7 @@ class _SignUpFormState extends State<SignUpForm> {
           widget.homeCallback();
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(ErrorString.fbVerifyEmailError.tr())),
+            SnackBar(content: Text(ErrorString.fbVerifyEmail.tr())),
           );
         }
       });

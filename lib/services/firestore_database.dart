@@ -68,7 +68,7 @@ class FirestoreDatabase {
         data: model.toJson(),
       );
     }
-    return Error(Exception(ErrorString.pathNotFoundError.tr()));
+    return Error(Exception(ErrorString.pathNotFound.tr()));
   }
 
   Future<Result<Exception, bool>> updateCatalog(
@@ -94,7 +94,7 @@ class FirestoreDatabase {
         data: model.toJson(),
       );
     }
-    return Error(Exception(ErrorString.pathNotFoundError.tr()));
+    return Error(Exception(ErrorString.pathNotFound.tr()));
   }
 
   Future<Result<Exception, bool>> deleteCatalog(
@@ -108,7 +108,7 @@ class FirestoreDatabase {
         data: model.toJson(),
       );
     }
-    return Error(Exception(ErrorString.pathNotFoundError.tr()));
+    return Error(Exception(ErrorString.pathNotFound.tr()));
   }
 
   Stream<List<CatalogModel>>? getAllCatalog({
@@ -153,7 +153,7 @@ class FirestoreDatabase {
         data: model.toJson(),
       );
     }
-    return Error(Exception(ErrorString.pathNotFoundError.tr()));
+    return Error(Exception(ErrorString.pathNotFound.tr()));
   }
 
   Stream<List<TestimonialModel>>? getAllTestimonial(

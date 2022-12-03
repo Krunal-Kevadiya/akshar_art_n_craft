@@ -10,7 +10,6 @@ class VerifyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDarkTheme = theme.brightness == Brightness.dark;
 
     return Scaffold(
       appBar: AppBar(
@@ -21,14 +20,11 @@ class VerifyPage extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 25.s),
           child: Text(
-            ErrorString.fbVerifyEmailError.tr(),
+            ErrorString.fbVerifyEmail.tr(),
             textAlign: TextAlign.center,
-            style: theme.textTheme.overline?.copyWith(
+            style: theme.textTheme.bodyText1?.copyWith(
               fontSize: 15.ms,
               fontWeight: FontWeight.w600,
-              color: isDarkTheme
-                  ? AppColors.primaryLightColor
-                  : AppColors.primaryColor,
             ),
           ),
         ),

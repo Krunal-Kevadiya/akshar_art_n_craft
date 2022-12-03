@@ -14,15 +14,15 @@ class WelcomePage extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: const CustomAppBar(isFullScreen: true),
-      body: Background(
-        bottomImage: Images.mainBottom,
-        bottomLeft: 0,
-        topLeft: 0,
-        alignment: Alignment.topLeft,
-        child: CustomScrollView(
-          slivers: <Widget>[
-            SliverFillRemaining(
-              hasScrollBody: false,
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverFillRemaining(
+            hasScrollBody: false,
+            child: Background(
+              bottomImage: Images.mainBottom,
+              bottomLeft: 0,
+              topLeft: 0,
+              alignment: Alignment.topLeft,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -42,8 +42,8 @@ class WelcomePage extends StatelessWidget {
                 ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
