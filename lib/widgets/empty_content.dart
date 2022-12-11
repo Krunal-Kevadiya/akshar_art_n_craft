@@ -46,9 +46,8 @@ class EmptyContent extends StatelessWidget {
               style: theme.textTheme.overline
                   ?.copyWith(fontWeight: FontWeight.w300, fontSize: 14.ms),
             ),
-            const Expanded(
-              child: Spacer(),
-            ),
+            const Spacer(),
+            SizedBox(height: 10.vs),
             RoundedButton(
               title: CatalogString.addButton.tr().toUpperCase(),
               press: press,

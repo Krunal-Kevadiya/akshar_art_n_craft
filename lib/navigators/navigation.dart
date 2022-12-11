@@ -16,6 +16,7 @@ class Navigation {
     Routes.signIn: (context, {arguments}) => const SignInPage(),
     Routes.signUp: (context, {arguments}) => const SignUpPage(),
     Routes.forgot: (context, {arguments}) => const ForgotPage(),
+    Routes.verify: (context, {arguments}) => const VerifyPage(),
     Routes.home: (context, {arguments}) => const HomePage(),
   };
 

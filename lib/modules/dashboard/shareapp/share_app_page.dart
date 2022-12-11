@@ -46,7 +46,7 @@ class ShareAppPage extends StatelessWidget {
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                        const Expanded(child: Spacer()),
+                        const Spacer(),
                         SizedBox(height: 16.vs),
                         RoundedButton(
                           title: DrawerMenuString.shareApp.tr().toUpperCase(),

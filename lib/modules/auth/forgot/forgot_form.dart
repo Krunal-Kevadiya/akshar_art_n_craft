@@ -19,24 +19,24 @@ class ForgotForm extends StatefulWidget {
 
 class _ForgotFormState extends State<ForgotForm> {
   GlobalKey<FormState>? _forgotFormKey;
-  late FocusNode _emailFocusNode;
-  TextEditingController? _emailController;
+  late FocusNode _focusNode;
+  late TextEditingController _controller;
 
   @override
   void initState() {
     super.initState();
     _forgotFormKey = GlobalKey();
-    _emailFocusNode = FocusNode();
-    _emailController = TextEditingController();
-    _emailFocusNode.requestFocus();
+    _focusNode = FocusNode();
+    _controller = TextEditingController();
+    _focusNode.requestFocus();
   }
 
   @override
   void dispose() {
     super.dispose();
     _forgotFormKey = null;
-    _emailFocusNode.unfocus();
-    _emailController?.dispose();
+    _focusNode.unfocus();
+    _controller.dispose();
   }
 
   @override
@@ -50,13 +50,13 @@ class _ForgotFormState extends State<ForgotForm> {
         children: [
           RoundedInput(
             autoFocus: true,
-            controller: _emailController,
-            focusNode: _emailFocusNode,
+            controller: _controller,
+            focusNode: _focusNode,
             prefixIcon: Icons.email_rounded,
             hintText: SignInString.emailHint.tr(),
             validator: Validations.email,
             textInputAction: TextInputAction.done,
-            onEditingComplete: _emailFocusNode.unfocus,
+            onEditingComplete: _focusNode.unfocus,
             onFieldSubmitted: (_) {
               _isValidate(authProvider);
             },
@@ -82,12 +82,15 @@ class _ForgotFormState extends State<ForgotForm> {
   Future<void> _isValidate(AuthProvider authProvider) async {
     if (_forgotFormKey!.currentState!.validate()) {
       final result =
-          await authProvider.sendPasswordResetEmail(_emailController!.text);
+          await authProvider.sendPasswordResetEmail(_controller.text);
       if (!mounted) return;
       result.when((error) {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(error.toString())));
       }, (success) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(ForgotPasswordString.msgForgotEmail.tr())),
+        );
         Navigator.of(context).pop();
       });
     }

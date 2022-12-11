@@ -75,10 +75,12 @@
     "signUpDescription": "Already have an Account ? "
   },
   "forgotPassword": {
-    "forgotPasswordTitle": "Forgot Password"
+    "forgotPasswordTitle": "Forgot Password",
+    "msgForgotEmail": "An email has just been sent to you, Click the link provided to complete forgotPassword"
   },
   "verifyEmail": {
-    "verifyEmailTitle": "Verify Email"
+    "verifyEmailTitle": "Verify Email",
+    "resentEmailButton": "Resend verification email"
   },
   "drawerMenu": {
     "shopForSection": "Shop for",

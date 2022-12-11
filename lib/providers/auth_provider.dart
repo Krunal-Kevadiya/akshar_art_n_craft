@@ -237,6 +237,7 @@ class AuthProvider extends ChangeNotifier {
         );
         final uploadTask = await ref.putFile(File(file.path), metadata);
         final downloadUrl = await uploadTask.ref.getDownloadURL();
+        final oldProfile = _auth.currentUser!.photoURL ?? '';
         await _auth.currentUser?.updatePhotoURL(downloadUrl);
         final userDetails = <String, dynamic>{
           'phone': 'phone',
@@ -245,6 +246,9 @@ class AuthProvider extends ChangeNotifier {
             .collection(FirestorePath.users)
             .doc(_auth.currentUser?.uid)
             .set(userDetails, SetOptions(merge: true));
+        if (oldProfile != '') {
+          await FirebaseStorage.instance.refFromURL(oldProfile).delete();
+        }
       }
       _status = Status.unauthenticated;
       notifyListeners();

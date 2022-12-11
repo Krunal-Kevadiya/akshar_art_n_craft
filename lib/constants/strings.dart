@@ -98,12 +98,14 @@ class ForgotPasswordString {
 
   static const String forgotPasswordTitle =
       'forgotPassword.forgotPasswordTitle';
+  static const String msgForgotEmail = 'forgotPassword.msgForgotEmail';
 }
 
 class VerifyEmailString {
   VerifyEmailString._();
 
   static const String verifyEmailTitle = 'verifyEmail.verifyEmailTitle';
+  static const String resentEmailButton = 'verifyEmail.resentEmailButton';
 }
 
 class DrawerMenuString {

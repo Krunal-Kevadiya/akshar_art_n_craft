@@ -6,33 +6,39 @@ part 'product_model.g.dart';
 class ProductModel {
   ProductModel({
     required this.id,
-    required this.shortDescription,
-    required this.price,
-    required this.size,
-    required this.createDate,
-    required this.catalog,
-    required this.piece,
-    required this.gst,
-    required this.weight,
+    required this.name,
+    required this.category,
+    required this.subCategory,
+    required this.brand,
     required this.fabric,
-    required this.fabricDescription,
+    required this.price,
+    required this.piece,
+    required this.size,
+    required this.weight,
+    required this.moq,
+    required this.gst,
+    required this.description,
     required this.photoUrl,
+    required this.delete,
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) =>
       _$ProductModelFromJson(json);
-  final String id;
-  final String shortDescription;
-  final num price;
+  final int id;
+  final String name;
+  final int category;
+  final int subCategory;
+  final int brand;
+  final int fabric;
+  final String price;
+  final String piece;
   final String size;
-  final DateTime createDate;
-  final String catalog;
-  final num piece;
-  final num gst;
-  final num weight;
-  final String fabric;
-  final String fabricDescription;
-  final String photoUrl;
+  final String weight;
+  final String moq;
+  final String gst;
+  final String description;
+  late List<String> photoUrl;
+  final bool delete;
 
   Map<String, dynamic> toJson() => _$ProductModelToJson(this);
 

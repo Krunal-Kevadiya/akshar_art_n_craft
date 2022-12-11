@@ -19,4 +19,5 @@ class Vectors {
   static const String whatsup = '$prefix/ic_whatsup.svg';
   static const String camera = '$prefix/ic_camera.svg';
   static const String media = '$prefix/ic_media.svg';
+  static const String verify = '$prefix/ic_verify.svg';
 }

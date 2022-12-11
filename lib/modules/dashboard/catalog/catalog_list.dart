@@ -27,7 +27,8 @@ class CatalogList extends StatelessWidget {
       stream: firestoreDatabase.getAllCatalog(type: type),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          final lists = (snapshot.data ?? []) as List<CatalogModel>;
+          final lists =
+              (snapshot.data ?? <CatalogModel>[]) as List<CatalogModel>;
           if (lists.isNotEmpty) {
             return catalogList(theme, lists, firestoreDatabase);
           } else {
@@ -162,7 +163,7 @@ class CatalogList extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
-              const Expanded(child: Spacer()),
+              const Spacer(),
               Icon(
                 Icons.delete,
                 size: 25.s,
@@ -176,7 +177,7 @@ class CatalogList extends StatelessWidget {
                 style: TextStyle(color: Theme.of(context).canvasColor),
                 textAlign: TextAlign.right,
               ),
-              const Expanded(child: Spacer()),
+              const Spacer(),
             ],
           ),
         ),
@@ -194,7 +195,7 @@ class CatalogList extends StatelessWidget {
           padding: EdgeInsets.only(left: 10.s),
           child: Column(
             children: <Widget>[
-              const Expanded(child: Spacer()),
+              const Spacer(),
               Icon(
                 Icons.edit,
                 size: 25.s,
@@ -208,7 +209,7 @@ class CatalogList extends StatelessWidget {
                 style: TextStyle(color: Theme.of(context).canvasColor),
                 textAlign: TextAlign.left,
               ),
-              const Expanded(child: Spacer()),
+              const Spacer(),
             ],
           ),
         ),

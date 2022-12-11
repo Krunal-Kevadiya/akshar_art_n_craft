@@ -26,4 +26,8 @@ class CatalogModel {
   String toString() {
     return '${toJson()}';
   }
+
+  @override
+  bool operator ==(dynamic other) =>
+      other != null && other is CatalogModel && id == other.id;
 }

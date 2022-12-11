@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
@@ -87,6 +88,10 @@ class FirestoreDatabase {
         );
         final uploadTask = await ref.putFile(File(file.path), metadata);
         final downloadUrl = await uploadTask.ref.getDownloadURL();
+        final oldProfile = model.photoUrl ?? '';
+        if (oldProfile != '') {
+          await FirebaseStorage.instance.refFromURL(oldProfile).delete();
+        }
         model.photoUrl = downloadUrl;
       }
       return _firestoreService.update(
@@ -165,6 +170,139 @@ class FirestoreDatabase {
         path: path,
         builder: (data, documentId) =>
             data != null ? TestimonialModel.fromJson(data) : null,
+      );
+    }
+    return null;
+  }
+
+  DocumentReference<Map<String, dynamic>>? getFirestoreRef(
+    FirestoreOperationType type,
+    int id,
+  ) {
+    final path = getCatalogPath(type, id);
+    if (path != null) {
+      return _firestoreService.ref(path);
+    }
+    return null;
+  }
+
+  Future<Result<Exception, bool>> addProduct(
+    FirestoreOperationType type,
+    ProductModel model,
+    List<XFile?> files,
+  ) async {
+    final path = getCatalogPath(type, model.id);
+    if (path != null) {
+      final newFiles =
+          files.where((item) => item != null).whereType<XFile>().toList();
+      if (newFiles.isNotEmpty) {
+        final list = newFiles.map(
+          (file) {
+            final ref = FirebaseStorage.instance
+                .ref()
+                .child(type.name)
+                .child(file.getName);
+            final metadata = SettableMetadata(
+              contentType: 'image/${file.getExtension}',
+              customMetadata: {'picked-file-path': file.path},
+            );
+            return ref.putFile(File(file.path), metadata);
+          },
+        );
+        final uploadTask = await Future.wait(list);
+        final downloadUrl = await Future.wait(
+          uploadTask.map((task) => task.ref.getDownloadURL()),
+        );
+        model.photoUrl = downloadUrl;
+      }
+      return _firestoreService.add(
+        path: path,
+        data: model.toJson(),
+      );
+    }
+    return Error(Exception(ErrorString.pathNotFound.tr()));
+  }
+
+  Future<Result<Exception, bool>> updateProduct(
+    FirestoreOperationType type,
+    ProductModel model,
+    List<XFile?> files,
+  ) async {
+    final path = getCatalogPath(type, model.id);
+    if (path != null) {
+      final newFiles =
+          files.where((item) => item != null).whereType<XFile>().toList();
+      if (newFiles.isNotEmpty) {
+        final list = newFiles.map(
+          (file) {
+            final ref = FirebaseStorage.instance
+                .ref()
+                .child(type.name)
+                .child(file.getName);
+            final metadata = SettableMetadata(
+              contentType: 'image/${file.getExtension}',
+              customMetadata: {'picked-file-path': file.path},
+            );
+            return ref.putFile(File(file.path), metadata);
+          },
+        );
+        final uploadTask = await Future.wait(list);
+        final downloadUrl = await Future.wait(
+          uploadTask.map((task) => task.ref.getDownloadURL()),
+        );
+        // if (model.photoUrl) {
+        //   await FirebaseStorage.instance.refFromURL(model.photoUrl).delete();
+        // }
+        model.photoUrl = downloadUrl;
+      }
+      return _firestoreService.update(
+        path: path,
+        data: model.toJson(),
+      );
+    }
+    return Error(Exception(ErrorString.pathNotFound.tr()));
+  }
+
+  Future<Result<Exception, bool>> deleteProduct(
+    FirestoreOperationType type,
+    ProductModel model,
+  ) async {
+    final path = getCatalogPath(type, model.id);
+    if (path != null) {
+      return _firestoreService.update(
+        path: path,
+        data: model.toJson(),
+      );
+    }
+    return Error(Exception(ErrorString.pathNotFound.tr()));
+  }
+
+  Stream<List<ProductModel>>? getAllProduct({
+    required FirestoreOperationType type,
+    bool isDelete = false,
+  }) {
+    final path = getCatalogPath(type, null);
+    if (path != null) {
+      return _firestoreService.collectionStream(
+        path: path,
+        builder: (data, documentId) =>
+            data != null ? ProductModel.fromJson(data) : null,
+        queryBuilder: (query) => query.where('delete', isEqualTo: isDelete),
+      );
+    }
+    return null;
+  }
+
+  Stream<ProductModel?>? getProductById(
+    FirestoreOperationType type,
+    int id,
+  ) {
+    final path = getCatalogPath(type, id);
+    if (path != null) {
+      return _firestoreService.documentStream(
+        path: path,
+        builder: (data, documentId) =>
+            data != null ? ProductModel.fromJson(data) : null,
       );
     }
     return null;

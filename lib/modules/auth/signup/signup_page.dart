@@ -37,20 +37,21 @@ class SignUpPage extends StatelessWidget {
                     SvgPicture.asset(Vectors.signup),
                     SizedBox(height: 16.vs),
                     SignUpForm(
-                      navigationCallback: (routeName) {
-                        Navigator.pushNamed(
-                          context,
-                          routeName,
-                          arguments: {'currentWidget': context.widget},
-                        );
-                      },
-                      homeCallback: () {
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          Routes.home,
-                          ModalRoute.withName(Routes.root),
-                          arguments: {'currentWidget': context.widget},
-                        );
+                      navigationCallback: (routeName, isRemoveUntil) {
+                        if (isRemoveUntil) {
+                          Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            routeName,
+                            ModalRoute.withName(Routes.root),
+                            arguments: {'currentWidget': context.widget},
+                          );
+                        } else {
+                          Navigator.pushNamed(
+                            context,
+                            routeName,
+                            arguments: {'currentWidget': context.widget},
+                          );
+                        }
                       },
                     ),
                     const SocialSignUp()

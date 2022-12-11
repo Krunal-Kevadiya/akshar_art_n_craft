@@ -11,6 +11,10 @@ class FirestoreService {
   FirestoreService._();
   static final instance = FirestoreService._();
 
+  DocumentReference<Map<String, dynamic>> ref(String path) {
+    return FirebaseFirestore.instance.doc(path);
+  }
+
   Future<Result<Exception, bool>> add({
     required String path,
     required Map<String, dynamic> data,

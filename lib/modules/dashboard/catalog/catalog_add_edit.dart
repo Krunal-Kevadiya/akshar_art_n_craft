@@ -23,8 +23,8 @@ class CatalogAddEdit extends StatefulWidget {
 
 class _CatalogAddEditState extends State<CatalogAddEdit> {
   GlobalKey<FormState>? _catalogFormKey;
-  TextEditingController? _nameController;
-  TextEditingController? _descriptionController;
+  late List<FocusNode> _focusNode;
+  late List<TextEditingController> _controller;
   XFile? _file;
   final String _photoUrl = '';
   bool _isLoading = false;
@@ -35,38 +35,32 @@ class _CatalogAddEditState extends State<CatalogAddEdit> {
   void initState() {
     super.initState();
     _catalogFormKey = GlobalKey();
-    _nameController = TextEditingController();
-    _descriptionController = TextEditingController();
+    _focusNode = List<FocusNode>.generate(
+      2,
+      (int index) => FocusNode(),
+    );
+    _controller = List<TextEditingController>.generate(
+      2,
+      (int index) => TextEditingController(),
+    );
+    _focusNode[0].requestFocus();
   }
-
-  // @override
-  // void didChangeDependencies() {
-  //   super.didChangeDependencies();
-  //   final arguments =
-  //       ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
-  //   if (arguments != null && arguments.isNotEmpty == true) {
-  //     final _todoModel = CatalogModel.fromJson(arguments);
-  //     _id = _todoModel.id;
-  //     _photoUrl = _todoModel.photoUrl;
-  //     _deleted = _todoModel.delete;
-  //     _nameController = TextEditingController(text: _todoModel.name);
-  //     _descriptionController =
-  //         TextEditingController(text: _todoModel.description);
-  //   }
-  // }
 
   @override
   void dispose() {
     super.dispose();
     _file = null;
     _catalogFormKey = null;
-    _nameController?.dispose();
-    _descriptionController?.dispose();
+    for (final node in _focusNode) {
+      node.unfocus();
+    }
+    for (final input in _controller) {
+      input.dispose();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final focusScope = FocusScope.of(context);
     final firestoreDatabase =
         Provider.of<FirestoreDatabase>(context, listen: false);
 
@@ -76,7 +70,7 @@ class _CatalogAddEditState extends State<CatalogAddEdit> {
           hasScrollBody: false,
           child: Padding(
             padding: EdgeInsets.all(25.s),
-            child: addEditForm(focusScope, firestoreDatabase),
+            child: addEditForm(firestoreDatabase),
           ),
         ),
       ],
@@ -84,7 +78,6 @@ class _CatalogAddEditState extends State<CatalogAddEdit> {
   }
 
   Widget addEditForm(
-    FocusScopeNode focusScope,
     FirestoreDatabase firestoreDatabase,
   ) {
     return Form(
@@ -96,7 +89,7 @@ class _CatalogAddEditState extends State<CatalogAddEdit> {
             file: _file,
             size: 110,
             photoUrl: _photoUrl,
-            name: _nameController?.text ?? '',
+            name: _controller[0].text,
             onFileSubmitted: (photo) {
               setState(() => _file = photo);
             },
@@ -105,29 +98,35 @@ class _CatalogAddEditState extends State<CatalogAddEdit> {
           SizedBox(height: 32.vs),
           RoundedInput(
             autoFocus: true,
-            controller: _nameController,
+            controller: _controller[0],
+            focusNode: _focusNode[0],
             prefixIcon: Icons.category,
             validator: Validations.name,
             hintText: CatalogString.nameLabel.tr(),
-            onEditingComplete: focusScope.nextFocus,
+            onEditingComplete: () => fieldFocusChange(
+              context: context,
+              from: _focusNode[0],
+              to: _focusNode[1],
+            ),
             enabled: !_isLoading,
           ),
           SizedBox(height: 16.vs),
           RoundedInput(
-            controller: _descriptionController,
+            controller: _controller[1],
             prefixIcon: Icons.description,
             minLines: 3,
             maxLines: 5,
+            focusNode: _focusNode[1],
             validator: Validations.description,
             hintText: CatalogString.descriptionLabel.tr(),
             textInputAction: TextInputAction.done,
-            onEditingComplete: focusScope.unfocus,
+            onEditingComplete: _focusNode[1].unfocus,
             onFieldSubmitted: (_) {
               _isValidate(firestoreDatabase);
             },
             enabled: !_isLoading,
           ),
-          const Expanded(child: Spacer()),
+          const Spacer(),
           SizedBox(height: 16.vs),
           ConditionBaseWidget(
             isLoading: _isLoading,
@@ -144,7 +143,9 @@ class _CatalogAddEditState extends State<CatalogAddEdit> {
     );
   }
 
-  Future<void> _isValidate(FirestoreDatabase firestoreDatabase) async {
+  Future<void> _isValidate(
+    FirestoreDatabase firestoreDatabase,
+  ) async {
     if (_catalogFormKey!.currentState!.validate()) {
       setState(() => _isLoading = true);
       final result = _id == null
@@ -152,8 +153,8 @@ class _CatalogAddEditState extends State<CatalogAddEdit> {
               widget.type,
               CatalogModel(
                 id: documentIdFromCurrentDate(),
-                name: _nameController!.text,
-                description: _descriptionController!.text,
+                name: _controller[0].text,
+                description: _controller[1].text,
                 photoUrl: _photoUrl,
                 delete: _deleted,
               ),
@@ -163,22 +164,48 @@ class _CatalogAddEditState extends State<CatalogAddEdit> {
               widget.type,
               CatalogModel(
                 id: _id ?? documentIdFromCurrentDate(),
-                name: _nameController!.text,
-                description: _descriptionController!.text,
+                name: _controller[0].text,
+                description: _controller[1].text,
                 photoUrl: _photoUrl,
                 delete: _deleted,
               ),
               _file,
             );
       if (!mounted) return;
-      setState(() => {_isLoading = false, _file = null});
+      setState(() => {_isLoading = false});
       result.when((error) {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(error.toString())));
       }, (success) {
-        _nameController = TextEditingController();
-        _descriptionController = TextEditingController();
+        setState(
+          () => {
+            _file = null,
+            _catalogFormKey = GlobalKey(),
+            _controller = List<TextEditingController>.generate(
+              2,
+              (int index) => TextEditingController(),
+            )
+          },
+        );
+        _focusNode[0].requestFocus();
       });
     }
   }
 }
+
+
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   final arguments =
+  //       ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+  //   if (arguments != null && arguments.isNotEmpty == true) {
+  //     final _todoModel = CatalogModel.fromJson(arguments);
+  //     _id = _todoModel.id;
+  //     _photoUrl = _todoModel.photoUrl;
+  //     _deleted = _todoModel.delete;
+  //     _nameController = TextEditingController(text: _todoModel.name);
+  //     _descriptionController =
+  //         TextEditingController(text: _todoModel.description);
+  //   }
+  // }

@@ -22,8 +22,8 @@ class RateUsPage extends StatefulWidget {
 
 class _RateUsPageState extends State<RateUsPage> {
   GlobalKey<FormState>? _rateUsFormKey;
-  TextEditingController? _nameController;
-  TextEditingController? _commentController;
+  late List<FocusNode> _focusNode;
+  late List<TextEditingController> _controller;
 
   double _rating = 0;
   bool _isLoading = false;
@@ -32,28 +32,28 @@ class _RateUsPageState extends State<RateUsPage> {
   void initState() {
     super.initState();
     _rateUsFormKey = GlobalKey();
-    _nameController = TextEditingController();
-    _commentController = TextEditingController();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _nameController = TextEditingController(text: '');
-    _commentController = TextEditingController(text: '');
+    _focusNode = List<FocusNode>.generate(2, (int index) => FocusNode());
+    _controller = List<TextEditingController>.generate(
+      2,
+      (int index) => TextEditingController(),
+    );
+    _focusNode[0].requestFocus();
   }
 
   @override
   void dispose() {
     super.dispose();
     _rateUsFormKey = null;
-    _nameController?.dispose();
-    _commentController?.dispose();
+    for (final node in _focusNode) {
+      node.unfocus();
+    }
+    for (final input in _controller) {
+      input.dispose();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final focusScope = FocusScope.of(context);
     final authProvider = Provider.of<AuthProvider>(context);
     final firestoreDatabase =
         Provider.of<FirestoreDatabase>(context, listen: false);
@@ -64,9 +64,9 @@ class _RateUsPageState extends State<RateUsPage> {
       builder: (context, snapshot) {
         final user = snapshot.data as UserModel?;
         if (user != null && _rating == 0 && !_isLoading) {
-          _nameController = TextEditingController(text: user.displayName ?? '');
-          _nameController?.selection = TextSelection.fromPosition(
-            TextPosition(offset: _nameController?.text.length ?? 0),
+          _controller[0] = TextEditingController(text: user.displayName ?? '');
+          _controller[0].selection = TextSelection.fromPosition(
+            TextPosition(offset: _controller[0].text.length),
           );
         }
         return Scaffold(
@@ -82,7 +82,6 @@ class _RateUsPageState extends State<RateUsPage> {
                 child: Padding(
                   padding: EdgeInsets.all(25.s),
                   child: rateUsForm(
-                    focusScope: focusScope,
                     theme: theme,
                     firestoreDatabase: firestoreDatabase,
                   ),
@@ -96,7 +95,6 @@ class _RateUsPageState extends State<RateUsPage> {
   }
 
   Widget rateUsForm({
-    required FocusScopeNode focusScope,
     required ThemeData theme,
     required FirestoreDatabase firestoreDatabase,
   }) {
@@ -108,23 +106,29 @@ class _RateUsPageState extends State<RateUsPage> {
           SizedBox(height: 32.vs),
           RoundedInput(
             autoFocus: true,
-            controller: _nameController,
+            controller: _controller[0],
+            focusNode: _focusNode[0],
             prefixIcon: Icons.person_rounded,
             validator: Validations.name,
             hintText: CatalogString.nameLabel.tr(),
-            onEditingComplete: focusScope.nextFocus,
+            onEditingComplete: () => fieldFocusChange(
+              context: context,
+              from: _focusNode[0],
+              to: _focusNode[1],
+            ),
             enabled: !_isLoading,
           ),
           SizedBox(height: 16.vs),
           RoundedInput(
-            controller: _commentController,
+            controller: _controller[1],
+            focusNode: _focusNode[1],
             prefixIcon: Icons.description,
             //minLines: 3,
             //maxLines: 5,
             validator: Validations.comment,
             hintText: RateUsString.commentHint.tr(),
             textInputAction: TextInputAction.done,
-            onEditingComplete: focusScope.unfocus,
+            onEditingComplete: _focusNode[1].unfocus,
             onFieldSubmitted: (_) {
               _isValidate(firestoreDatabase);
             },
@@ -133,10 +137,8 @@ class _RateUsPageState extends State<RateUsPage> {
           SizedBox(height: 16.vs),
           ratingTitle(theme: theme),
           ratingView(),
+          const Spacer(),
           SizedBox(height: 16.vs),
-          const Expanded(
-            child: Spacer(),
-          ),
           ConditionBaseWidget(
             isLoading: false,
             isSeenProgress: true,
@@ -219,8 +221,8 @@ class _RateUsPageState extends State<RateUsPage> {
         FirestoreOperationType.testimonial,
         TestimonialModel(
           id: documentIdFromCurrentDate(),
-          name: _nameController!.text,
-          comment: _commentController!.text,
+          name: _controller[0].text,
+          comment: _controller[1].text,
           rating: _rating,
         ),
       );
@@ -230,8 +232,11 @@ class _RateUsPageState extends State<RateUsPage> {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(error.toString())));
       }, (success) {
-        _nameController = TextEditingController();
-        _commentController = TextEditingController();
+        _controller = List<TextEditingController>.generate(
+          2,
+          (int index) => TextEditingController(),
+        );
+        _focusNode[0].requestFocus();
       });
     }
   }

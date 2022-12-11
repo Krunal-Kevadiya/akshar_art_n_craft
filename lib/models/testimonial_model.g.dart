@@ -12,7 +12,7 @@ TestimonialModel _$TestimonialModelFromJson(Map<String, dynamic> json) =>
       name: json['name'] as String,
       phone: json['phone'] as String?,
       comment: json['comment'] as String?,
-      rating: json['rating'] as double?,
+      rating: (json['rating'] as num?)?.toDouble(),
     );
 
 Map<String, dynamic> _$TestimonialModelToJson(TestimonialModel instance) =>

@@ -13,10 +13,8 @@ class SignInForm extends StatefulWidget {
   const SignInForm({
     super.key,
     required this.navigationCallback,
-    required this.homeCallback,
   });
-  final void Function(String routeName) navigationCallback;
-  final VoidCallback homeCallback;
+  final void Function(String routeName, bool isRemoveUntil) navigationCallback;
 
   @override
   State<SignInForm> createState() => _SignInFormState();
@@ -24,30 +22,31 @@ class SignInForm extends StatefulWidget {
 
 class _SignInFormState extends State<SignInForm> {
   GlobalKey<FormState>? _signInFormKey;
-  late FocusNode _emailFocusNode;
-  late FocusNode _passwordFocusNode;
-  TextEditingController? _emailController;
-  TextEditingController? _passwordController;
+  late List<FocusNode> _focusNode;
+  late List<TextEditingController> _controller;
 
   @override
   void initState() {
     super.initState();
     _signInFormKey = GlobalKey();
-    _emailFocusNode = FocusNode();
-    _passwordFocusNode = FocusNode();
-    _emailController = TextEditingController();
-    _passwordController = TextEditingController();
-    _emailFocusNode.requestFocus();
+    _focusNode = List<FocusNode>.generate(2, (int index) => FocusNode());
+    _controller = List<TextEditingController>.generate(
+      2,
+      (int index) => TextEditingController(),
+    );
+    _focusNode[0].requestFocus();
   }
 
   @override
   void dispose() {
     super.dispose();
     _signInFormKey = null;
-    _emailFocusNode.unfocus();
-    _passwordFocusNode.unfocus();
-    _emailController?.dispose();
-    _passwordController?.dispose();
+    for (final node in _focusNode) {
+      node.unfocus();
+    }
+    for (final input in _controller) {
+      input.dispose();
+    }
   }
 
   @override
@@ -62,29 +61,29 @@ class _SignInFormState extends State<SignInForm> {
         children: [
           RoundedInput(
             autoFocus: true,
-            controller: _emailController,
-            focusNode: _emailFocusNode,
+            controller: _controller[0],
+            focusNode: _focusNode[0],
             prefixIcon: Icons.email_rounded,
             validator: Validations.email,
             hintText: SignInString.emailHint.tr(),
             onEditingComplete: () => fieldFocusChange(
               context: context,
-              from: _emailFocusNode,
-              to: _passwordFocusNode,
+              from: _focusNode[0],
+              to: _focusNode[1],
             ),
             enabled: authProvider.status != Status.authenticating,
           ),
           SizedBox(height: 16.vs),
           RoundedInput(
-            controller: _passwordController,
-            focusNode: _passwordFocusNode,
+            controller: _controller[1],
+            focusNode: _focusNode[1],
             prefixIcon: Icons.lock,
             validator: Validations.password,
             hintText: SignInString.passwordHint.tr(),
             maxLines: 1,
             obscureTextWithSuffixIcon: true,
             textInputAction: TextInputAction.done,
-            onEditingComplete: _passwordFocusNode.unfocus,
+            onEditingComplete: _focusNode[1].unfocus,
             onFieldSubmitted: (_) {
               _isValidate(authProvider);
             },
@@ -107,7 +106,7 @@ class _SignInFormState extends State<SignInForm> {
             child: TextButton(
               onPressed: () {
                 if (authProvider.status != Status.authenticating) {
-                  widget.navigationCallback(Routes.forgot);
+                  widget.navigationCallback(Routes.forgot, false);
                 }
               },
               child: Text(
@@ -124,7 +123,7 @@ class _SignInFormState extends State<SignInForm> {
           AlreadyHaveAnAccount(
             press: () {
               if (authProvider.status != Status.authenticating) {
-                widget.navigationCallback(Routes.signUp);
+                widget.navigationCallback(Routes.signUp, false);
               }
             },
           ),
@@ -136,8 +135,8 @@ class _SignInFormState extends State<SignInForm> {
   Future<void> _isValidate(AuthProvider authProvider) async {
     if (_signInFormKey!.currentState!.validate()) {
       final result = await authProvider.signInWithEmailAndPassword(
-        _emailController!.text,
-        _passwordController!.text,
+        _controller[0].text,
+        _controller[1].text,
       );
       if (!mounted) return;
       result.when((error) {
@@ -145,12 +144,9 @@ class _SignInFormState extends State<SignInForm> {
             .showSnackBar(SnackBar(content: Text(error.toString())));
       }, (success) {
         if (success.emailVerified == true) {
-          widget.homeCallback();
+          widget.navigationCallback(Routes.home, true);
         } else {
-          authProvider.sendEmailVerification();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(ErrorString.fbVerifyEmail.tr())),
-          );
+          widget.navigationCallback(Routes.verify, true);
         }
       });
     }
