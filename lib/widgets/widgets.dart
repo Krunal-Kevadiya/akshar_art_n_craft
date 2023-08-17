@@ -2,6 +2,7 @@ export './already_have_an_account.dart';
 export './app_back_button.dart';
 export './app_bar.dart';
 export './background.dart';
+export './carousel_slider/carousel_slider.dart';
 export './catalog_item.dart';
 export './condition_base_widget.dart';
 export './empty_content.dart';

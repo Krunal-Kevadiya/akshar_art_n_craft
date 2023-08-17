@@ -1,4 +1,3 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
@@ -85,9 +84,10 @@ class _HomePageState extends State<HomePage> {
 }
 
 class HomeView extends StatefulWidget {
-  const HomeView({super.key});
-  // ignore: avoid_field_initializers_in_const_classes
+  HomeView({super.key});
   final FirestoreOperationType type = FirestoreOperationType.product;
+
+  final CarouselMultipleState carouselState = CarouselMultipleState(size: 2);
 
   @override
   State<HomeView> createState() => _HomeViewState();
@@ -119,6 +119,27 @@ class _HomeViewState extends State<HomeView>
             final lists =
                 (snapshot.data ?? <ProductModel>[]) as List<ProductModel>;
             if (lists.isNotEmpty) {
+              widget.carouselState.options.insert(
+                0,
+                CarouselOptions(
+                  height: 70.hp,
+                  viewportFraction: 1,
+                ),
+              );
+              widget.carouselState.options.insert(
+                1,
+                CarouselOptions(
+                  height: 500.vs,
+                  viewportFraction: 0.70,
+                  enlargeCenterPage: true,
+                ),
+              );
+              widget.carouselState.itemCount = lists.length;
+              final pageController = PageController(
+                viewportFraction: options.viewportFraction,
+                initialPage: carouselState!.realPage,
+              );
+              widget.carouselState.pageController = pageController;
               return productList(theme, lists);
             } else {
               return EmptyContent(
@@ -202,11 +223,12 @@ class _HomeViewState extends State<HomeView>
                 height: 500.vs,
                 viewportFraction: 0.70,
                 enlargeCenterPage: true,
-                onPageChanged: (index, reason) {
-                  _carouselController.animateToPage(index);
-                },
+                // onPageChanged: (index, reason) {
+                //   _carouselController.animateToPage(index);
+                // },
               ),
               itemCount: lists.length,
+              carouselController: _carouselController,
               itemBuilder: (context, itemIndex, pageViewIndex) {
                 return productCard(lists, lists[itemIndex]);
               },

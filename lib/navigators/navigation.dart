@@ -88,7 +88,7 @@ class Navigation {
   static Widget getDrawerScreen(DrawerMenuModel currentItem) {
     switch (currentItem.routes) {
       case DrawerMenuString.home:
-        return const HomeView();
+        return HomeView();
       case DrawerMenuString.category:
         return CatalogPage(
           title: CatalogString.categoryTitle.tr(),
@@ -137,7 +137,7 @@ class Navigation {
       case DrawerMenuString.rateUs:
         return const RateUsPage();
       default:
-        return const HomeView();
+        return HomeView();
     }
   }
 
