@@ -60,7 +60,7 @@ class Navigation {
                 end: Offset.zero,
               ).animate(animation),
               child: child,
-            )
+            ),
           ],
         ),
       );

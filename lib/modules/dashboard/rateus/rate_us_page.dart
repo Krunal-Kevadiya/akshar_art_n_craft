@@ -147,7 +147,7 @@ class _RateUsPageState extends State<RateUsPage> {
                 _isValidate(firestoreDatabase);
               },
             ),
-          )
+          ),
         ],
       ),
     );

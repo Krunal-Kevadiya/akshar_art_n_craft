@@ -73,7 +73,7 @@ class _ForgotFormState extends State<ForgotForm> {
                 _isValidate(authProvider);
               },
             ),
-          )
+          ),
         ],
       ),
     );

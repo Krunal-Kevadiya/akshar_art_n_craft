@@ -64,7 +64,7 @@ class ContactUsPage extends StatelessWidget {
                       fontSize: 15.ms,
                       fontWeight: FontWeight.w600,
                     ),
-                  )
+                  ),
                 ],
               ),
             ),

@@ -90,7 +90,7 @@ class MyBottomSheet {
               style: theme.textTheme.labelSmall?.copyWith(fontSize: 16.ms),
             ),
             onTap: () => Navigator.pop(context),
-          )
+          ),
         ],
       ),
     );
@@ -175,9 +175,9 @@ class MyBottomSheet {
                     pickPositive();
                   },
                 ),
-              )
+              ),
             ],
-          )
+          ),
         ],
       ),
     );

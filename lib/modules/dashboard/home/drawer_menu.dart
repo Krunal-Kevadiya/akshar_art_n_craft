@@ -94,7 +94,7 @@ class DrawerMenu extends StatelessWidget {
               email ?? '',
               style: theme.textTheme.bodySmall
                   ?.copyWith(fontWeight: FontWeight.w300, fontSize: 12.ms),
-            )
+            ),
           ],
         ),
       ),
@@ -114,7 +114,7 @@ class DrawerMenu extends StatelessWidget {
             ),
           ),
         ),
-        const Divider()
+        const Divider(),
       ],
     );
   }

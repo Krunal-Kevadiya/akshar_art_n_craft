@@ -51,7 +51,7 @@ class EmptyContent extends StatelessWidget {
             RoundedButton(
               title: CatalogString.addButton.tr().toUpperCase(),
               press: press,
-            )
+            ),
           ],
         ),
       ),

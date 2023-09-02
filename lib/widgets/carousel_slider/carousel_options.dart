@@ -57,7 +57,8 @@ class CarouselOptions {
   ///Defaults to true, i.e. infinite loop.
   final bool enableInfiniteScroll;
 
-  ///Determines if carousel should loop to the closest occurence of requested page.
+  ///Determines if carousel should loop to the closest occurence
+  ///of requested page.
   ///
   ///Defaults to true.
   final bool animateToClosest;
@@ -79,7 +80,8 @@ class CarouselOptions {
   /// Defaults to 4 seconds.
   final Duration autoPlayInterval;
 
-  /// The animation duration between two transitioning pages while in auto playback.
+  /// The animation duration between two transitioning pages
+  /// while in auto playback.
   ///
   /// Defaults to 800 ms.
   final Duration autoPlayAnimationDuration;
@@ -101,6 +103,7 @@ class CarouselOptions {
   final Axis scrollDirection;
 
   /// Called whenever the page in the center of the viewport changes.
+  // ignore: inference_failure_on_function_return_type
   final Function(int index, CarouselPageChangedReason reason)? onPageChanged;
 
   /// Called whenever the carousel is scrolled
@@ -122,8 +125,8 @@ class CarouselOptions {
   /// Default to `true`.
   final bool pageSnapping;
 
-  /// If `true`, the auto play function will be paused when user is interacting with
-  /// the carousel, and will be resumed when user finish interacting.
+  /// If `true`, the auto play function will be paused when user is interacting
+  /// with the carousel, and will be resumed when user finish interacting.
   /// Default to `true`.
   final bool pauseAutoPlayOnTouch;
 
@@ -133,17 +136,19 @@ class CarouselOptions {
   /// Default to `true`.
   final bool pauseAutoPlayOnManualNavigate;
 
-  /// If `enableInfiniteScroll` is `false`, and `autoPlay` is `true`, this option
-  /// decide the carousel should go to the first item when it reach the last item or not.
-  /// If set to `true`, the auto play will be paused when it reach the last item.
-  /// If set to `false`, the auto play function will animate to the first item when it was
-  /// in the last item.
+  ///If `enableInfiniteScroll` is `false`, and `autoPlay` is `true`, this option
+  /// decide the carousel should go to the first item when it reach
+  /// the last item or not.
+  /// If set to `true`, the auto play will be paused when it reach the last item
+  /// If set to `false`, the auto play function will animate to the first
+  /// item when it was in the last item.
   final bool pauseAutoPlayInFiniteScroll;
 
-  /// Pass a `PageStoragekey` if you want to keep the pageview's position when it was recreated.
-  final PageStorageKey? pageViewKey;
+  /// Pass a `PageStoragekey` if you want to keep the pageview's position when
+  /// it was recreated.
+  final PageStorageKey<dynamic>? pageViewKey;
 
-  /// Use [enlargeStrategy] to determine which method to enlarge the center page.
+  /// Use [enlargeStrategy] to determine which method to enlarge the center page
   final CenterPageEnlargeStrategy enlargeStrategy;
 
   /// How much the pages next to the center page will be scaled down.
@@ -154,7 +159,9 @@ class CarouselOptions {
   final bool disableCenter;
 
   /// Whether to add padding to both ends of the list.
-  /// If this is set to true and [viewportFraction] < 1.0, padding will be added such that the first and last child slivers will be in the center of the viewport when scrolled all the way to the start or end, respectively.
+  /// If this is set to true and [viewportFraction] < 1.0, padding will be added
+  /// such that the first and last child slivers will be in the center of the
+  /// viewport when scrolled all the way to the start or end, respectively.
   /// If [viewportFraction] >= 1.0, this property has no effect.
   /// This property defaults to true and must not be null.
   final bool padEnds;
@@ -176,6 +183,7 @@ class CarouselOptions {
     Duration? autoPlayAnimationDuration,
     Curve? autoPlayCurve,
     bool? enlargeCenterPage,
+    // ignore: inference_failure_on_function_return_type
     Function(int index, CarouselPageChangedReason reason)? onPageChanged,
     ValueChanged<double?>? onScrolled,
     ScrollPhysics? scrollPhysics,
@@ -184,7 +192,7 @@ class CarouselOptions {
     bool? pauseAutoPlayOnTouch,
     bool? pauseAutoPlayOnManualNavigate,
     bool? pauseAutoPlayInFiniteScroll,
-    PageStorageKey? pageViewKey,
+    PageStorageKey<dynamic>? pageViewKey,
     CenterPageEnlargeStrategy? enlargeStrategy,
     double? enlargeFactor,
     bool? disableCenter,

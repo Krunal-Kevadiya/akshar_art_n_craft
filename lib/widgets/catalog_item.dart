@@ -143,7 +143,7 @@ class CatalogItem extends StatelessWidget {
             fontWeight: FontWeight.w400,
             fontSize: 12.ms,
           ),
-        )
+        ),
       ],
     );
   }

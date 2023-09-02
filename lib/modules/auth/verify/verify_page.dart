@@ -68,12 +68,12 @@ class _VerifyPageState extends State<VerifyPage> {
                           _isValidate(authProvider);
                         },
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );

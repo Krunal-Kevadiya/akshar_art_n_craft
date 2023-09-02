@@ -32,7 +32,7 @@ class SocialSignUp extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 50.vs)
+        SizedBox(height: 50.vs),
       ],
     );
   }

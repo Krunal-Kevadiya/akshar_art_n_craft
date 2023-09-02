@@ -34,7 +34,7 @@ class MockDatas {
         icon: Icons.cottage,
         routes: DrawerMenuString.home,
         type: MenuType.menuItem,
-      )
+      ),
     ];
 
     if (isAdmin && isLogin) {
@@ -68,7 +68,7 @@ class MockDatas {
           icon: Icons.token,
           routes: DrawerMenuString.product,
           type: MenuType.menuItem,
-        )
+        ),
       ]);
     }
 
@@ -88,7 +88,7 @@ class MockDatas {
       DrawerMenuModel(
         text: DrawerMenuString.myAccountSection.tr(),
         type: MenuType.menuTitle,
-      )
+      ),
     ]);
 
     if (!isLogin) {
@@ -127,7 +127,7 @@ class MockDatas {
           icon: Icons.key,
           routes: DrawerMenuString.logout,
           type: MenuType.menuItem,
-        )
+        ),
       ]);
     }
 
@@ -165,7 +165,7 @@ class MockDatas {
         icon: Icons.star,
         routes: DrawerMenuString.rateUs,
         type: MenuType.menuItem,
-      )
+      ),
     ]);
 
     return list;

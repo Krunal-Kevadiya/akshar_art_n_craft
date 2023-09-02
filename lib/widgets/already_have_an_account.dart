@@ -36,7 +36,7 @@ class AlreadyHaveAnAccount extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-        )
+        ),
       ],
     );
   }

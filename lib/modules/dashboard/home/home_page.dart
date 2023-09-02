@@ -67,7 +67,7 @@ class _HomePageState extends State<HomePage> {
                               context,
                               Routes.signIn,
                               arguments: {'currentWidget': this},
-                            )
+                            ),
                           },
                         );
                   } else {
@@ -119,27 +119,6 @@ class _HomeViewState extends State<HomeView>
             final lists =
                 (snapshot.data ?? <ProductModel>[]) as List<ProductModel>;
             if (lists.isNotEmpty) {
-              widget.carouselState.options.insert(
-                0,
-                CarouselOptions(
-                  height: 70.hp,
-                  viewportFraction: 1,
-                ),
-              );
-              widget.carouselState.options.insert(
-                1,
-                CarouselOptions(
-                  height: 500.vs,
-                  viewportFraction: 0.70,
-                  enlargeCenterPage: true,
-                ),
-              );
-              widget.carouselState.itemCount = lists.length;
-              final pageController = PageController(
-                viewportFraction: options.viewportFraction,
-                initialPage: carouselState!.realPage,
-              );
-              widget.carouselState.pageController = pageController;
               return productList(theme, lists);
             } else {
               return EmptyContent(
@@ -173,6 +152,8 @@ class _HomeViewState extends State<HomeView>
       child: Stack(
         children: [
           CarouselSlider.builder(
+            index: 0,
+            carouselState: widget.carouselState,
             options: CarouselOptions(
               height: 70.hp,
               viewportFraction: 1,
@@ -219,13 +200,12 @@ class _HomeViewState extends State<HomeView>
             height: 70.hp,
             width: 100.wp,
             child: CarouselSlider.builder(
+              index: 1,
+              carouselState: widget.carouselState,
               options: CarouselOptions(
                 height: 500.vs,
                 viewportFraction: 0.70,
                 enlargeCenterPage: true,
-                // onPageChanged: (index, reason) {
-                //   _carouselController.animateToPage(index);
-                // },
               ),
               itemCount: lists.length,
               carouselController: _carouselController,
@@ -233,7 +213,7 @@ class _HomeViewState extends State<HomeView>
                 return productCard(lists, lists[itemIndex]);
               },
             ),
-          )
+          ),
         ],
       ),
     );

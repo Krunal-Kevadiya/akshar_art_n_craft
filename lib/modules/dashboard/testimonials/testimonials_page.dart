@@ -106,7 +106,7 @@ class TestimonialsPage extends StatelessWidget {
               ),
             ),
             SizedBox(height: 5.vs),
-            ratingView(model)
+            ratingView(model),
           ],
         ),
       ),

@@ -185,7 +185,7 @@ class ContactUsString {
       id: 1,
       name: 'contact.byPhoneName',
       phone: 'contact.byPhoneNo',
-    )
+    ),
   ];
   static const String byEmailTitle = 'contact.byEmailTitle';
   static const String byEmailDesc = 'contact.byEmailDesc';

@@ -7,6 +7,8 @@ class CarouselMultipleState {
     options = List<CarouselOptions?>.filled(size, null);
     onResetTimer = List<Function?>.filled(size, null);
     onResumeTimer = List<Function?>.filled(size, null);
+    pageController = List<PageController?>.filled(size, null);
+    // ignore: inference_failure_on_function_return_type
     changeMode = List<Function(CarouselPageChangedReason)?>.filled(size, null);
   }
 
@@ -15,7 +17,7 @@ class CarouselMultipleState {
 
   /// [pageController] is created using the properties passed to the constructor
   /// and can be used to control the [PageView] it is passed to.
-  PageController? pageController;
+  late List<PageController?> pageController;
 
   /// The actual index of the [PageView].
   ///
@@ -42,5 +44,6 @@ class CarouselMultipleState {
   late List<Function?> onResumeTimer;
 
   /// The callback to set the Reason Carousel changed
+  // ignore: inference_failure_on_function_return_type
   late List<Function(CarouselPageChangedReason)?> changeMode;
 }

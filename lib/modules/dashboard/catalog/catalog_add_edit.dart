@@ -197,7 +197,7 @@ class _CatalogAddEditState extends State<CatalogAddEdit> {
             _controller = List<TextEditingController>.generate(
               2,
               (int index) => TextEditingController(),
-            )
+            ),
           },
         );
         _focusNode[0].requestFocus();

@@ -54,7 +54,7 @@ class SignUpPage extends StatelessWidget {
                         }
                       },
                     ),
-                    const SocialSignUp()
+                    const SocialSignUp(),
                   ],
                 ),
               ),

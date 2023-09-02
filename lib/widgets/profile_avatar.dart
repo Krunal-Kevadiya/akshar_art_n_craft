@@ -70,7 +70,7 @@ class ProfileAvatar extends StatelessWidget {
                   color: AppColors.white,
                 ),
               ),
-            )
+            ),
         ],
       ),
     );
